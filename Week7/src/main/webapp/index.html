@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Main</title>
+<link rel="stylesheet" href="resources/css/style.css" />
+<link type="text/css" rel="stylesheet"
+	href="/Week7/resources/bootstrap-3.3.6-dist/css/bootstrap.css" />
+</head>
+<body data-ng-app="mainApp">
+
+	<welcome></welcome>
+	<div class="jumbotron">
+		<h3>Add Team</h3><br>
+		<div data-ng-controller="teamCtrl">
+			<form novalidate>
+			    Team Name: 
+			    <input type="text" ng-model="team.name">
+			    Stadium: 
+			    <input type="text" ng-model="team.stadium">
+			    <button ng-click="saveTeam(team)">Add</button>
+			</form>
+		</div>
+	</div>
+	<div class="jumbotron">
+		<h3>Add Player</h3><br>
+		<div ng-controller="teamCtrl">
+			<div data-ng-controller="playerCtrl">
+				<form novalidate>
+				    First Name: 
+				    <input type="text" ng-model="player.first_name">
+				    Last Name: 
+				    <input type="text" ng-model="player.last_name">
+				    Position:
+				    <input type="text" ng-model="player.position"><br><br>
+				    Country:
+				    <input type="text" ng-model="player.country">
+				    <select ng-model="player.team" ng-options="x.name for x in teams">
+					</select>
+				    <button ng-click="savePlayer(player)">Add</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	
+	<div ng-controller="teamCtrl">
+		<table class="table table-striped">
+		   <tr>
+		      <th>Name</th>
+		      <th>Stadium</th>
+		   </tr>
+		   
+		   <tr ng-repeat = "x in teams">
+		      <td> {{ x.name }}</td>
+		      <td> {{ x.stadium }}</td>
+		   </tr>
+		</table>
+	
+	</div>
+	
+		<div ng-controller="playerCtrl">
+		<table class="table table-striped">
+		   <tr>
+		      <th>First Name</th>
+		      <th>Last Name</th>
+		      <th>Position</th>
+		      <th>Country</th>
+		   </tr>
+		   
+		   <tr ng-repeat = "x in players">
+		      <td> {{ x.first_name }}</td>
+		      <td> {{ x.last_name }}</td>
+		      <td> {{ x.position }}</td>
+		      <td> {{ x.country }}</td>
+		   </tr>
+		</table>
+	
+	</div>
+<!--
+	<div data-ng-controller="teamCtrl">
+		<div class="item" ng-class="{'edited-item':editing, 'edited':team.edited}" 
+			ng-repeat="team in teams">
+			<label class="editing-label" ng-hide="editing">{{team.name}}</label>
+			<label class="editing-label" ng-hide="editing">{{team.stadium}}</label>
+			<input class="editing-label" type="text" ng-change="team.edited=true" 
+				 ng-show="editing" ng-model="team.name"/>
+			<input class="editing-label" type="text" ng-change="team.edited=true" 
+				 ng-show="editing" ng-model="team.stadium"/>
+			<a href="" ng-click="editing = !editing">Edit</a>
+			<a href="" ng-click="saveTeam(team)">Add</a>
+			<a href="" ng-click="helloworld()">Delete</a>
+		</div>
+	</div>
+
+	
+	<div data-ng-controller="playerCtrl">
+		<div class="item" ng-class="{'edited-item':editing, 'edited':player.edited}" 
+			ng-repeat="player in players">
+			<label class="editing-label" ng-hide="editing">first</label>
+			<label class="editing-label" ng-hide="editing">last</label>
+			<label class="editing-label" ng-hide="editing">position</label>
+			<label class="editing-label" ng-hide="editing">country</label>
+			<input class="editing-label" type="text" ng-change="player.edited=true" 
+				ng-show="editing" ng-model="player.first_name"/>
+				<input class="editing-label" type="text" ng-change="player.edited=true" 
+				ng-show="editing" ng-model="player.last_name"/>
+				<input class="editing-label" type="text" ng-change="player.edited=true" 
+				ng-show="editing" ng-model="player.position"/>
+				<input class="editing-label" type="text" ng-change="player.edited=true" 
+				ng-show="editing" ng-model="player.country"/>
+				<input class="editing-label" type="number" ng-change="player.edited=true" 
+				ng-show="editing" ng-model="player.team"/>
+			<a href="" ng-click="editing = !editing">Edit</a>
+			<a href="" ng-click="savePlayer(player)">Save</a>
+			<a href="" ng-click="helloworld()">Delete</a>
+		</div>
+	</div>
+	-->
+	<!-- 
+	 <div ng-app="" ng-init="team=Team_Name;firstName=First_Name;lastName = Last_Name">
+
+		Team Name: <input type="text"	ng-model="team">
+		First Name: <input type="text" ng-model="firstName">
+		Last Name: <input type="text" ng-model="lastName">
+		
+		Name: {{ team }}
+	
+	</div>
+	 -->
+ 	
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.js"></script>
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.js"></script>
+	<script type="text/javascript" src="resources/js/app.js"></script>
+	<script type="text/javascript" src="resources/js/MyDirective.js"></script>
+</body>
+</html>
