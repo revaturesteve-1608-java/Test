@@ -68,9 +68,9 @@
 				<version>2.2</version>
 				<configuration>
 					<url>http://ec2-54-152-99-76.compute-1.amazonaws.com:8080/manager/text</url>
+					<server>tommy</server>
 					<username>tomcat</username>
 					<password>secret</password>
-					<server>tommy</server>
 					<path>/Project3</path>
 				</configuration>
 			</plugin>
