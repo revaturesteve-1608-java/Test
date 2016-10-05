@@ -92,6 +92,25 @@ public class Person {
 		this.vaildated = vaildated;
 		this.linkedin = linkedin;
 	}
+	
+	public Person(String first_name, String last_name, String username, String password, String email, Role role,
+			byte[] profilePic, Complex complex, String phoneNumber, String bio, String unviersity, boolean vaildated,
+			String linkedin) {
+		super();
+		this.first_name = first_name;
+		this.last_name = last_name;
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.role = role;
+		this.profilePic = profilePic;
+		this.complex = complex;
+		this.phoneNumber = phoneNumber;
+		this.bio = bio;
+		this.unviersity = unviersity;
+		this.vaildated = vaildated;
+		this.linkedin = linkedin;
+	}
 
 	public int getId() {
 		return id;

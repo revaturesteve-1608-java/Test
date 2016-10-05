@@ -39,6 +39,11 @@ public class ForumCategory {
 		this.id = id;
 		this.categoryName = categoryName;
 	}
+	
+	public ForumCategory(String categoryName) {
+		this();
+		this.categoryName = categoryName;
+	}
 
 	public int getId() {
 		return id;

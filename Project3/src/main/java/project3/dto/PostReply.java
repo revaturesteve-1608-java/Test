@@ -58,6 +58,16 @@ public class PostReply {
 		this.timestamp = timestamp;
 	}
 
+	public PostReply(ForumPost post, int likes, int dislikes, boolean approval, String content, Timestamp timestamp) {
+		super();
+		this.post = post;
+		this.likes = likes;
+		this.dislikes = dislikes;
+		this.approval = approval;
+		this.content = content;
+		this.timestamp = timestamp;
+	}
+
 	public int getId() {
 		return id;
 	}
