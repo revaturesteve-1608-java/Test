@@ -25,21 +25,18 @@ public class SimpleDaoImpl implements SimpleDao{
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ForumPost> getAllPosts() {
-		// TODO Auto-generated method stub
 		Criteria criteria = session.getCurrentSession().createCriteria(ForumPost.class);
 		return criteria.list();
 	}
 
 	@Override
 	public ForumPost getPostById(int id) {
-		// TODO Auto-generated method stub
 		ForumPost post = (ForumPost) session.getCurrentSession().get(ForumPost.class, id);
 		return post;
 	}
 
 	@Override
 	public Person getPersonById(int id) {
-		// TODO Auto-generated method stub
 		Person person = (Person) session.getCurrentSession().get(Person.class, id);
 		return person;
 	}
@@ -48,7 +45,6 @@ public class SimpleDaoImpl implements SimpleDao{
 	public void createPerson(String first_name, String last_name, String username, String password, String email, Role role,
 			byte[] profilePic, Complex complex, String phoneNumber, String bio, String unviersity, boolean vaildated,
 			String linkedin) {
-		// TODO Auto-generated method stub
 		Person newPerson = new Person(first_name, last_name, username, password, email, role, profilePic, 
 				complex, phoneNumber, bio, unviersity, vaildated, linkedin);
 		session.getCurrentSession().save(newPerson);
@@ -56,7 +52,6 @@ public class SimpleDaoImpl implements SimpleDao{
 
 	@Override
 	public void createForumCategory(String categoryName) {
-		// TODO Auto-generated method stub
 		ForumCategory newCategory = new ForumCategory(categoryName);
 		session.getCurrentSession().save(newCategory);
 	}
@@ -64,21 +59,18 @@ public class SimpleDaoImpl implements SimpleDao{
 	@Override
 	public void createPostReply(ForumPost post, int likes, int dislikes, boolean approval, 
 			String content, Timestamp timestamp) {
-		// TODO Auto-generated method stub
 		PostReply newReply = new PostReply(post, likes, dislikes, approval, content, timestamp);
 		session.getCurrentSession().save(newReply);
 	}
 
 	@Override
 	public void createComplex(String complexName) {
-		// TODO Auto-generated method stub
 		Complex newComplex = new Complex(complexName);
 		session.getCurrentSession().save(newComplex);
 	}
 
 	@Override
 	public void deleteForumPost(int id) {
-		// TODO Auto-generated method stub
 		Session currentSession = session.getCurrentSession();
 		ForumPost post = (ForumPost) currentSession.get(ForumPost.class, id);
 		currentSession.delete(post);
@@ -86,7 +78,6 @@ public class SimpleDaoImpl implements SimpleDao{
 
 	@Override
 	public void deletePostReply(int id) {
-		// TODO Auto-generated method stub
 		Session currentSession = session.getCurrentSession();
 		PostReply reply = (PostReply) currentSession.get(PostReply.class, id);
 		currentSession.delete(reply);
