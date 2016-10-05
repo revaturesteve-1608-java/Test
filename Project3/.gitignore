@@ -1,0 +1,10 @@
+/bin/
+
+.classpath
+.settings
+/
+target/
+
+build/
+
+*/.metadata/*
