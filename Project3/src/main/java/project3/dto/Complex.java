@@ -30,6 +30,11 @@ public class Complex {
 		this.id = id;
 		this.complexName = complexName;
 	}
+	
+	public Complex(String complexName) {
+		super();
+		this.complexName = complexName;
+	}
 
 	public int getId() {
 		return id;
