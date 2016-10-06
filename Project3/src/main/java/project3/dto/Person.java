@@ -28,13 +28,13 @@ public class Person {
 	@Column(name="u_firstName", nullable=false)
 	private String first_name;
 	
-	@Column(name="u_lastName", nullable= false)
+	@Column(name="u_lastName", nullable=false)
 	private String last_name;
 
-	@Column(name="u_username", nullable= false, unique=true)
+	@Column(name="u_username", nullable=false, unique=true)
 	private String username;
 	
-	@Column(name="u_password", nullable= false, unique=true)
+	@Column(name="u_password", nullable=false, unique=true)
 	private String password;
 	
 	@Column(name="u_email", nullable= false, unique=true)
@@ -110,6 +110,18 @@ public class Person {
 		this.unviersity = unviersity;
 		this.vaildated = vaildated;
 		this.linkedin = linkedin;
+	}
+
+	public Person(String first_name, String last_name, String username, String password, String email, Role role,
+			boolean vaildated) {
+		super();
+		this.first_name = first_name;
+		this.last_name = last_name;
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.role = role;
+		this.vaildated = vaildated;
 	}
 
 	public int getId() {
