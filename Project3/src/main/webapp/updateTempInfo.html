@@ -17,15 +17,16 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 </head>
-<body data-ng-app="updateTempInfo">
+<body data-ng-app="updateTempInfo" data-ng-controller="updateTempCtrl">
 
 	<div class="container">
 		<div class="jumbotron">
 			<div id="welcome">
 				<p>Please update your information</p> <br>
+				
 				<div id="updateTempCtrl" data-ng-controller="updateTempCtrl">
-					New Username: <input class="form-group" id="username" type="username" maxlength="40" placeholder="New Username" ng-model="username"> <br><br>
-					Temporary Password: <input class="form-group" id="password" type="password" maxlength="40" placeholder="Temporary Password" ng-model="oldPassword"> <br><br>
+					New Username: <input class="form-group" id="username" type="username" maxlength="40" placeholder="New Username" ng-model="username" value={{user.username}}> <br><br>
+					Temporary Password: <input class="form-group" id="password" type="password" maxlength="40" placeholder="Temporary Password" ng-model="oldPassword" value={{user.password}}> <br><br>
 					New Password: <input class="form-group" id="password" type="password" maxlength="40" placeholder="New Password" ng-model="newPassword"> <br><br>
 					<button type="button" class="btn btn-primary" ng-click="updateInfo(oldPassword, newPassword, username)">update</button>
 			</div>
