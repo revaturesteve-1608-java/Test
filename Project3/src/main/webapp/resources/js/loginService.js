@@ -16,13 +16,13 @@ angular.module('loginApp').service('loginService', function($http, $window) {
 			console.log(response.data);
 			var person = response.data;
 			
-			
-			if(person.vaildated) {
+			$window.location.href = 'index.html';
+		/*	if(person.vaildated) {
 				$window.location.href = 'index.html';
 			} else {
 				$window.location.href = 'updateTempinfo.html';
 			}
-			
+			*/
 			console.log("logged in");
 			
 			
