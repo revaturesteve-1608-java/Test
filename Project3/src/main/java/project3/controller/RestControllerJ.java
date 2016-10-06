@@ -20,6 +20,7 @@ import project3.simpledao.LoginDao;
 @SessionAttributes("user")
 public class RestControllerJ {
 	
+
 	@Autowired
 	LoginDao dao;
 
