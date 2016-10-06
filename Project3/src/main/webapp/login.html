@@ -1,0 +1,31 @@
+<!DOCTYPE>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>RevPages</title>
+<link rel="stylesheet" type="text/css" href="resources/css/homepage.css"/>
+</head>
+<body data-ng-app="loginApp" data-ng-controller="loginController">
+	<div class="container">
+		
+			<label id="title">Welcome to RevPages</label><br> <label for="user" class="input">UserName</label><br>
+			<input type="text" name="user" placeholder="Username" data-ng-model="person.username"><br>
+				<label for="password" class="input">Password</label><br>
+				<input type="password"  name="password" placeholder="Password" data-ng-model="person.password"><br>
+				<button type="submit" class="button-primary" data-ng-click="loginUser(person)">Login</button>
+		
+	</div>
+</body>
+
+
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap.min.js"></script>
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap-tpls.min.js"></script>
+<script type="text/javascript" src="resources/js/app.js"></script>
+<script type="text/javascript" src="resources/js/loginController.js"></script>
+<script type="text/javascript" src="resources/js/loginService.js"></script>
+</html>
+
