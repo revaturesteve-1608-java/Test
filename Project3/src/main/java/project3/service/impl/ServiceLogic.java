@@ -76,6 +76,8 @@ public class ServiceLogic implements ServiceInterface{
 			//make new user name 
 			person.setUsername(person.getEmail());
 			System.out.println("password: " + person.getPassword());
+			//set it as new user
+			person.setVaildated(false);
 			// Generate a Temporary Password
 			String password = getRandom(20);
 			System.out.println("password2: " + password);
