@@ -9,3 +9,5 @@ build/
 
 
 */.metadata/*
+
+/pom.properties

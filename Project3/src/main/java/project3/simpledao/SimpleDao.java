@@ -16,6 +16,8 @@ public interface SimpleDao {
 	
 	public Person getPersonById(int id);
 	
+	public Person getPersonByEmail(String email);
+
 	public Person getPersonByUsername(String username);
 	
 	public void updateTempPerson(String username, String pass, String newUsername);
@@ -25,6 +27,8 @@ public interface SimpleDao {
 			String linkedin);
 	
 	public void createForumCategory(String categoryName);
+	
+	public void createUser(Person person);
 	
 	public void createPostReply(ForumPost post, int likes, int dislikes, boolean approval, 
 			String content, Timestamp timestamp);
