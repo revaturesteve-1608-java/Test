@@ -8,12 +8,7 @@ angular.module('loginApp').controller('loginController',
 				loginService.loginUser(person);
 			}
 
-			$scope.user;
-
-			$scope.getUser = loginService.getUser(function(response) {
-				console.log(response);
-				console.log(response.data)
-				$scope.user = response.data;
-			})
+			
+			
 
 		});

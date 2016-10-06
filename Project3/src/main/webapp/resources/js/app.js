@@ -66,3 +66,5 @@ app.service('createUserService', function($http, $q) {
 		$http.post('rest/getRoles').then(callback);
 	}
 })
+
+angular.module('loginApp', ['ngMaterial']);

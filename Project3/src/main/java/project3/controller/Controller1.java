@@ -18,7 +18,8 @@ public class Controller1 {
 	@RequestMapping(value="/updateTemp", method=RequestMethod.POST)
 	public void updateTempUser(@RequestBody String[] usernamePass){
 //		System.out.println("HEY IT GOT INTO CONTROLLER");
-		String testUsername = "John";
+		String testUsername = usernamePass[3];
+		System.out.println("current user: " + testUsername);
 		System.out.println("inside controller oldPass: " + usernamePass[0]);
 		System.out.println("inside controller newPass: " + usernamePass[1]);
 //		System.out.println("inside controller firstname: " + person.getFirst_name());
