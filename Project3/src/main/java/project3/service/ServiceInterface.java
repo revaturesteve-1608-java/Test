@@ -1,5 +1,9 @@
 package project3.service;
 
-public class ServiceInterface {
+import project3.dto.Person;
+
+public interface ServiceInterface {
+	
+	public void createUser(Person person);
 
 }
