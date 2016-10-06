@@ -1,20 +1,87 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<meta charset="utf-8">
+<meta name="theme-color" content="#f26925">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+<title>Revature | Advancing Talent and Technologies</title>
+<link rel="canonical" href="https://revature.com" />
+<link href="css/bootstrap-3.3.7/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+<link href="css/carousel.css" rel="stylesheet" />
+<link href="css/style.css" rel="stylesheet">
+<link
+	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"
+	rel="icon" />
+<link href="css/responsive.css" rel="stylesheet">
+<link href="imgs/favicon.ico" rel="icon" type="image/x-icon" />
+<link rel="icon" href="imgs/favicon_192.png" />
+<link rel="apple-touch-icon" href="imgs/favicon_192.png" />
+<meta name="msapplication-square150x150logo" content="favicon_150.png" />
+<script src="https://use.typekit.net/pvo4jdm.js"></script>
+<script>try{Typekit.load({ async: true });}catch(e){}</script>
+<meta
+	content="We’re a leading-edge technology solutions firm with an unparalleled talent development platform that empowers people and companies to move forward, faster."
+	name="description">
+<meta name="keywords"
+	content="training program, software development, find developers, hire software developer" />
+<style type="text/css">
+.wf-loading {
+	visibility: hidden;
+}
+</style>
+<script src="https://use.fontawesome.com/8d8fa1da46.js"></script>
 </head>
-<body data-ng-app="loginApp" data-ng-controller="loginController">
-	{{user}}
-</body>
+<body ng-app="routingApp">
+	<div class="navbar-wrapper hero-bm">
+		<div class="container">
 
-<script type="text/javascript"
-	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
-<script type="text/javascript"
-	src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap.min.js"></script>
-<script type="text/javascript"
-	src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap-tpls.min.js"></script>
-<script type="text/javascript" src="resources/js/app.js"></script>
-<script type="text/javascript" src="resources/js/loginController.js"></script>
-<script type="text/javascript" src="resources/js/loginService.js"></script>
+			<nav class="navbar navbar-revature navbar-static-top navbar-bg">
+				<div class="container">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed"
+							data-toggle="collapse" data-target="#navbar"
+							aria-expanded="false" aria-controls="navbar">
+							<span class="sr-only">Toggle navigation</span> <span
+								class="icon-bar"></span> <span class="icon-bar"></span> <span
+								class="icon-bar"></span>
+						</button>
+						<div class="logo">
+							<a href="index.html"><img src="imgs/logo.png" alt="Revature" /></a>
+						</div>
+					</div>
+					<div id="navbar" class="navbar-collapse collapse rev-menu">
+						<ul class="nav navbar-nav">
+							<li><a href='#dashboard'>Home</a></li>
+							<li><a href='#userProfile'>My Profile</a></li>
+
+							<li><a href='#settings'>About</a></li>
+
+						</ul>
+					</div>
+				</div>
+			</nav>
+			
+			<div align="center">
+				<h1>RevOverFlow</h1>
+			</div>
+
+		</div>
+	</div>
+	
+	<br><br>
+	
+	   <div>
+            <div ng-view></div>            
+        </div>
+
+      <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.js'></script>
+        <!--<script src="scripts/angular.min.js"></script>-->
+        <script src="scripts/angular-route.min.js"></script>
+        <script src="app.js"></script>
+        <script src='scripts/ctrls.js'></script>
+
+</body>
 </html>
