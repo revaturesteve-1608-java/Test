@@ -3,13 +3,13 @@
  */
 // tells angular to create a project with the name passed in
 // not providing the [] will tell angular one already exists
-angular.module('mainApp', [])
+angular.module('routingApp')
 
 // scope is basically an object
 .controller('newUserCtrl', function($scope, createUserService) {
 	$scope.createUser = function(person) {
 		console.log('About to create ' + person.first_name);
-		dataService.createUser(person);
+		createUserService.createUser(person);
 	}
 
 })
