@@ -13,6 +13,7 @@ angular.module('updateTempInfo', [])
 		var usernamePass = [oldPassword, newPassword, username]
 		updateTempDataService.update(usernamePass);
 	}
+	
 	$scope.getUser = updateTempDataService.getUser(function(response){
 		console.log(response.data)
 	})
