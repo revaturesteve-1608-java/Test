@@ -112,6 +112,18 @@ public class Person {
 		this.linkedin = linkedin;
 	}
 
+	public Person(String first_name, String last_name, String username, String password, String email, Role role,
+			boolean vaildated) {
+		super();
+		this.first_name = first_name;
+		this.last_name = last_name;
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.role = role;
+		this.vaildated = vaildated;
+	}
+
 	public int getId() {
 		return id;
 	}

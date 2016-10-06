@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -94,4 +95,25 @@ public class SimpleDaoImpl implements SimpleDao{
 		currentSession.delete(reply);
 	}
 
+
+	@Override
+	public Person getPersonByUsername(String username) {
+		// TODO Auto-generated method stub
+		Session currentSession = session.getCurrentSession();
+		Criteria criteria = currentSession.createCriteria(Person.class);
+		Person person = (Person) criteria.add(Restrictions.eq("username", username)).list().get(0);
+		return person;
+	}
+
+	@Override
+	public void updateTempPerson(String username, String pass, String newUsername) {
+		// TODO Auto-generated method stub
+		Session currentSession = session.getCurrentSession();
+		Criteria criteria = currentSession.createCriteria(Person.class);
+		Person person = (Person) criteria.add(Restrictions.eq("username", username)).list().get(0);
+		person.setPassword(pass);
+		person.setUsername(newUsername);
+		person.setVaildated(true);
+		
+	}
 }

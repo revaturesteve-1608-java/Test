@@ -17,6 +17,10 @@ public interface SimpleDao {
 	public Person getPersonById(int id);
 	
 	public Person getPersonByEmail(String email);
+
+	public Person getPersonByUsername(String username);
+	
+	public void updateTempPerson(String username, String pass, String newUsername);
 	
 	public void createPerson(String first_name, String last_name, String username, String password, String email, Role role,
 			byte[] profilePic, Complex complex, String phoneNumber, String bio, String unviersity, boolean vaildated,
