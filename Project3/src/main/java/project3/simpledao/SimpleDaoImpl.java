@@ -40,7 +40,18 @@ public class SimpleDaoImpl implements SimpleDao{
 		Person person = (Person) session.getCurrentSession().get(Person.class, id);
 		return person;
 	}
+	
+	@Override
+	public Person getPersonByEmail(String email) {
+		return (Person) session.getCurrentSession().get(Person.class, email);
+	}
+	
+	@Override
+	public void createUser(Person person) {
+		session.getCurrentSession().save(person);
+	}
 
+	//not using this method
 	@Override
 	public void createPerson(String first_name, String last_name, String username, String password, String email, Role role,
 			byte[] profilePic, Complex complex, String phoneNumber, String bio, String unviersity, boolean vaildated,
@@ -82,4 +93,5 @@ public class SimpleDaoImpl implements SimpleDao{
 		PostReply reply = (PostReply) currentSession.get(PostReply.class, id);
 		currentSession.delete(reply);
 	}
+
 }

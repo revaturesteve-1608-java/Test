@@ -28,13 +28,13 @@ public class Person {
 	@Column(name="u_firstName", nullable=false)
 	private String first_name;
 	
-	@Column(name="u_lastName", nullable= false)
+	@Column(name="u_lastName", nullable=false)
 	private String last_name;
 
-	@Column(name="u_username", nullable= false, unique=true)
+	@Column(name="u_username", nullable=false, unique=true)
 	private String username;
 	
-	@Column(name="u_password", nullable= false, unique=true)
+	@Column(name="u_password", nullable=false, unique=true)
 	private String password;
 	
 	@Column(name="u_email", nullable= false, unique=true)
