@@ -3,8 +3,11 @@ package project3.service.impl;
 import java.security.SecureRandom;
 import java.util.Calendar;
 
+import org.springframework.stereotype.Component;
+
 import project3.service.Crypt;
 
+@Component
 public class CryptImpl implements Crypt{
 	
 	private String[][] keys = new String[][]{
@@ -24,13 +27,24 @@ public class CryptImpl implements Crypt{
 	private char[] alphabet1 = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
     private char[] alphabet2 = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
 
+    private boolean condition(int num){
+		if((num > 47 && num < 57) || (num > 65 && num < 90) || (num > 97 && num < 122)) {
+			return true;
+		}
+		return false;
+	}
+
     @Override
 	public String getRandom(int length) {
 		SecureRandom random = new SecureRandom();
 		String randomString = "";
 		for(int i = 0; i < length; i++){
-			int num = random.nextInt(94) + 33;;
-			randomString += Character.toString((char)num);
+			int num = random.nextInt(94) + 33;
+			if(condition(num)) {
+				randomString += Character.toString((char)num);
+			} else {
+				i--;
+			}
 		}
 		return randomString;
 	}
