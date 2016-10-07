@@ -24,4 +24,11 @@ public class BusinessLogicImpl implements BusinessLogic{
 	public void updateTempPerson(String username, String pass, String newUsername){
 		dao.updateTempPerson(username, pass, newUsername);
 	}
+	
+	@Override
+	@Transactional
+	public void updateUserInfo(String currentUser, String newPassword, String username, String newEmail, 
+			String newPhone, String newUniversity, String newLinkedIn){
+		dao.updateUserInfo(currentUser, newPassword, username, newEmail, newPhone, newUniversity, newLinkedIn);
+	}
 }

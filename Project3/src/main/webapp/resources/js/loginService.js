@@ -20,7 +20,7 @@ angular.module('loginApp').service('loginService', function($http, $window) {
 			if(person.vaildated) {
 				$window.location.href = 'index.html';
 			} else {
-				$window.location.href = 'updateTempinfo.html';
+				$window.location.href = 'updateTempInfo.html';
 			}
 			
 			console.log("logged in");
@@ -31,9 +31,7 @@ angular.module('loginApp').service('loginService', function($http, $window) {
 		})
 	}
 	
-	this.getUser = function(callback) {
-		$http.get('rest/user').then(callback);
-	}
+	
 	
 	
 })
