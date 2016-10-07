@@ -16,6 +16,7 @@ import project3.dto.Person;
 import project3.dto.Role;
 import project3.service.Crypt;
 import project3.service.ServiceInterface;
+import project3.simpledao.LoginDao;
 import project3.simpledao.SimpleDao;
 import project3.util.Email;
 
@@ -30,6 +31,9 @@ public class ServiceLogic implements ServiceInterface{
 	 */
 	@Autowired // mapped to the bean
 	SimpleDao dao;
+	
+	@Autowired
+	LoginDao loginDao;
 	
 	private String getRandom(int length){
 		return crypt.getRandom(length);
@@ -71,6 +75,7 @@ public class ServiceLogic implements ServiceInterface{
 
 	@Override
 	public void createUser(Person person) {
+		person.setPassword(person.getPassword().toLowerCase());
 		// Check if email exists
 		if(dao.getPersonByEmail(person.getEmail()) == null) {
 			//make new user name 
@@ -89,7 +94,9 @@ public class ServiceLogic implements ServiceInterface{
 			dao.createUser(person);
 			// Send Email to Account
 			String subject = "Welcome to Revatuer";
-			String message = "Here is your new password: " + password;
+			String message = "Here is your loging information /n/n" 
+					+ "Username: " + person.getUsername() + "/n" 
+					+ "Password: " + password;
 			email(person.getEmail(), message, subject);
 		} else {
 			//tell that the email already exist
@@ -99,6 +106,15 @@ public class ServiceLogic implements ServiceInterface{
 	@Override
 	public List<Role> getRoles() {
 		return dao.getRoles();
+	}
+
+	@Override
+	public Person loginUser(String username, String password) {
+		Person person = loginDao.loginUser(username, password);
+		if(crypt.validate(password, person.getPassword())) {
+			return person;
+		}
+		return null;
 	}
 	
 	
