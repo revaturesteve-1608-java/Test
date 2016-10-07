@@ -12,4 +12,14 @@ public interface Crypt {
 
 	public String getRandom(int length);
 	
+	/**
+	 * 
+	 * This method is used to compare user supplied values to encrypted fields.
+	 * 
+	 * @param input  : User supplied value. Such as: password from user.
+	 * @param hashed : Encrypted version of that value. Such as: password from database.
+	 * @return true if they match, false if they don't.
+	 */
+	public boolean validate(String input, String hashed);
+	
 }

@@ -9,6 +9,8 @@ public interface ServiceInterface {
 	
 	public void createUser(Person person);
 	
+	public Person loginUser(String username, String password);
+	
 	public List<Role> getRoles();
 
 }
