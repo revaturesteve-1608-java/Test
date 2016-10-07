@@ -20,6 +20,8 @@ public interface SimpleDao {
 
 	public Person getPersonByUsername(String username);
 	
+	public List<Role> getRoles();
+	
 	public void updateTempPerson(String username, String pass, String newUsername);
 	
 	public void updateUserInfo(String currentUser, String newPassword, String username, String newEmail, 

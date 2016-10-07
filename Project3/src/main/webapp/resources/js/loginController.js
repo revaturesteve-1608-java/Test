@@ -8,8 +8,4 @@ angular.module('loginApp').controller('loginController',
 				console.log(person);
 				loginService.loginUser(person);
 			}
-
-			$scope.user;
-
-			
 		});

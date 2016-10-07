@@ -3,6 +3,8 @@ package project3.simpledao;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -18,6 +20,7 @@ import project3.dto.PostReply;
 import project3.dto.Role;
 
 @Repository
+@Transactional
 public class SimpleDaoImpl implements SimpleDao{
 	
 	@Autowired
@@ -42,9 +45,22 @@ public class SimpleDaoImpl implements SimpleDao{
 		return person;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public Person getPersonByEmail(String email) {
-		return (Person) session.getCurrentSession().get(Person.class, email);
+		List<Person> persons = session.getCurrentSession().createCriteria(Person.class).
+				add(Restrictions.eq("email", email)).list();
+		if(persons.size() == 0) {
+			return null;
+		} else {
+			return persons.get(0);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Role> getRoles() {
+		return (List<Role>) session.getCurrentSession().createCriteria(Role.class).list();
 	}
 	
 	@Override
@@ -131,4 +147,5 @@ public class SimpleDaoImpl implements SimpleDao{
 		person.setLinkedin(newLinkedIn);
 		person.setUsername(username);
 	}
+
 }

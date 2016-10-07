@@ -23,26 +23,26 @@ public class RestControllerJ {
     
     @Autowired
     LoginDao dao;
-
-    @RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public Person handleTodo(@RequestBody Person person, ModelMap map) {
-        
-        Person persons = dao.loginUser(person.getUsername(), person.getPassword());
-        
-        map.addAttribute("person", persons);
-        
-        return persons;
-    }
-    
-    
-    @RequestMapping(value = "/user",  produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Person> getUser(@ModelAttribute("person") Person person){
-        
-        System.out.println(person.getUsername());
-        
-        System.out.println("------------------Here-----------------------------------");
-        
-        return new ResponseEntity<Person>(person, HttpStatus.OK);
-    }
+	
+	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public Person handleTodo(@RequestBody Person person, ModelMap map) {
+		
+		Person persons = dao.loginUser(person.getUsername(), person.getPassword());
+		
+		map.addAttribute("person", persons);
+		
+		return persons;
+	}
+	
+	
+	@RequestMapping(value = "/user",  produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Person> getUser(@ModelAttribute("person") Person person){
+		
+		System.out.println(person.getUsername());
+		
+		System.out.println("------------------Here-----------------------------------");
+		
+		return new ResponseEntity<Person>(person, HttpStatus.OK);
+	}
 }
