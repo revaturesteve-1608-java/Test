@@ -75,7 +75,7 @@ public class ServiceLogic implements ServiceInterface{
 
 	@Override
 	public void createUser(Person person) {
-		person.setPassword(person.getPassword().toLowerCase());
+		person.setEmail(person.getEmail().toLowerCase());
 		// Check if email exists
 		if(dao.getPersonByEmail(person.getEmail()) == null) {
 			//make new user name 
