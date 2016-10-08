@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+
+<link rel="stylesheet" href="resources/css/updateTempInfo.css">
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+	crossorigin="anonymous">
+
+<!-- jQuery CDN -->
+<script src="https://code.jquery.com/jquery-1.12.3.js"
+	type="text/javascript"></script>
+
+<!-- Latest compiled and minified JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	crossorigin="anonymous"></script>
+
+
+</head>
+
+<style type="text/css">
+
+	#allPosts{
+		margin-right: 20%;
+		margin-left: 20%;
+		margin-top: 5%;
+	}
+	#singleReply{
+		margin-top: 2%;
+	}
+	#thumbsUp{
+		margin-left: 10%;
+	}
+
+</style>
+<body data-ng-app="posts">
+
+<div id="allPosts" data-ng-controller="postsCtrl">
+	<div id="newPost">
+		<ul class="list-group">
+			<li class="list-group-item">
+				<div>
+					<p id="theUsername">Username</p>
+				</div>
+			</li>
+			<li class="list-group-item">
+				<div>
+					<input class="form-group" id="postContent" type="text" placeholder="What is your question?" ng-model="newPost">
+				</div>
+			</li>
+			<li class="list-group-item">
+				<div>
+					<button id="submit" type="button" ng-click="addPost(newPost)">Submit</button>
+				</div>
+			</li>
+		</ul>
+	</div>
+	
+	
+	<div id="eachPost">
+		<ul class="list-group">
+			<li class="list-group-item">
+				<div>
+					<p id="theUsername">Username</p>
+				</div>
+			</li>
+			<li class="list-group-item">
+				<div>
+					<p id="thePost">HOWOWOWO</p>
+				</div>
+			</li>
+			
+			
+				<li class="list-group-item" id="replies1">
+					<div id="singleReply" class="row">
+						<div class="col-md-8">
+							Morbi leo risus
+						</div>
+						<div class="col-md-4">
+							<button type="button" class="btn btn-default" aria-label="Right Align">
+  								<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+							</button>
+						</div>
+					</div>
+					
+					<div id="singleReply" class="row">
+						<div class="col-md-8">
+							Porta ac consectetur ac
+						</div>
+						<div class="col-md-4">
+							<button type="button" class="btn btn-default" aria-label="Right Align">
+  								<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+							</button>
+						</div>
+					</div>
+				</li>
+			<li class="list-group-item" id="theRepyTextBox">
+				<input id="post" name="post1" type="hidden" ng-init="postId1=1" ng-model="postId1"/>
+				<input class="form-group" id="replyText" type="text" placeholder="reply" ng-model="userReply1">  
+				<button id="reply" type="button" ng-click="addReply(userReply1, postId1)"> reply</button>
+			</li>
+		</ul>
+	</div>
+</div>
+
+
+
+
+
+
+
+	<!-- Scripts for AngularJS -->
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.js"></script>
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.js"></script>
+	<script type="text/javascript" src="resources/js/posts.js"></script>
+</body>
+</html>

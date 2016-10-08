@@ -10,29 +10,19 @@ angular.module('updateUserInfo', [])
 		console.log('EVENT LISTENER WORKED')
 		console.log("oldpass: " + oldPassword);
 		console.log("newpass: " + newPassword);
-		if((typeof oldPassword) === "undefined" || (typeof newPassword) === "undefined") {
-			newPassword = "N/A"
-		}
-		if((typeof newEmail) === "undefined" || newEmail === "") {
-			newEmail = "N/A"
-		}
-		if((typeof username) === "undefined" || username === ""){
-			username = "N/A"
-		}
-		if((typeof newPhone) === "undefined" || newPhone === ""){
-			newPhone = "N/A"
-		}
-		if((typeof newUniversity) === "undefined" || newUniversity === ""){
-			newUniversity = "N/A"
-		}
-		if((typeof newLinkedIn) === "undefined" || newLinkedIn === ""){
-			newLinkedIn = "N/A"
-		}
 					
-		var information = [oldPassword, newPassword, username, newEmail, newPhone, newUniversity, newLinkedIn]
+		var information = [oldPassword, newPassword, username, newEmail, newPhone, newUniversity, newLinkedIn/*, $scope.user.username*/]
 		console.log(information);
 		updateUserData.update(information);
 	}
+	
+//	$scope.user;
+//	
+//	$scope.getUser = updateUserData.getUser(function(response){
+//		$scope.user = response.data;
+//		console.log($scope.user);
+//		
+//	})
 })
 
 .service('updateUserData', function($http){
@@ -40,4 +30,8 @@ angular.module('updateUserInfo', [])
 		console.log('GOT INTO SERVICE')
 		$http.post("rest/updateInfo", information).then()
 	}
+	
+//	this.getUser = function(callback){
+//		$http.get('rest/user').then(callback)
+//	}
 })

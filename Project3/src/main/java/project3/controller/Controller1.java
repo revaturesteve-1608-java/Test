@@ -45,6 +45,38 @@ public class Controller1 {
 		System.out.println("inside controller newPass: " + information[4]);
 		System.out.println("inside controller newPass: " + information[5]);
 		System.out.println("inside controller newPass: " + information[6]);
+		// information[7] is the current user
+		Person currentUser = service.getPersonByUsername("Joey");
+		String newPassword = information[1];
+		String newUsername = information[2];
+		String newEmail = information[3];
+		String newPhone = information[4];
+		String newUniversity = information[5];
+		String newLinkedIn = information[6];
+		
+		
+		if(information[1]==null || "".equals(information[1])) {
+			newPassword = currentUser.getPassword();
+		}
+		if(information[2]==null || "".equals(information[1])){
+			newUsername = currentUser.getUsername();
+		}
+		if(information[3]==null || "".equals(information[1])) {
+			newEmail = currentUser.getEmail();
+		}
+		if(information[4]==null || "".equals(information[1])){
+			newPhone = currentUser.getPhoneNumber();
+		}
+		if(information[5]==null || "".equals(information[1])){
+			newUniversity = currentUser.getUnviersity();
+		}
+		if(information[6]==null || "".equals(information[1])){
+			newLinkedIn = currentUser.getLinkedin();
+		}
+		
+		System.out.println("current user: " + currentUser);
+		System.out.println("email: " + newEmail + "\tsize: " + newEmail.length());
+		
 		if(information[0] == null)
 			System.out.println("CAN CHECK FOR NULLS");
 //		System.out.println("inside controller firstname: " + person.getFirst_name());
@@ -54,6 +86,7 @@ public class Controller1 {
 //		service.updateTempPerson(testUsername, usernamePass[1], usernamePass[2]);
 		
 //		Person person = service.getPersonByUsername(username);
-//		service.updateUserInfo(person.getUsername(), information[1], information[2], information[3], information[4], information[5], information[6]);
+		service.updateUserInfo(currentUser.getUsername(), newPassword, newUsername, newEmail, newPhone, newUniversity, newLinkedIn);
+		System.out.println("REALLY SHOULD NOT GET HERE");
 	}
 }

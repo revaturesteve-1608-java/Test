@@ -139,7 +139,9 @@ public class SimpleDaoImpl implements SimpleDao{
 		Session currentSession = session.getCurrentSession();
 		Criteria criteria = currentSession.createCriteria(Person.class);
 		Person person = (Person) criteria.add(Restrictions.eq("username", currentUser)).list().get(0);
+		System.out.println("inside dao email: " + newEmail + "\tsize: " + newEmail.length());
 		person.setPassword(newPassword);
+		System.out.println("SHOULD NOT GET HERE");
 		person.setUsername(username);
 		person.setEmail(newEmail);
 		person.setPhoneNumber(newPhone);
