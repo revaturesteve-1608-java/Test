@@ -37,7 +37,6 @@ app.controller("newUserCtrl", function($scope, createUserService) {
 	$scope.getRoles = createUserService.getRoles(
 			// pass in the callback function
 			function(response) {
-				console.log(response.data)
 				$scope.roles = response.data;
 			})
 
@@ -51,11 +50,12 @@ app.controller("newUserCtrl", function($scope, createUserService) {
  * a database, as well as firing save, edit, and delete operations -Services can
  * share data between controllers
  */
-app.service('createUserService', function($http, $q) {
+app.service('createUserService', function($http, $q, $window) {
 	
 	this.createUser = function(person) {
 		$http.post('rest/createUser', person).then(function(response) {
 			console.log(response + ' YAY!');
+			$window.alert(response.data);
 		}, function(error) {
 			console.log($q.reject(error));
 		});
