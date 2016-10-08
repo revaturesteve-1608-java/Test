@@ -37,7 +37,6 @@ app.controller("newUserCtrl", function($scope, createUserService) {
 	$scope.getRoles = createUserService.getRoles(
 			// pass in the callback function
 			function(response) {
-				console.log(response.data)
 				$scope.roles = response.data;
 			})
 
@@ -51,32 +50,16 @@ app.controller("newUserCtrl", function($scope, createUserService) {
  * a database, as well as firing save, edit, and delete operations -Services can
  * share data between controllers
  */
-app.service('createUserService', function($http, $q) {
+app.service('createUserService', function($http, $q, $window) {
 	
 	this.createUser = function(person) {
 		$http.post('rest/createUser', person).then(function(response) {
 			console.log(response + ' YAY!');
-			
+			$window.alert(response.data);
 		}, function(error) {
 			console.log($q.reject(error));
 		});
 	}
-	
-//	this.showAlert = function(ev) {
-//	    // Appending dialog to document.body to cover sidenav in docs app
-//	    // Modal dialogs should fully cover application
-//	    // to prevent interaction outside of dialog
-//	    $mdDialog.show(
-//	      $mdDialog.alert()
-//	        .parent(angular.element(document.querySelector('#popupContainer')))
-//	        .clickOutsideToClose(true)
-//	        .title('This is an alert title')
-//	        .textContent('You can specify some description text in here.')
-//	        .ariaLabel('Alert Dialog Demo')
-//	        .ok('Got it!')
-//	        .targetEvent(ev)
-//	    );
-//	  };
 	
 	this.getRoles = function(callback) {
 		// callback is a function that takes a response

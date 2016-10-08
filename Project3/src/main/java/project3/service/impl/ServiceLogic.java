@@ -19,6 +19,7 @@ import project3.service.ServiceInterface;
 import project3.simpledao.LoginDao;
 import project3.simpledao.SimpleDao;
 import project3.util.Email;
+import project3.util.ProfileImage;
 
 @Component
 public class ServiceLogic implements ServiceInterface{
@@ -43,17 +44,17 @@ public class ServiceLogic implements ServiceInterface{
 		return crypt.encrypt(target);
 	}
 	
-	private byte[] extractBytes (String ImageName) throws IOException {
-		// open image
-		File imgPath = new File(ImageName);
-		BufferedImage bufferedImage = ImageIO.read(imgPath);
-		
-		// get DataBufferBytes from Raster
-		WritableRaster raster = bufferedImage .getRaster();
-		DataBufferByte data   = (DataBufferByte) raster.getDataBuffer();
-		
-		return ( data.getData() );
-	}
+//	private byte[] extractBytes (String ImageName) throws IOException {
+//		// open image
+//		File imgPath = new File(ImageName);
+//		BufferedImage bufferedImage = ImageIO.read(imgPath);
+//		
+//		// get DataBufferBytes from Raster
+//		WritableRaster raster = bufferedImage.getRaster();
+//		DataBufferByte data   = (DataBufferByte) raster.getDataBuffer();
+//		
+//		return (data.getData());
+//	}
 	
 	// method to send an email to employee regarding reimbursement request status. 
 	//Email sent by another thread
@@ -74,7 +75,7 @@ public class ServiceLogic implements ServiceInterface{
 	}
 
 	@Override
-	public void createUser(Person person) {
+	public String createUser(Person person) {
 		person.setEmail(person.getEmail().toLowerCase());
 		// Check if email exists
 		if(dao.getPersonByEmail(person.getEmail()) == null) {
@@ -89,7 +90,12 @@ public class ServiceLogic implements ServiceInterface{
 			person.setPassword(maskElement(password));
 			System.out.println("password3: " + person.getPassword());
 			// set a default profile picture
-			
+			person.setProfilePic(ProfileImage.getGravatar80pxByte(person.getEmail()));
+			System.out.println(person.getProfilePic());
+			if(person.getProfilePic() == null) {
+				person.setProfilePic(ProfileImage.getGravatar80pxByte
+						("revature.reimbursements@gmail.com"));
+			}
 			// Save in Database
 			dao.createUser(person);
 			// Send Email to Account
@@ -98,8 +104,11 @@ public class ServiceLogic implements ServiceInterface{
 					+ "Username: " + person.getUsername() + "/n" 
 					+ "Password: " + password;
 			email(person.getEmail(), message, subject);
+			return "[\"User had been created\"]";
 		} else {
 			//tell that the email already exist
+			System.out.println("email already exist");
+			return "[\"Email already exist\"]";
 		}		
 	}
 
