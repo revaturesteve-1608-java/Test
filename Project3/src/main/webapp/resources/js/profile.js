@@ -1,34 +1,9 @@
-var app = angular.module('routingApp', ['ngRoute']);
+/**
+ * 
+ */
+angular.module('routingApp')
 
-app.config(function($routeProvider) {
-    $routeProvider
-    
-    .when('/', {
-        templateUrl : 'views/dashboard.html'
-        // ,controller : 'homeController'
-    })
-    
-    .when('/userProfile', {
-        templateUrl : 'views/userProfile.html',
-        controller : 'profileCtrl'
-    })
-    
-    .when('/settings', {
-        templateUrl : 'views/settings.html'
-        // ,controller : 'contactContoller'
-    })
-    
-    .when('/createNewUser', {
-        templateUrl : 'views/createNewUser.html',
-        controller : "newUserCtrl"
-    })
-    
-    .otherwise({
-        redirectTo : '/'
-    });
-})
-
-app.controller("newUserCtrl", function($scope, createUserService) {
+.controller("profileCtrl", function($scope, createUserService) {
 	$scope.createUser = function(person) {
 		console.log('About to create ' + person.first_name);
 		createUserService.createUser(person);
@@ -40,7 +15,7 @@ app.controller("newUserCtrl", function($scope, createUserService) {
 				$scope.roles = response.data;
 			})
 
-})
+});
 
 /*
  * Service
@@ -51,7 +26,7 @@ app.controller("newUserCtrl", function($scope, createUserService) {
  * a database, as well as firing save, edit, and delete operations 
  * -Services can share data between controllers
  */
-app.service('createUserService', function($http, $q, $window) {
+app.service('profileService', function($http, $q, $window) {
 	
 	this.createUser = function(person) {
 		$http.post('rest/createUser', person).then(function(response) {
