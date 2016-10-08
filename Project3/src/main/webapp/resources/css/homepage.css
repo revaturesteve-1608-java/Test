@@ -36,3 +36,39 @@ input {
 	border-radius: 2px;
 	margin: 10px 0px:
 }
+
+.dialogdemoBasicUsage {
+  position: relative; 
+  
+  }
+  
+md-backdrop{
+position: fixed !important;
+}
+
+.md-dialog-container {
+	position: fixed;
+}
+
+md-toolbar{
+	background-color: #ff4511;
+	border: 2px solid #FFF;
+	border-radius: 25px;
+	color: white;
+	margin: 0px 0px 2px 0px;
+}
+
+.md-toolbar-tools{
+	background-color: #ff4511;
+	border: 2px solid #FFF;
+	border-radius: 25px;
+	color: white;
+}
+
+md-dialog{
+	border-radius: 25px;
+}
+
+md-dialog-content {
+	text-align: center;
+}

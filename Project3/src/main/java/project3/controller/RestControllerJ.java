@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import project3.dto.Person;
+import project3.service.ServiceInterface;
 import project3.simpledao.LoginDao;
 
 @RestController
@@ -24,11 +25,14 @@ public class RestControllerJ {
     @Autowired
     LoginDao dao;
 	
+	@Autowired 	
+	ServiceInterface service; 
+
 	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public Person handleTodo(@RequestBody Person person, ModelMap map) {
 		
-		Person persons = dao.loginUser(person.getUsername(), person.getPassword());
+		Person persons = service.loginUser(person.getUsername(), person.getPassword());
 		
 		map.addAttribute("person", persons);
 		

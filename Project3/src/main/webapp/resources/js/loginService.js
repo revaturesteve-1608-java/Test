@@ -29,7 +29,7 @@ angular.module('loginApp').service('loginService', function($http, $window, $mdD
 			
 		}, function(error) {
 			//console.log('error');
-		//	showAlert();
+			showAlert();
 		})
 	}
 	

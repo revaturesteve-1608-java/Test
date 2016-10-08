@@ -35,10 +35,10 @@ public class Person {
 	private String username;
 	
 	@Column(name="u_password", nullable=false, unique=true)
+	@Size(min=6)
 	private String password;
 	
 	@Column(name="u_email", nullable= false, unique=true)
-	@Size(min=6)
 	private String email;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
