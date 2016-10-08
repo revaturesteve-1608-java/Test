@@ -3,9 +3,10 @@
  */
 angular.module('loginApp').controller('loginController',function($scope,  $mdDialog, $http, $window) {
 
-			/*$scope.loginUser = function(person) {
+			$scope.loginUser = function(person) {
+				console.log(person);
 				loginService.loginUser(person);
-			}*/
+			}
 
 			$scope.status = '  ';
 			$scope.customFullscreen = false;
