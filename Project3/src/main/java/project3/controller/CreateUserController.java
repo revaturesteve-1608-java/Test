@@ -24,10 +24,10 @@ public class CreateUserController {
 	@RequestMapping(value="/createUser", method=RequestMethod.POST, 
 			consumes=MediaType.APPLICATION_JSON_VALUE, 
 			produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Person> createUser(@RequestBody Person person) {
+	public ResponseEntity<String> createUser(@RequestBody Person person) {
 		System.out.println("save post " + person); 
-		service.createUser(person);
-		return new ResponseEntity<Person>(person, HttpStatus.OK);
+		String status = service.createUser(person);
+		return new ResponseEntity<String>(status, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value="/getRoles", method=RequestMethod.POST,

@@ -65,6 +65,12 @@
 		    <artifactId>mail</artifactId>
 		    <version>1.4</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.timgroup/jgravatar -->
+		<dependency>
+		    <groupId>com.timgroup</groupId>
+		    <artifactId>jgravatar</artifactId>
+		    <version>1.0</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>Project3</finalName>
