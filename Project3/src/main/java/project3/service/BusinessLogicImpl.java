@@ -15,6 +15,11 @@ public class BusinessLogicImpl implements BusinessLogic{
 	SimpleDao dao;
 	
 	@Override
+	public Person getPersonById(int id) {
+		return dao.getPersonById(id);
+	}
+	
+	@Override
 	public Person getPersonByUsername(String username){
 		return dao.getPersonByUsername(username);
 	}

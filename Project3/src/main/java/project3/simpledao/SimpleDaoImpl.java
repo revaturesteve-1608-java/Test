@@ -6,6 +6,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -114,9 +115,10 @@ public class SimpleDaoImpl implements SimpleDao{
 
 	@Override
 	public Person getPersonByUsername(String username) {
-		// TODO Auto-generated method stub
 		Session currentSession = session.getCurrentSession();
 		Criteria criteria = currentSession.createCriteria(Person.class);
+		criteria.setFetchMode("role", FetchMode.JOIN);
+		criteria.setFetchMode("complex", FetchMode.JOIN);
 		Person person = (Person) criteria.add(Restrictions.eq("username", username)).list().get(0);
 		return person;
 	}

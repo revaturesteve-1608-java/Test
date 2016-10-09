@@ -3,17 +3,19 @@
  */
 angular.module('routingApp')
 
-.controller("profileCtrl", function($scope, createUserService) {
+.controller("profileCtrl", function($scope, profileService) {
 	$scope.createUser = function(person) {
 		console.log('About to create ' + person.first_name);
-		createUserService.createUser(person);
+		profileService.createUser(person);
 	}
 	
-	$scope.getRoles = createUserService.getRoles(
+	$scope.getPerson = profileService.getPerson(
 			// pass in the callback function
 			function(response) {
-				$scope.roles = response.data;
-			})
+				console.log(response + " NO");
+				$scope.person = response.data;
+			}
+	)
 
 });
 
@@ -37,8 +39,8 @@ app.service('profileService', function($http, $q, $window) {
 		});
 	}
 	
-	this.getRoles = function(callback) {
+	this.getPerson = function(callback) {
 		// callback is a function that takes a response
-		$http.post('rest/getRoles').then(callback);
+		$http.post('rest/getPerson').then(callback);
 	}
 })
