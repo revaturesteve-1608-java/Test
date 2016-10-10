@@ -2,7 +2,7 @@
  * 
  */
 
-angular.module('loginApp').service('loginService', function($http, $window, $mdDialog) {
+angular.module('routingApp').service('loginService', function($http, $window, $mdDialog) {
 	
 	this.loginUser = function(person) {
 		/*var parameter = JSON.stringify({username: username, password: password});
@@ -17,22 +17,23 @@ angular.module('loginApp').service('loginService', function($http, $window, $mdD
 			var person = response.data;
 			
 			console.log(person);
-			
-			if(person.vaildated) {
-				$window.location.href = 'index.html';
+			if(person.id = 0) {
+				if(person.vaildated) {
+					$window.location.href = 'index.html';
+				} else {
+					$window.location.href = 'updateTempInfo.html';
+				}
+				
+				console.log("logged in");
 			} else {
-				$window.location.href = 'updateTempInfo.html';
+				console.log("where");
 			}
-			
-			console.log("logged in");
-			
 			
 		}, function(error) {
 			//console.log('error');
 			showAlert();
 		})
 	}
-	
 	
 	 this.showAlert = function(ev) {
 		    // Appending dialog to document.body to cover sidenav in docs app
@@ -49,8 +50,6 @@ angular.module('loginApp').service('loginService', function($http, $window, $mdD
 		        .targetEvent(ev)
 		    );
 		  };
-	
-	
 	
 	
 })

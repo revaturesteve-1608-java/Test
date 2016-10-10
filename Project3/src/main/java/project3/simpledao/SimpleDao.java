@@ -24,6 +24,9 @@ public interface SimpleDao {
 	
 	public void updateTempPerson(String username, String pass, String newUsername);
 	
+	public void updateUserInfo(String currentUser, String newPassword, String username, String newEmail, 
+			String newPhone, String newUniversity, String newLinkedIn);
+	
 	public void createPerson(String first_name, String last_name, String username, String password, String email, Role role,
 			byte[] profilePic, Complex complex, String phoneNumber, String bio, String unviersity, boolean vaildated,
 			String linkedin);
@@ -40,4 +43,6 @@ public interface SimpleDao {
 	public void deleteForumPost(int id);
 	
 	public void deletePostReply(int id);
+	
+	public void createForumPost(ForumPost post);
 }

@@ -3,9 +3,150 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<h2>dashboard</h2>
-<h4>- will have all overflow questions, sorting by category, etc</h4>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-4">
+				<h3>My Profile</h3>
+				<!-- Button trigger modal -->
+				<button type="button" class="btn btn-primary btn-lg"
+					data-toggle="modal" data-target="#myModal">Edit Profile Information</button>
+
+
+
+			</div>
+
+			<div class="col-md-8">
+				<h3>My Dashboard</h3>
+
+			</div>
+		</div>
+	</div>
+
+
+	<!-- Edit Profile Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Edit Profile Information</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal" id="components" role="form">
+						<fieldset>
+							<div class="tab-content">
+								<!-- Tabs of snippets go here -->
+								<div class="tab-pane active" id="input">
+									<div class="component">
+										<!-- Text input-->
+										<div class="form-group">
+											<label class="col-md-4 control-label" for="textinput">
+												Username</label>
+											<div class="col-md-8">
+												<input class="form-control input-md" id="username" type="username" maxlength="40" placeholder="Username" ng-model="username">
+											</div>
+										</div>
+									</div>
+									<div class="component">
+										<!-- Text input-->
+										<div class="form-group">
+											<label class="col-md-4 control-label" for="textinput">
+												Current Password</label>
+											<div class="col-md-8">
+											<input class="form-control input-md" id="password" type="password" maxlength="40" placeholder="Password" ng-model="oldPassword">
+											</div>
+										</div>
+									</div>
+
+									<div class="component">
+										<!-- Text input-->
+										<div class="form-group">
+											<label class="col-md-4 control-label" for="textinput">
+												New Password</label>
+											<div class="col-md-8">
+											<input class="form-control input-md" id="password" type="password" maxlength="40" placeholder="New Password" ng-model="newPassword">
+											</div>
+										</div>
+									</div>
+									<div class="component">
+										<!-- Password input-->
+										<div class="form-group">
+											<label class="col-md-4 control-label" for="passwordinput">New Email Address
+											</label>
+											<div class="col-md-8">
+											<input class="form-control input-md" id="email" type="text" maxlength="150" placeholder="Email Address" ng-model="newEmail">
+											</div>
+										</div>
+									</div>
+									<div class="component">
+										<!-- Search input-->
+										<div class="form-group">
+											<label class="col-md-4 control-label" for="searchinput">
+												Phone Number</label>
+											<div class="col-md-8">
+											<input class="form-control input-md" id="phone" type="text" maxlength="11" placeholder="Phone" ng-model="newPhone">
+											</div>
+										</div>
+									</div>
+									<div class="component">
+										<!-- Search input-->
+										<div class="form-group">
+											<label class="col-md-4 control-label" for="searchinput">
+												University</label>
+											<div class="col-md-8">
+											<input class="form-control input-md" id="university" type="text" maxlength="150" placeholder="University" ng-model="newUniversity">
+											</div>
+										</div>
+									</div>
+									<div class="component">
+										<!-- Search input-->
+										<div class="form-group">
+											<label class="col-md-4 control-label" for="searchinput">
+												LinkedIn Link</label>
+											<div class="col-md-8">
+											<input class="form-control input-md" id="linkedIn" type="text" maxlength="200" placeholder="LinkedIn link" ng-model="newLinkedIn">
+											</div>
+										</div>
+									</div>
+									
+
+								</div>
+							</div>
+						</fieldset>
+					</form>
+
+
+
+
+
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" ng-click="updateInformation(oldPassword, newPassword, username, newEmail, newPhone, newUniversity, newLinkedIn)">Save Changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+<!-- Scripts for AngularJS -->
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.js"></script>
+	<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.js"></script>
+	<script type="text/javascript" src="resources/js/updateUserInfo.js"></script>
 </body>
 </html>

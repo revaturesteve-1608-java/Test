@@ -1,34 +1,13 @@
 @CHARSET "ISO-8859-1";
 
-.jumbotron {
-	margin-top: 27%;
-	margin-right: 15%;
-	margin-left: 10%;
-	opacity: .95;
+
+#components{
+	margin-top:10%;
+	margin-left:20%;
+	margin-right:20%;
+	margin-bottom:20%;
 }
-.form-horizontal {
-	margin-right: 20%
-}
-.mainBody {
-	background-image: url("images/bunnyMoney.gif");
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center center;
-}
-.failedLogin {
-	margin-top: 10%;
-}
-#submitBtn {
-	margin-left: 40%;
-	margin-top: 5%
-}
-#userPass {
-	margin-left: 10%
-}
-#failedLogin {
-	margin-left: 35%;
-	margin-top: 10%;
-}
-#welcome{
-	margin-left: 35%;
+
+#updateBtn{
+	margin-left: 60%;
 }
