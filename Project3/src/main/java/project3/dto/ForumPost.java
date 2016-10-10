@@ -74,6 +74,15 @@ public class ForumPost {
 		this.timestamp = timestamp;
 		this.resolved = resolved;
 	}
+	
+	public ForumPost(Person author, String title, String content, Timestamp timestamp, boolean resolved) {
+		this();
+		this.author = author;
+		this.title = title;
+		this.content = content;
+		this.timestamp = timestamp;
+		this.resolved = resolved;
+	}
 
 	public int getId() {
 		return id;

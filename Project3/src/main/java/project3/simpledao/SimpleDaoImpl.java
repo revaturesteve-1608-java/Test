@@ -166,4 +166,10 @@ public class SimpleDaoImpl implements SimpleDao{
 		person.setUsername(username);
 	}
 
+	@Override
+	public void createForumPost(ForumPost post) {
+		// TODO Auto-generated method stub
+		session.getCurrentSession().save(post);
+	}
+
 }

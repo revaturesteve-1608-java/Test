@@ -2,9 +2,9 @@
  * 
  */
 
-angular.module('updateTempInfo', [])
+angular.module('routingApp')
 
-.controller('updateTempCtrl', function($scope, updateTempDataService){
+.controller('updateTempCtrl', function($scope, updateTempDataService, $window){
 	console.log('FIRST IN CONTROLLER')
 	$scope.checked;
 	$scope.checkingPassword = function(oldPassword){
@@ -34,13 +34,41 @@ angular.module('updateTempInfo', [])
 	})
 })
 
-.service('updateTempDataService', function($http){
+.service('updateTempDataService', function($http, $window){
 	
 	this.update = function(usernamePass){
 		console.log('GOT INTO SERVICE')
-		$http.post("rest/updateTemp", usernamePass).then()
+		$http.post("rest/updateTemp", usernamePass).then(function(response) {
+			console.log(response + ' YAY!');
+//			$window.alert(response.data);
+			if(response.data == "true"){
+				$window.location.href = 'index.html';
+			} else{
+				$window.alert("Incorrect Temporary password was inputted. Please try again");
+			}
+			
+			
+		}, function(error) {
+			console.log($q.reject(error));
+		});
 	}
 	this.getUser = function(callback){
 		$http.get('rest/user').then(callback)
 	}
+	
+//	 this.showAlert = function(ev) {
+//		    // Appending dialog to document.body to cover sidenav in docs app
+//		    // Modal dialogs should fully cover application
+//		    // to prevent interaction outside of dialog
+//		    $mdDialog.show(
+//		      $mdDialog.alert()
+//		        .parent(angular.element(document.querySelector('#popupContainer')))
+//		        .clickOutsideToClose(true)
+//		        .title('Incorrect Temporary Password')
+//		        .textContent('Update failed. You have put in the incorrect Temporary Password')
+//		        .ariaLabel('Alert Dialog Demo')
+//		        .ok('Got it!')
+//		        .targetEvent(ev)
+//		    );
+//		  };
 })
