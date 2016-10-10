@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -20,7 +19,7 @@ import project3.simpledao.LoginDao;
 
 @RestController
 @SessionAttributes("person")
-public class RestControllerJ {
+public class LoginController {
     
     @Autowired
     LoginDao dao;
@@ -28,14 +27,15 @@ public class RestControllerJ {
 	@Autowired 	
 	ServiceInterface service; 
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/login", method = RequestMethod.POST, 
+			produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Person handleTodo(@RequestBody Person person, ModelMap map) {
-		
+	public Person  checkLogin(@RequestBody Person person, ModelMap map) {
 		Person persons = service.loginUser(person.getUsername(), person.getPassword());
-		
+		if(persons == null) {
+			persons = new Person();
+		}
 		map.addAttribute("person", persons);
-		
 		return persons;
 	}
 	
