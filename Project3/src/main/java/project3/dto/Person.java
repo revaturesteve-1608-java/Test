@@ -240,11 +240,9 @@ public class Person {
 	public String toString() {
 		return "Person [id=" + id + ", first_name=" + first_name + ", last_name=" 
 				+ last_name + ", username=" + username
-				+ ", password=" + password + ", email=" + email + ", role=" + role 
-				+ ", profilePic="
-				+ Arrays.toString(profilePic) + ", complex=" + complex 
+				+ ", password=" + password + ", email=" + email
 				+ ", phoneNumber=" + phoneNumber + ", bio=" + bio
-				+ ", unviersity=" + unviersity + ", vaildated=" + vaildated 
+				+ ", unviersity=" + unviersity
 				+ ", linkedin=" + linkedin + "]";
 	}
 }

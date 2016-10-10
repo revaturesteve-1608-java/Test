@@ -2,7 +2,8 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Update information</title>
+<title>Update Information</title>
+
 <link rel="stylesheet" href="resources/css/updateTempInfo.css">
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -15,20 +16,24 @@
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
 </head>
-<body data-ng-app="updateTempInfo" data-ng-controller="updateTempCtrl">
+<body>
+
+	<body data-ng-app="updateUserInfo">
 
 	<div class="container">
 		<div class="jumbotron">
 			<div id="welcome">
 				<p>Please update your information</p> <br>
-				
-				<div id="updateTempCtrl" data-ng-controller="updateTempCtrl">
+				<div id="" data-ng-controller="updateUserCtrl">
 					New Username: <input class="form-group" id="username" type="username" maxlength="40" placeholder="New Username" ng-model="username"> <br><br>
-					Temporary Password: <input class="form-group" id="password" type="password" minlength="6" placeholder="Temporary Password" ng-model="oldPassword" ng-change="checkingPassword(oldPassword)"> <br><br>
-					New Password: <input class="form-group" id="password" type="password" minlength="6" placeholder="New Password" ng-model="newPassword" ng-disabled="checked ==false;"> <br><br>
-					<button type="button" class="btn btn-primary" ng-click="updateInfo(oldPassword, newPassword, username)" ng-disabled="checked ==false;">update</button>
+					Temporary Password: <input class="form-group" id="password" type="password" maxlength="40" placeholder="Temporary Password" ng-model="oldPassword"> <br><br>
+					New Password: <input class="form-group" id="password" type="password" maxlength="40" placeholder="New Password" ng-model="newPassword"> <br><br>
+					Email Address: <input class="form-group" id="email" type="text" maxlength="150" placeholder="Email Address" ng-model="newEmail"> <br><br>
+					Phone number: <input class="form-group" id="phone" type="text" maxlength="11" placeholder="Phone" ng-model="newPhone"> <br><br>
+					University: <input class="form-group" id="university" type="text" maxlength="150" placeholder="University" ng-model="newUniversity"> <br><br>
+					LinkedIn link: <input class="form-group" id="linkedIn" type="text" maxlength="200" placeholder="LinkedIn link" ng-model="newLinkedIn"> <br><br>
+					<button type="button" class="btn btn-primary" ng-click="updateInformation(oldPassword, newPassword, username, newEmail, newPhone, newUniversity, newLinkedIn)">update</button>
 			</div>
 		</div>
 	</div>
@@ -39,7 +44,9 @@
 		src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.js"></script>
 	<script type="text/javascript"
 		src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.js"></script>
-	<script type="text/javascript" src="resources/js/updatetemp.js"></script>
+	<script type="text/javascript" src="resources/js/updateUserInfo.js"></script>
+
+</body>
 
 </body>
 </html>
