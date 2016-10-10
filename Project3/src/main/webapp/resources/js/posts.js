@@ -31,7 +31,7 @@ angular.module('posts', [])
 		elem.append(buttonListener);
 		angular.element('#theRepyTextBox #replyText').val("");
 	}
-	$scope.addPost = function(newPost){
+	$scope.addPost = function(postTitle, postContent){
 		
 //		<div id="eachPost">
 //		<input id="post1" name="post1" type="hidden" value="Joey" />
@@ -62,8 +62,8 @@ angular.module('posts', [])
 		
 //		<div class="row"><div class="col-md-8"><p id="theUsername">Username</p></div><div class="col-md-4"><button type="button" class="btn btn-default" aria-label="Right Align"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button><button type="button" class="btn btn-default" aria-label="Right Align"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></div></div>
 		
-		var postInfo = []
-		
+		var postInfo = [postTitle, postContent, $scope.user.username]
+		postsService.createPost(postInfo);
 		
 		var elem = angular.element('#newPost');
 		$scope.count = $scope.count+1;
@@ -71,7 +71,7 @@ angular.module('posts', [])
 			+ '<p id="theUsername">Username</p></div><div class="col-md-4"><button type="button" class="btn btn-default" aria-label="Right Align">'
 			+ '<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>'
 			+ '<button type="button" class="btn btn-default" aria-label="Right Align"><span class="glyphicon glyphicon-remove" aria-hidden="true">'
-			+ '</span></button></div></div> </li>  <li class="list-group-item"><div><p id="thePost">' + newPost + '</p></div></li> '
+			+ '</span></button></div></div> </li>  <li class="list-group-item"><div><p id="thePost">' + postContent + '</p></div></li> '
 			+ '<li class="list-group-item" id="replies' + $scope.count + '"></li> <li class="list-group-item" id="theRepyTextBox">'
 			+ '<input id="post" name="post1" type="hidden" ng-init="postId' + $scope.count + '=' + $scope.count + '" ng-model="postId' + $scope.count + '"/>'
 			+ '<input class="form-group" id="replyText" type="text" placeholder="reply" ng-model="userReply' + $scope.count + '"> '
@@ -80,13 +80,33 @@ angular.module('posts', [])
 		elem.after(addListener);
 		angular.element('#newPost #postContent').val("");
 	}
+	
+	
+	$scope.user;
+	$scope.getUser = postsService.getUser(function(response){
+		$scope.user = response.data;
+		console.log($scope.user);
+		
+	})
+	
+	$scope.getPosts = postsService.getPosts(function(response){
+		console.log("came all the way back")
+	})
 })
 
 .service('postsService', function($http){
 	
 	this.createPost = function(postInformation){
 		console.log('GOT INTO SERVICE')
-		$http.post("rest/updateInfo", postInformation).then()
+		$http.post("rest/createPost", postInformation).then()
+	}
+	
+	this.getUser = function(callback){
+		$http.get('rest/user').then(callback)
+	}
+	
+	this.getPosts = function(callback){
+		$http.get('/rest/getPosts').then(callback)
 	}
 	
 })

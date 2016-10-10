@@ -1,10 +1,12 @@
 package project3.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -12,14 +14,15 @@ import project3.dto.Person;
 import project3.service.BusinessLogic;
 
 @RestController
-//@SessionAttributes("user")
+@SessionAttributes("person")
 public class Controller1 {
 	
 	@Autowired
 	BusinessLogic service;
 	
 	@RequestMapping(value="/updateTemp", method=RequestMethod.POST)
-	public void updateTempUser(@RequestBody String[] usernamePass){
+	@ResponseBody
+	public boolean updateTempUser(@RequestBody String[] usernamePass, ModelMap map){
 //		System.out.println("HEY IT GOT INTO CONTROLLER");
 		String testUsername = usernamePass[3];
 		System.out.println("inside controller oldPass: " + usernamePass[0]);
@@ -28,7 +31,14 @@ public class Controller1 {
 //		System.out.println("inside controller lastname: " + person.getLast_name());
 //		System.out.println("inside controller email: " + person.getEmail());
 		
-		service.updateTempPerson(testUsername, usernamePass[1], usernamePass[2]);
+		boolean updated = service.updateTempPerson(testUsername, usernamePass[1], usernamePass[0], usernamePass[2]);
+		if(updated == true){
+			Person updatedPerson = service.getPersonByUsername(usernamePass[2]);
+			map.addAttribute("person", updatedPerson);
+			return updated;
+		}
+		return updated;
+		
 		
 //		Person person = service.getPersonByUsername(username);
 //		service.updateTempPerson(person);
