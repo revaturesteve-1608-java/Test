@@ -119,8 +119,8 @@ public class ServiceLogic implements ServiceInterface{
 
 	@Override
 	public Person loginUser(String username, String password) {
-		Person person = loginDao.loginUser(username, password);
-		if(crypt.validate(password, person.getPassword())) {
+		Person person = dao.getPersonByUsername(username);
+		if(person != null && crypt.validate(password, person.getPassword())) {
 			return person;
 		}
 		return null;

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -25,6 +26,16 @@ public class SimpleDaoImpl implements SimpleDao{
 	
 	@Autowired
 	SessionFactory session;
+	
+	/**
+	 * A private method to join the table together
+	 * 
+	 * @param column the column to join
+	 * @param criteria where it joining to
+	 */
+	private void addColumn(String column, Criteria criteria) {
+		criteria.setFetchMode(column, FetchMode.JOIN);
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -43,6 +54,21 @@ public class SimpleDaoImpl implements SimpleDao{
 	public Person getPersonById(int id) {
 		Person person = (Person) session.getCurrentSession().get(Person.class, id);
 		return person;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public Person getPersonByUsername(String username) {
+		Session currentSession = session.getCurrentSession();
+		Criteria criteria = currentSession.createCriteria(Person.class);
+		addColumn("role", criteria);
+		addColumn("complex", criteria);
+		List<Person> persons = (List<Person>) criteria.add(Restrictions.eq("username", username)).list();
+		if(persons.size() == 0) {
+			return null;
+		} else {
+			return persons.get(0);
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -111,16 +137,6 @@ public class SimpleDaoImpl implements SimpleDao{
 		currentSession.delete(reply);
 	}
 
-
-	@Override
-	public Person getPersonByUsername(String username) {
-		// TODO Auto-generated method stub
-		Session currentSession = session.getCurrentSession();
-		Criteria criteria = currentSession.createCriteria(Person.class);
-		Person person = (Person) criteria.add(Restrictions.eq("username", username)).list().get(0);
-		return person;
-	}
-
 	@Override
 	public void updateTempPerson(String username, String pass, String newUsername) {
 		// TODO Auto-generated method stub
@@ -131,6 +147,12 @@ public class SimpleDaoImpl implements SimpleDao{
 		person.setUsername(newUsername);
 		person.setVaildated(true);
 		
+	}
+
+	@Override
+	public void createForumPost(ForumPost post) {
+		// TODO Auto-generated method stub
+		session.getCurrentSession().save(post);
 	}
 
 }
