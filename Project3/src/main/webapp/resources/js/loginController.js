@@ -11,20 +11,6 @@ angular.module('routingApp').controller('loginController', function($scope, $mdD
 			$scope.status = '  ';
 			$scope.customFullscreen = false;
 			
-			function DialogController($scope, $mdDialog) {
-			    $scope.hide = function() {
-			      $mdDialog.hide();
-			    };
-
-			    $scope.cancel = function() {
-			      $mdDialog.cancel();
-			    };
-
-			    $scope.answer = function(answer) {
-			      $mdDialog.hide(answer);
-			    };
-			  }
-			
 			$scope.signIn = function(person) {
 				console.log("here");
 				$http.post('rest/login', person).then(function(response) {
@@ -39,7 +25,7 @@ angular.module('routingApp').controller('loginController', function($scope, $mdD
 					if(person.id !== 0){
 						$cookies.user = person;
 						if(person.vaildated) {
-							$window.location.href = 'index.html';
+							$window.location.href = 'moderate-view.html';
 						} else {
 							$window.location.href = 'updateTempInfo.html';
 						}
@@ -53,20 +39,7 @@ angular.module('routingApp').controller('loginController', function($scope, $mdD
 			
 		}
 			
-			 function showAlert() {
-			    
-				 alert = $mdDialog.alert({
-				        title: 'User is not found',
-				        textContent: 'Please try again',
-				        ok: 'Ok'
-				      });
-
-				      $mdDialog
-				        .show( alert )
-				        .finally(function() {
-				          alert = undefined;
-				        });
-			 }
+			 
 			 
 			 
 			 function DialogController($scope, $mdDialog) {
