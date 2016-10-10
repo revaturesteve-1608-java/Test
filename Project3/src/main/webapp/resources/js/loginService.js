@@ -33,6 +33,7 @@ angular.module('loginApp').service('loginService', function($http, $window, $mdD
 		})
 	}
 	
+	
 	 this.showAlert = function(ev) {
 		    // Appending dialog to document.body to cover sidenav in docs app
 		    // Modal dialogs should fully cover application
@@ -48,6 +49,8 @@ angular.module('loginApp').service('loginService', function($http, $window, $mdD
 		        .targetEvent(ev)
 		    );
 		  };
+	
+	
 	
 	
 })
