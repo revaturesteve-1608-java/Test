@@ -1,4 +1,4 @@
-var app = angular.module('routingApp', ['ngRoute']);
+var app = angular.module('routingApp', ['ngRoute','ngMaterial','ngMessages','material.svgAssetsCache', 'ngCookies']);
 
 app.config(function($routeProvider) {
     $routeProvider
@@ -39,6 +39,14 @@ app.controller("newUserCtrl", function($scope, createUserService) {
 			function(response) {
 				$scope.roles = response.data;
 			})
+
+})
+
+app.controller("indexCtrl", function($scope, $http, $window, $cookies) {
+	$scope.homePage = function() {
+//		console.log($cookies.user)
+		$window.location.href = 'login.html';
+	}
 
 })
 
