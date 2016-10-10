@@ -100,8 +100,8 @@ public class ServiceLogic implements ServiceInterface{
 			dao.createUser(person);
 			// Send Email to Account
 			String subject = "Welcome to Revatuer";
-			String message = "Here is your loging information /n/n" 
-					+ "Username: " + person.getUsername() + "/n" 
+			String message = "Here is your loging information <br><br>" 
+					+ "Username: " + person.getUsername() + "<br>" 
 					+ "Password: " + password;
 			email(person.getEmail(), message, subject);
 			return "[\"User had been created\"]";
