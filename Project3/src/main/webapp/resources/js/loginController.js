@@ -1,12 +1,12 @@
 /**
  * 
  */
-angular.module('loginApp').controller('loginController',function($scope,  $mdDialog, $http, $window) {
+angular.module('routingApp').controller('loginController', function($scope, $mdDialog, $http, $window, $cookies) {
 
-			$scope.loginUser = function(person) {
-				console.log(person);
-				loginService.loginUser(person);
-			}
+//			$scope.loginUser = function(person) {
+//				console.log(person);
+//				loginService.loginUser(person);
+//			}
 
 			$scope.status = '  ';
 			$scope.customFullscreen = false;
@@ -26,28 +26,30 @@ angular.module('loginApp').controller('loginController',function($scope,  $mdDia
 			  }
 			
 			$scope.signIn = function(person) {
-				
+				console.log("here");
 				$http.post('rest/login', person).then(function(response) {
-					
 					//	console.log(typeof response.data);
 					//	console.log(response.data);
-						var person = response.data;
-						
-						console.log(person);
-						
-						customAlert();
-						
-						
+					var person = response.data;
+					
+					console.log(person);
+					console.log(person.id);
+					
+					
+					if(person.id !== 0){
+						$cookies.user = person;
 						if(person.vaildated) {
 							$window.location.href = 'index.html';
 						} else {
 							$window.location.href = 'updateTempInfo.html';
 						}
-						
-						
-					}, function(error) {
-						
-					})
+					} else {
+						console.log("where2");
+						customAlert();
+					}
+				}, function(error) {
+					customAlert();
+				})
 			
 		}
 			
