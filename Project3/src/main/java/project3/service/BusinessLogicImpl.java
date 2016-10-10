@@ -18,6 +18,9 @@ import project3.util.GetTimestamp;
 public class BusinessLogicImpl implements BusinessLogic{
 	
 	@Autowired
+	Crypt crypt;
+	
+	@Autowired
 	SimpleDao dao;
 	
 	@Override
@@ -27,8 +30,16 @@ public class BusinessLogicImpl implements BusinessLogic{
 	
 	@Override
 	@Transactional
-	public void updateTempPerson(String username, String pass, String newUsername){
-		dao.updateTempPerson(username, pass, newUsername);
+	public boolean updateTempPerson(String username, String pass, String oldPass, String newUsername){
+		Person person = dao.getPersonByUsername(username);
+		if(crypt.validate(oldPass, person.getPassword())){
+			String encryptPass = crypt.encrypt(pass);
+			dao.updateTempPerson(username, encryptPass, newUsername);
+			return true;
+		} else{
+			return false;
+		}
+		
 	}
 	
 	@Override
@@ -44,5 +55,11 @@ public class BusinessLogicImpl implements BusinessLogic{
 		ForumPost post = new ForumPost(author, title, content, GetTimestamp.getCurrentTime(), false);
 //		post.setCategory(categories);
 		dao.createForumPost(post);
+	}
+
+	@Override
+	public List<ForumPost> getAllPosts() {
+		// TODO Auto-generated method stub
+		return dao.getAllPosts();
 	}
 }
