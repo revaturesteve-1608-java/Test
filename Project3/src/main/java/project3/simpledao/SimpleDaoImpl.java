@@ -41,6 +41,13 @@ public class SimpleDaoImpl implements SimpleDao{
 	@Override
 	public List<ForumPost> getAllPosts() {
 		Criteria criteria = session.getCurrentSession().createCriteria(ForumPost.class);
+//		criteria.setFetchMode("author", FetchMode.EAGER);
+//		criteria.setFetchMode("role", FetchMode.EAGER);
+//		criteria.setFetchMode("complex", FetchMode.EAGER);
+		List<ForumPost> posts = criteria.list();
+		for(ForumPost p: posts)
+			p.toString();
+			
 		return criteria.list();
 	}
 
