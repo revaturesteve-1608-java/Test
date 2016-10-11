@@ -154,30 +154,51 @@ public class ServiceLogic implements ServiceInterface{
 			dao.createUser(person);
 			// Send Email to Account
 			String subject = "Welcome to Revatuer";
-			String message2 = 
-			"<h1>Portfolio approved !!</h1>"
+			String message = 
+			"<table style=\"min-width:100%;\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\">"
+			    + "<tbody>"
+					+ "<tr>"
+						+ "<td style=\"min-width:100%;padding:1px 18px;\">"
+							+ "<table style=\"min-width:100%;border-top-width:5px;border-top-style:solid;border-top-color:#F26925;\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\">"
+								+ "<tbody>"
+									+ "<tr>"
+			                        	+ "<td>"
+			                            	+ "<span></span>"
+			                            + "</td>"
+			                        + "</tr>"
+			                    + "</tbody>"
+			                + "</table>"
+			            + "</td>"
+			        + "</tr>"
+			    + "</tbody>"
+			+ "</table>"
+			+ "<h1>Welcome to RevPages !!</h1>"
 			+ "<table style=\"overflow-x:auto;max-width:100%;min-width:100%;\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" align=\"left\">"
             	+ "<tbody>"
             		+ "<tr>"
             			+ "<td style=\"padding-top:0;padding-right:18px;padding-bottom:9px;padding-left:18px;\" valign=\"top\">"
-            				+ "<h1>Portfolio approved !!</h1>"
-            				+ "<h3 style=\"text-align:left;\">Hello Alan Reilly</h3>"
-            				+ "<p style=\"text-align:left;\"> Your portfolio Alan is approved on 11-Oct-2016."
+            				+ "<h3 style=\"text-align:left;\">Hello " + person.getFirst_name() + " " + person.getLast_name() + "</h3>"
+            				+ "<p style=\"text-align:left;\"> Your account had been approve<br><br>"
+            				
+            				+ "Here is your logging information <br><br>" 
+        					+ "Username: " + person.getUsername() + "<br>" 
+        					+ "Password: " + password
+        					+ "<br>"
+        					+ "<br>"
+        					+ "Click the link below to login: "
+        					+ "<a rel=\"nofollow\" target=\"_blank\" href=\"http://ec2-54-152-99-76.compute-1.amazonaws.com:8080/Project3/login.html\">Login</a></p>"
 
             				+ "<br>"
             				+ "<br>"
             				+ "<br>Regards<br>"
-            				+ "<strong>RevaturePro</strong><br>"
-            				+ "<a rel=\"nofollow\" target=\"_blank\" href=\"http://track.revature.com/track/click/30470371/www.revature.com?p=eyJzIjoiQ29mc1ZvaXNQV2VhS0xkeE5CTEFBaTkyZ0JVIiwidiI6MSwicCI6IntcInVcIjozMDQ3MDM3MSxcInZcIjoxLFwidXJsXCI6XCJodHRwczpcXFwvXFxcL3d3dy5yZXZhdHVyZS5jb21cIixcImlkXCI6XCJmNjlmMGY3NWNhNzQ0ZTQyYmMzYzE0MjE5MWE2ZDEyYlwiLFwidXJsX2lkc1wiOltcImYzMzAwNzEwM2Y4MmM1NjdhOTcwODk3OGE1MjI3MjczN2I1YmFkOGNcIl19In0\">https://www.revature.com</a></p>"
+            				+ "<strong>RevPages</strong><br>"
+            				+ "<a rel=\"nofollow\" target=\"_blank\" href=\"http://ec2-54-152-99-76.compute-1.amazonaws.com:8080/Project3\">https://www.revpages.com</a></p>"
 
             			+ "</td>"
             		+ "</tr>"
             	+ "</tbody>"
             + "</table>";
-			String message = "Here is your loging information <br><br>" 
-					+ "Username: " + person.getUsername() + "<br>" 
-					+ "Password: " + password;
-			email(person.getEmail(), message2, subject);
+			email(person.getEmail(), message, subject);
 			return "[\"User had been created\"]";
 		} else {
 			//tell that the email already exist
