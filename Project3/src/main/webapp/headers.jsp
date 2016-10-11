@@ -36,5 +36,4 @@
 	src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/svg-assets-cache.js"></script>
 <script type="text/javascript"
 	src="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.1/angular-material.js"></script>
-
 <script src="resources/js/app.js"></script>
