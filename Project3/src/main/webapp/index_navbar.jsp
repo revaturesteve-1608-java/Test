@@ -18,7 +18,7 @@
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse" id="index-navbar" 
-			data-ng-controller="indexCtrl">
+			data-ng-controller="frontCtrl">
 			<ul class="nav navbar-nav navbar-right">
 				<li>
 				<button type="submit" class="btn btn-info"
