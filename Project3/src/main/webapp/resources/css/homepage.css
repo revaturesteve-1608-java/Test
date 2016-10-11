@@ -34,8 +34,13 @@ input {
 	width: 100%;
 	border: 5px solid #FF4500;
 	border-radius: 2px;
-	margin: 10px 0px:
+	margin: 10px 0px;
+	color: black !important;
 }
+
+li button {
+	margin: 2px 15px 0px 0px;
+} 
 
 .dialogdemoBasicUsage {
   position: relative; 
