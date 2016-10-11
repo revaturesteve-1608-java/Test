@@ -35,10 +35,10 @@ public class Person {
 	private String username;
 	
 	@Column(name="u_password", nullable=false, unique=true)
+	@Size(min=6)
 	private String password;
 	
 	@Column(name="u_email", nullable= false, unique=true)
-	@Size(min=6)
 	private String email;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
@@ -241,9 +241,8 @@ public class Person {
 		return "Person [id=" + id + ", first_name=" + first_name + ", last_name=" 
 				+ last_name + ", username=" + username
 				+ ", password=" + password + ", email=" + email + ", role=" + role 
-				+ ", profilePic="
-				+ Arrays.toString(profilePic) + ", complex=" + complex 
-				+ ", phoneNumber=" + phoneNumber + ", bio=" + bio
+				+ ", profilePic=" + Arrays.toString(profilePic) + ", complex=" 
+				+ complex + ", phoneNumber=" + phoneNumber + ", bio=" + bio
 				+ ", unviersity=" + unviersity + ", vaildated=" + vaildated 
 				+ ", linkedin=" + linkedin + "]";
 	}

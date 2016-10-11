@@ -49,6 +49,22 @@ public class CryptImpl implements Crypt{
 		return randomString;
 	}
     
+    /**
+	 * 
+	 * This method is used to compare user supplied values to encrypted fields.
+	 * 
+	 * @param input  : User supplied value. Such as: password from user.
+	 * @param hashed : Encrypted version of that value. Such as: password from database.
+	 * @return true if they match, false if they don't.
+	 */
+	public boolean validate(String input, String hashed){
+		if(decrypt(hashed).equals(input)) {
+			return true;
+		} else {	
+			return false;
+		}
+	}
+    
 	/**
 	 * This method salts && encrypts the target.
 	 *  
@@ -174,45 +190,6 @@ public class CryptImpl implements Crypt{
 			case 29: return salt + "gsqrzD" + target + "182";
 			case 30: return salt + "AFOB@H" + target + "943";
 			case 31: return salt + "YxVKTz" + target + "452";
-			default: return null;
-		}
-	}
-	
-	private String saltTarget(String target, String day){
-		
-		switch(Integer.parseInt(day)){
-
-			case  1: return day + "4OY#nR" + target + "690";
-			case  2: return day + "kt4oRA" + target + "848";
-			case  3: return day + "tqDHZe" + target + "290";
-			case  4: return day + "VOYhUy" + target + "575";
-			case  5: return day + "9kA?3e" + target + "692";
-			case  6: return day + "7mEY2Y" + target + "447";
-			case  7: return day + "Nlt$Yl" + target + "040";
-			case  8: return day + "J7U9wl" + target + "408";
-			case  9: return day + "lrJy?z" + target + "199";
-			case 10: return day + "aG9SGv" + target + "571";
-			case 11: return day + "la9Fmw" + target + "352";
-			case 12: return day + "5Fbdtn" + target + "394";
-			case 13: return day + "b#?LZK" + target + "922";
-			case 14: return day + "@b8rqK" + target + "328";
-			case 15: return day + "E@ZwEU" + target + "432";
-			case 16: return day + "NssU1i" + target + "107";
-			case 17: return day + "dSa#bb" + target + "706";
-			case 18: return day + "GavTJP" + target + "231";
-			case 19: return day + "prp5sj" + target + "189";
-			case 20: return day + "5KNmg2" + target + "825";
-			case 21: return day + "erq17Q" + target + "161";
-			case 22: return day + "xc21Ha" + target + "330";
-			case 23: return day + "wW6!6X" + target + "212";
-			case 24: return day + "pbk3Ob" + target + "716";
-			case 25: return day + "zHLL7J" + target + "486";
-			case 26: return day + "gMcyh0" + target + "095";
-			case 27: return day + "UaFhTf" + target + "242";
-			case 28: return day + "XJh?QJ" + target + "764";
-			case 29: return day + "gsqrzD" + target + "182";
-			case 30: return day + "AFOB@H" + target + "943";
-			case 31: return day + "YxVKTz" + target + "452";
 			default: return null;
 		}
 	}
@@ -610,413 +587,384 @@ public class CryptImpl implements Crypt{
 	}
 	
 	//-------------------------------------------------------------------------------------------------
-		// Decryption
-		private String decrypt(String target){
-			
-			String[] dKeys = bindKeys(target);
-			
-			return decrypt(target, dKeys[0], dKeys[1]);
-		}
-		private String decrypt(String target, String key1, String key2){
-			
-			String temp = target;
-			temp = temp.substring(2);
-			
-			//------------------
-			// Reveal Cipher
-			for(int i = 0; i < key1.length(); i++){
-				
-				temp = decrypt(temp, key2);
-			}
-			
-			//------------------
-			// Reveal Mask
-			temp = clearMask(temp);
-			
-			return unsaltTarget(temp);
-		}
-		private String decrypt(String target, String keyword){
-			
-			char[] tempPassword = target.toCharArray();
-			char[] tempUsername = keyword.toCharArray();
-			char[] tempResult = new char[tempPassword.length];
-	        
-	        int keyBase = tempUsername.length;
-	        int keyCeil = tempUsername.length;
-	        int keyIndex;
-	        
-			for(int i = 0; i < tempPassword.length; i++){
-				
-				if(Character.isAlphabetic(tempPassword[i])){
-					
-					keyIndex = keyBase % keyCeil;
-					
-					if(Character.isUpperCase(tempPassword[i]) && Character.isUpperCase(tempUsername[keyIndex]))
-					{
-						tempResult[i] = decipherLetter(alphabet1, alphabet1, tempPassword[i], keyIndex, tempUsername);
-					}
-					
-					else if(Character.isUpperCase(tempPassword[i]) && Character.isLowerCase(tempUsername[keyIndex])){
-						
-						tempResult[i] = decipherLetter(alphabet1, alphabet2, tempPassword[i], keyIndex, tempUsername);
-					}
-					
-					else if(Character.isLowerCase(tempPassword[i]) && Character.isUpperCase(tempUsername[keyIndex])){
-						
-						tempResult[i] = decipherLetter(alphabet2, alphabet1, tempPassword[i], keyIndex, tempUsername);
-					}
-					
-					else {
-						
-						tempResult[i] = decipherLetter(alphabet2, alphabet2, tempPassword[i], keyIndex, tempUsername);
-					}
-					
-					keyBase++;
-				}
-				
-				else if(Character.isDigit(tempPassword[i])){
-					
-					
-					tempResult[i] = decipherNumber(tempPassword[i]);
-				}
-				
-				else {
-					
-					tempResult[i] = decipherOther(tempPassword[i]);
-				}
-			}
-			
-			return new String(tempResult);
-		}
-		private char decipherLetter(char[] alpha1, char[] alpha2, char letter, int keyIndex, char[] keyword){
-			
-			int cipherLetter;
-			int indexLetter = 0;
-			int indexKey = 0;
-			
-			for(int i = 0; i < 26; i++){
-				
-				if(letter == alpha1[i]){
-					indexLetter = i;
-					break;
-				}
-			}
-			
-			for(int j = 0; j < 26; j++){
-				
-				if(keyword[keyIndex] == alpha2[j]){
-					
-					indexKey = j;
-					break;
-				}
-			}
-			
-			cipherLetter = indexLetter - indexKey;
-			
-			while(cipherLetter < 0){
-				
-				cipherLetter += 26;
-			}
-			
-			return alpha1[cipherLetter];
-		}
-		private char decipherNumber(char number){
-			
-			int trueNumber = Character.getNumericValue(number);
-
-			switch(trueNumber){
-			
-				case 0:  return 53;
-				case 1:  return 52;
-				case 2:  return 56;
-				case 3:  return 50;
-				case 4:  return 49;
-				case 5:  return 55;
-				case 6:  return 57;
-				case 7:  return 48;
-				case 8:  return 51;
-				case 9:  return 54;
-				default: return 0; // NULL
-			}
-		}
-		private char decipherOther(char other){
-			
-			switch(other){
-			
-				case 32:  return 37;
-				case 33:  return 35;
-				case 34:  return 36;
-				case 35:  return 61;
-				case 36:  return 44;
-				case 37:  return 64;
-				case 38:  return 93;
-				case 39:  return 94;
-				case 40:  return 62;
-				case 41:  return 34;
-				case 42:  return 33; 
-				case 43:  return 91;
-				case 44:  return 123;
-				case 45:  return 32;
-				case 46:  return 58;
-				case 47:  return 46;
-				case 58:  return 39;
-				case 59:  return 45;
-				case 60:  return 43;
-				case 61:  return 47;
-				case 62:  return 63;
-				case 63:  return 96;
-				case 64:  return 42; 
-				case 91:  return 40;
-				case 92:  return 38;
-				case 93:  return 59;
-				case 94:  return 125;
-				case 95:  return 124;
-				case 96:  return 126;
-				case 123: return 41;
-				case 124: return 92;
-				case 125: return 60;
-				case 126: return 95;
-				default:  return 0; // NULL
-			}
-		}
-		private String clearMask(String maskedField){
-			
-			char[] maskedArray = maskedField.toCharArray();
-			char[] trueLetters = new char[maskedField.length() / 6];
-			
-			int startPos = 0;
-			int counter = 1;
-			int interval = 6;
-			int limit;
-
-			String mini;
-			
-			// i = 1 True Letter
-			for(int i = 0; i < trueLetters.length; i++){
-				
-				limit = counter * interval;
-				
-				mini = "";
-				
-				// j = 1 piece of the masked letter
-				for(int j = startPos; j < limit; j++){
-					
-					mini += Character.toString(maskedArray[j]);
-				}
-				
-				counter  += 1;
-				startPos += 6;
+	// Decryption
+	private String decrypt(String target){
+		String[] dKeys = bindKeys(target);
+		return decrypt(target, dKeys[0], dKeys[1]);
+	}
+	
+	private String decrypt(String target, String key1, String key2){
+		String temp = target;
+		temp = temp.substring(2);
 		
-				switch(mini){
-					case "$OhuT#": trueLetters[i] = 'A'; 
-						break;
-					case "TtFTiY": trueLetters[i] = 'B'; 
-						break;
-					case "tCdOUC": trueLetters[i] = 'C'; 
-						break;
-					case "3xwtpi": trueLetters[i] = 'D'; 
-						break;
-					case "!M0$Xe": trueLetters[i] = 'E'; 
-						break;
-					case "wvQvVO": trueLetters[i] = 'F'; 
-						break;
-					case "e#t3hA": trueLetters[i] = 'G'; 
-						break;
-					case "zZJuZE": trueLetters[i] = 'H'; 
-						break;
-					case "E#kkTA": trueLetters[i] = 'I'; 
-						break;
-					case "YRd0V$": trueLetters[i] = 'J'; 
-						break;
-					case "S5Z6CN": trueLetters[i] = 'K'; 
-						break;
-					case "ruBvQq": trueLetters[i] = 'L'; 
-						break;
-					case "DYOohJ": trueLetters[i] = 'M'; 
-						break;
-					case "C!4zE8": trueLetters[i] = 'N'; 
-						break;
-					case "fOY9iN": trueLetters[i] = 'O'; 
-						break;
-					case "FYpp4u": trueLetters[i] = 'P'; 
-						break;
-					case "0sG4r3": trueLetters[i] = 'Q'; 
-						break;
-					case "KYtiUl": trueLetters[i] = 'R'; 
-						break;
-					case "q$kreA": trueLetters[i] = 'S'; 
-						break;
-					case "jv8MUZ": trueLetters[i] = 'T'; 
-						break;
-					case "wa0$Hn": trueLetters[i] = 'U'; 
-						break;
-					case "mw154U": trueLetters[i] = 'V'; 
-						break;
-					case "K0xe4k": trueLetters[i] = 'W'; 
-						break;
-					case "NngHYK": trueLetters[i] = 'X'; 
-						break;
-					case "pJE1Nw": trueLetters[i] = 'Y'; 
-						break;
-					case "COqVzq": trueLetters[i] = 'Z'; 
-						break;
-					case "mPcFC2": trueLetters[i] = 'a'; 
-						break;
-					case "JINKJk": trueLetters[i] = 'b'; 
-						break;
-					case "wkNBhR": trueLetters[i] = 'c'; 
-						break;
-					case "kesPkg": trueLetters[i] = 'd'; 
-						break;
-					case "nkfZn4": trueLetters[i] = 'e'; 
-						break;
-					case "$w?fY2": trueLetters[i] = 'f'; 
-						break;
-					case "Xwo?Kg": trueLetters[i] = 'g'; 
-						break;
-					case "CPa?8Y": trueLetters[i] = 'h'; 
-						break;
-					case "o?!9w4": trueLetters[i] = 'i'; 
-						break;
-					case "UzdBgX": trueLetters[i] = 'j'; 
-						break;
-					case "gcEI3h": trueLetters[i] = 'k'; 
-						break;
-					case "F#qIp?": trueLetters[i] = 'l'; 
-						break;
-					case "3YeSkm": trueLetters[i] = 'm'; 
-						break;
-					case "gFCXbS": trueLetters[i] = 'n'; 
-						break;
-					case "dHZ6g!": trueLetters[i] = 'o'; 
-						break;
-					case "kb65mt": trueLetters[i] = 'p'; 
-						break;
-					case "7b7099": trueLetters[i] = 'q'; 
-						break;
-					case "oHyVZ?": trueLetters[i] = 'r'; 
-						break;
-					case "XR#i3C": trueLetters[i] = 's'; 
-						break;
-					case "hp7X#v": trueLetters[i] = 't'; 
-						break;
-					case "SfyQSZ": trueLetters[i] = 'u'; 
-						break;
-					case "ACro8E": trueLetters[i] = 'v'; 
-						break;
-					case "gh4BjV": trueLetters[i] = 'w'; 
-						break;
-					case "8cUb0S": trueLetters[i] = 'x'; 
-						break;
-					case "Iey9ay": trueLetters[i] = 'y'; 
-						break;
-					case "j5Db9V": trueLetters[i] = 'z'; 
-						break;
-					case "2b6pD8": trueLetters[i] = 32; 
-						break;
-					case "M54?bE": trueLetters[i] = 33; 
-						break; 
-					case "Rp$wGi": trueLetters[i] = 34; 
-						break; 
-					case "I0uQ9Y": trueLetters[i] = 35; 
-						break; 
-					case "a9PjnL": trueLetters[i] = 36; 
-						break; 
-					case "nZVNug": trueLetters[i] = 37; 
-						break; 
-					case "7Jf!lN": trueLetters[i] = 38; 
-						break; 
-					case "2CU6Ft": trueLetters[i] = 39; 
-						break; 
-					case "OPRQfR": trueLetters[i] = 40; 
-						break; 
-					case "jY3zgw": trueLetters[i] = 41; 
-						break; 
-					case "DOVa2s": trueLetters[i] = 42; 
-						break; 
-					case "KP6JVz": trueLetters[i] = 43; 
-						break; 
-					case "wuws!m": trueLetters[i] = 44; 
-						break; 
-					case "HOQraS": trueLetters[i] = 45; 
-						break; 
-					case "IPNHri": trueLetters[i] = 46; 
-						break; 
-					case "7XEj5R": trueLetters[i] = 47; 
-						break;
-					case "p90dHj": trueLetters[i] = 48; 
-						break;
-					case "1i!Rc!": trueLetters[i] = 49; 
-						break;
-					case "h00pFz": trueLetters[i] = 50; 
-						break;
-					case "5p1Qp9": trueLetters[i] = 51; 
-						break;
-					case "7tU0fU": trueLetters[i] = 52; 
-						break;
-					case "Ukmety": trueLetters[i] = 53; 
-						break;
-					case "Hy32BQ": trueLetters[i] = 54; 
-						break;
-					case "Dgyllp": trueLetters[i] = 55; 
-						break;
-					case "MGvJXc": trueLetters[i] = 56; 
-						break;
-					case "MDCqbq": trueLetters[i] = 57; 
-						break;
-					case "YpkzKT": trueLetters[i] = 58; 
-						break; 
-					case "EkvUI0": trueLetters[i] = 59; 
-						break; 
-					case "eqBO7c": trueLetters[i] = 60; 
-						break; 
-					case "16RYrG": trueLetters[i] = 61; 
-						break; 
-					case "gFswj6": trueLetters[i] = 62; 
-						break; 
-					case "?TJQUA": trueLetters[i] = 63; 
-						break; 
-					case "inP8eS": trueLetters[i] = 64; 
-						break;
-					case "dmFtkx": trueLetters[i] = 91; 
-						break;
-					case "IVD3EC": trueLetters[i] = 92; 
-						break;
-					case "C4tdtH": trueLetters[i] = 93; 
-						break;
-					case "w$LsgQ": trueLetters[i] = 94; 
-						break;
-					case "1xRt1X": trueLetters[i] = 95; 
-						break;
-					case "4bbblY": trueLetters[i] = 96; 
-						break;
-					case "kToyO1": trueLetters[i] = 123; 
-						break;
-					case "aP1chC": trueLetters[i] = 124; 
-						break; 
-					case "Cfhven": trueLetters[i] = 125; 
-						break;
-					case "yvx?ZC": trueLetters[i] = 126; 
-						break;
-					default:
-						break;
+		//------------------
+		// Reveal Cipher
+		for(int i = 0; i < key1.length(); i++){
+			temp = decrypt(temp, key2);
+		}
+		
+		//------------------
+		// Reveal Mask
+		temp = clearMask(temp);
+		
+		return unsaltTarget(temp);
+	}
+	
+	private String decrypt(String target, String keyword){
+		
+		char[] tempPassword = target.toCharArray();
+		char[] tempUsername = keyword.toCharArray();
+		char[] tempResult = new char[tempPassword.length];
+        
+        int keyBase = tempUsername.length;
+        int keyCeil = tempUsername.length;
+        int keyIndex;
+        
+		for(int i = 0; i < tempPassword.length; i++){
+			if(Character.isAlphabetic(tempPassword[i])){
+				keyIndex = keyBase % keyCeil;
+				if(Character.isUpperCase(tempPassword[i]) && Character.isUpperCase(tempUsername[keyIndex])) {
+					tempResult[i] = decipherLetter(alphabet1, alphabet1, tempPassword[i], keyIndex, tempUsername);
+				} else if(Character.isUpperCase(tempPassword[i]) && Character.isLowerCase(tempUsername[keyIndex])) {
+					tempResult[i] = decipherLetter(alphabet1, alphabet2, tempPassword[i], keyIndex, tempUsername);
+				} else if(Character.isLowerCase(tempPassword[i]) && Character.isUpperCase(tempUsername[keyIndex])) {
+					tempResult[i] = decipherLetter(alphabet2, alphabet1, tempPassword[i], keyIndex, tempUsername);
+				} else {
+					tempResult[i] = decipherLetter(alphabet2, alphabet2, tempPassword[i], keyIndex, tempUsername);
 				}
+				keyBase++;
+			} else if(Character.isDigit(tempPassword[i])) {
+				tempResult[i] = decipherNumber(tempPassword[i]);
+			} else {
+				tempResult[i] = decipherOther(tempPassword[i]);
 			}
-			
-			return new String(trueLetters);
 		}
-		private String unsaltTarget(String target){
+		
+		return new String(tempResult);
+	}
+	
+	private char decipherLetter(char[] alpha1, char[] alpha2, char letter, int keyIndex, char[] keyword){
+		
+		int cipherLetter;
+		int indexLetter = 0;
+		int indexKey = 0;
+		
+		for(int i = 0; i < 26; i++) {
+			if(letter == alpha1[i]) {
+				indexLetter = i;
+				break;
+			}
+		}
+		
+		for(int j = 0; j < 26; j++) {
+			if(keyword[keyIndex] == alpha2[j]){
+				indexKey = j;
+				break;
+			}
+		}
+		
+		cipherLetter = indexLetter - indexKey;
+		
+		while(cipherLetter < 0){
+			cipherLetter += 26;
+		}
+		
+		return alpha1[cipherLetter];
+	}
+	
+	private char decipherNumber(char number){
+		int trueNumber = Character.getNumericValue(number);
+		switch(trueNumber) {
+			case 0:  return 53;
+			case 1:  return 52;
+			case 2:  return 56;
+			case 3:  return 50;
+			case 4:  return 49;
+			case 5:  return 55;
+			case 6:  return 57;
+			case 7:  return 48;
+			case 8:  return 51;
+			case 9:  return 54;
+			default: return 0; // NULL
+		}
+	}
+	
+	private char decipherOther(char other){
+		switch(other) {
+			case 32:  return 37;
+			case 33:  return 35;
+			case 34:  return 36;
+			case 35:  return 61;
+			case 36:  return 44;
+			case 37:  return 64;
+			case 38:  return 93;
+			case 39:  return 94;
+			case 40:  return 62;
+			case 41:  return 34;
+			case 42:  return 33; 
+			case 43:  return 91;
+			case 44:  return 123;
+			case 45:  return 32;
+			case 46:  return 58;
+			case 47:  return 46;
+			case 58:  return 39;
+			case 59:  return 45;
+			case 60:  return 43;
+			case 61:  return 47;
+			case 62:  return 63;
+			case 63:  return 96;
+			case 64:  return 42; 
+			case 91:  return 40;
+			case 92:  return 38;
+			case 93:  return 59;
+			case 94:  return 125;
+			case 95:  return 124;
+			case 96:  return 126;
+			case 123: return 41;
+			case 124: return 92;
+			case 125: return 60;
+			case 126: return 95;
+			default:  return 0; // NULL
+		}
+	}
+	
+	private String clearMask(String maskedField){
+		char[] maskedArray = maskedField.toCharArray();
+		char[] trueLetters = new char[maskedField.length() / 6];
+		
+		int startPos = 0;
+		int counter = 1;
+		int interval = 6;
+		int limit;
+
+		String mini;
+		
+		// i = 1 True Letter
+		for(int i = 0; i < trueLetters.length; i++){
 			
-			char[] temp = target.toCharArray();
+			limit = counter * interval;
 			
-			String result = "";
+			mini = "";
 			
-			for(int i = 8; i < temp.length - 3; i++){
+			// j = 1 piece of the masked letter
+			for(int j = startPos; j < limit; j++){
 				
-				result += Character.toString(temp[i]);
+				mini += Character.toString(maskedArray[j]);
 			}
 			
-			return result;
+			counter  += 1;
+			startPos += 6;
+	
+			switch(mini){
+				case "$OhuT#": trueLetters[i] = 'A'; 
+					break;
+				case "TtFTiY": trueLetters[i] = 'B'; 
+					break;
+				case "tCdOUC": trueLetters[i] = 'C'; 
+					break;
+				case "3xwtpi": trueLetters[i] = 'D'; 
+					break;
+				case "!M0$Xe": trueLetters[i] = 'E'; 
+					break;
+				case "wvQvVO": trueLetters[i] = 'F'; 
+					break;
+				case "e#t3hA": trueLetters[i] = 'G'; 
+					break;
+				case "zZJuZE": trueLetters[i] = 'H'; 
+					break;
+				case "E#kkTA": trueLetters[i] = 'I'; 
+					break;
+				case "YRd0V$": trueLetters[i] = 'J'; 
+					break;
+				case "S5Z6CN": trueLetters[i] = 'K'; 
+					break;
+				case "ruBvQq": trueLetters[i] = 'L'; 
+					break;
+				case "DYOohJ": trueLetters[i] = 'M'; 
+					break;
+				case "C!4zE8": trueLetters[i] = 'N'; 
+					break;
+				case "fOY9iN": trueLetters[i] = 'O'; 
+					break;
+				case "FYpp4u": trueLetters[i] = 'P'; 
+					break;
+				case "0sG4r3": trueLetters[i] = 'Q'; 
+					break;
+				case "KYtiUl": trueLetters[i] = 'R'; 
+					break;
+				case "q$kreA": trueLetters[i] = 'S'; 
+					break;
+				case "jv8MUZ": trueLetters[i] = 'T'; 
+					break;
+				case "wa0$Hn": trueLetters[i] = 'U'; 
+					break;
+				case "mw154U": trueLetters[i] = 'V'; 
+					break;
+				case "K0xe4k": trueLetters[i] = 'W'; 
+					break;
+				case "NngHYK": trueLetters[i] = 'X'; 
+					break;
+				case "pJE1Nw": trueLetters[i] = 'Y'; 
+					break;
+				case "COqVzq": trueLetters[i] = 'Z'; 
+					break;
+				case "mPcFC2": trueLetters[i] = 'a'; 
+					break;
+				case "JINKJk": trueLetters[i] = 'b'; 
+					break;
+				case "wkNBhR": trueLetters[i] = 'c'; 
+					break;
+				case "kesPkg": trueLetters[i] = 'd'; 
+					break;
+				case "nkfZn4": trueLetters[i] = 'e'; 
+					break;
+				case "$w?fY2": trueLetters[i] = 'f'; 
+					break;
+				case "Xwo?Kg": trueLetters[i] = 'g'; 
+					break;
+				case "CPa?8Y": trueLetters[i] = 'h'; 
+					break;
+				case "o?!9w4": trueLetters[i] = 'i'; 
+					break;
+				case "UzdBgX": trueLetters[i] = 'j'; 
+					break;
+				case "gcEI3h": trueLetters[i] = 'k'; 
+					break;
+				case "F#qIp?": trueLetters[i] = 'l'; 
+					break;
+				case "3YeSkm": trueLetters[i] = 'm'; 
+					break;
+				case "gFCXbS": trueLetters[i] = 'n'; 
+					break;
+				case "dHZ6g!": trueLetters[i] = 'o'; 
+					break;
+				case "kb65mt": trueLetters[i] = 'p'; 
+					break;
+				case "7b7099": trueLetters[i] = 'q'; 
+					break;
+				case "oHyVZ?": trueLetters[i] = 'r'; 
+					break;
+				case "XR#i3C": trueLetters[i] = 's'; 
+					break;
+				case "hp7X#v": trueLetters[i] = 't'; 
+					break;
+				case "SfyQSZ": trueLetters[i] = 'u'; 
+					break;
+				case "ACro8E": trueLetters[i] = 'v'; 
+					break;
+				case "gh4BjV": trueLetters[i] = 'w'; 
+					break;
+				case "8cUb0S": trueLetters[i] = 'x'; 
+					break;
+				case "Iey9ay": trueLetters[i] = 'y'; 
+					break;
+				case "j5Db9V": trueLetters[i] = 'z'; 
+					break;
+				case "2b6pD8": trueLetters[i] = 32; 
+					break;
+				case "M54?bE": trueLetters[i] = 33; 
+					break; 
+				case "Rp$wGi": trueLetters[i] = 34; 
+					break; 
+				case "I0uQ9Y": trueLetters[i] = 35; 
+					break; 
+				case "a9PjnL": trueLetters[i] = 36; 
+					break; 
+				case "nZVNug": trueLetters[i] = 37; 
+					break; 
+				case "7Jf!lN": trueLetters[i] = 38; 
+					break; 
+				case "2CU6Ft": trueLetters[i] = 39; 
+					break; 
+				case "OPRQfR": trueLetters[i] = 40; 
+					break; 
+				case "jY3zgw": trueLetters[i] = 41; 
+					break; 
+				case "DOVa2s": trueLetters[i] = 42; 
+					break; 
+				case "KP6JVz": trueLetters[i] = 43; 
+					break; 
+				case "wuws!m": trueLetters[i] = 44; 
+					break; 
+				case "HOQraS": trueLetters[i] = 45; 
+					break; 
+				case "IPNHri": trueLetters[i] = 46; 
+					break; 
+				case "7XEj5R": trueLetters[i] = 47; 
+					break;
+				case "p90dHj": trueLetters[i] = 48; 
+					break;
+				case "1i!Rc!": trueLetters[i] = 49; 
+					break;
+				case "h00pFz": trueLetters[i] = 50; 
+					break;
+				case "5p1Qp9": trueLetters[i] = 51; 
+					break;
+				case "7tU0fU": trueLetters[i] = 52; 
+					break;
+				case "Ukmety": trueLetters[i] = 53; 
+					break;
+				case "Hy32BQ": trueLetters[i] = 54; 
+					break;
+				case "Dgyllp": trueLetters[i] = 55; 
+					break;
+				case "MGvJXc": trueLetters[i] = 56; 
+					break;
+				case "MDCqbq": trueLetters[i] = 57; 
+					break;
+				case "YpkzKT": trueLetters[i] = 58; 
+					break; 
+				case "EkvUI0": trueLetters[i] = 59; 
+					break; 
+				case "eqBO7c": trueLetters[i] = 60; 
+					break; 
+				case "16RYrG": trueLetters[i] = 61; 
+					break; 
+				case "gFswj6": trueLetters[i] = 62; 
+					break; 
+				case "?TJQUA": trueLetters[i] = 63; 
+					break; 
+				case "inP8eS": trueLetters[i] = 64; 
+					break;
+				case "dmFtkx": trueLetters[i] = 91; 
+					break;
+				case "IVD3EC": trueLetters[i] = 92; 
+					break;
+				case "C4tdtH": trueLetters[i] = 93; 
+					break;
+				case "w$LsgQ": trueLetters[i] = 94; 
+					break;
+				case "1xRt1X": trueLetters[i] = 95; 
+					break;
+				case "4bbblY": trueLetters[i] = 96; 
+					break;
+				case "kToyO1": trueLetters[i] = 123; 
+					break;
+				case "aP1chC": trueLetters[i] = 124; 
+					break; 
+				case "Cfhven": trueLetters[i] = 125; 
+					break;
+				case "yvx?ZC": trueLetters[i] = 126; 
+					break;
+				default:
+					break;
+			}
 		}
+		
+		return new String(trueLetters);
+	}
+	
+	private String unsaltTarget(String target){
+		
+		char[] temp = target.toCharArray();
+		
+		String result = "";
+		
+		for(int i = 8; i < temp.length - 3; i++){
+			result += Character.toString(temp[i]);
+		}
+		
+		return result;
+	}
 
 }

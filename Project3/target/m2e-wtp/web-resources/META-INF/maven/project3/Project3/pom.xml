@@ -65,6 +65,22 @@
 		    <artifactId>mail</artifactId>
 		    <version>1.4</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.timgroup/jgravatar -->
+		<dependency>
+		    <groupId>com.timgroup</groupId>
+		    <artifactId>jgravatar</artifactId>
+		    <version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>net.java.dev.jets3t</groupId>
+			<artifactId>jets3t</artifactId>
+			<version>0.9.4</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.bouncycastle</groupId>
+		    <artifactId>bcprov-jdk15on</artifactId>
+		    <version>1.53</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>Project3</finalName>

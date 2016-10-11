@@ -6,6 +6,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -25,11 +26,28 @@ public class SimpleDaoImpl implements SimpleDao{
 	
 	@Autowired
 	SessionFactory session;
+	
+	/**
+	 * A private method to join the table together
+	 * 
+	 * @param column the column to join
+	 * @param criteria where it joining to
+	 */
+	private void addColumn(String column, Criteria criteria) {
+		criteria.setFetchMode(column, FetchMode.JOIN);
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ForumPost> getAllPosts() {
 		Criteria criteria = session.getCurrentSession().createCriteria(ForumPost.class);
+//		criteria.setFetchMode("author", FetchMode.EAGER);
+//		criteria.setFetchMode("role", FetchMode.EAGER);
+//		criteria.setFetchMode("complex", FetchMode.EAGER);
+		List<ForumPost> posts = criteria.list();
+		for(ForumPost p: posts)
+			p.toString();
+			
 		return criteria.list();
 	}
 
@@ -47,6 +65,21 @@ public class SimpleDaoImpl implements SimpleDao{
 	
 	@SuppressWarnings("unchecked")
 	@Override
+	public Person getPersonByUsername(String username) {
+		Session currentSession = session.getCurrentSession();
+		Criteria criteria = currentSession.createCriteria(Person.class);
+		addColumn("role", criteria);
+		addColumn("complex", criteria);
+		List<Person> persons = (List<Person>) criteria.add(Restrictions.eq("username", username)).list();
+		if(persons.size() == 0) {
+			return null;
+		} else {
+			return persons.get(0);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
 	public Person getPersonByEmail(String email) {
 		List<Person> persons = session.getCurrentSession().createCriteria(Person.class).
 				add(Restrictions.eq("email", email)).list();
@@ -57,10 +90,21 @@ public class SimpleDaoImpl implements SimpleDao{
 		}
 	}
 	
+	@Override
+	public ForumCategory getForumCategoryById(int id) {
+		return (ForumCategory) session.getCurrentSession().get(ForumCategory.class, id);
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Role> getRoles() {
 		return (List<Role>) session.getCurrentSession().createCriteria(Role.class).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ForumCategory> getForumCategory() {
+		return (List<ForumCategory>) session.getCurrentSession().createCriteria(ForumCategory.class).list();
 	}
 	
 	@Override
@@ -111,16 +155,6 @@ public class SimpleDaoImpl implements SimpleDao{
 		currentSession.delete(reply);
 	}
 
-
-	@Override
-	public Person getPersonByUsername(String username) {
-		// TODO Auto-generated method stub
-		Session currentSession = session.getCurrentSession();
-		Criteria criteria = currentSession.createCriteria(Person.class);
-		Person person = (Person) criteria.add(Restrictions.eq("username", username)).list().get(0);
-		return person;
-	}
-
 	@Override
 	public void updateTempPerson(String username, String pass, String newUsername) {
 		// TODO Auto-generated method stub
@@ -130,7 +164,31 @@ public class SimpleDaoImpl implements SimpleDao{
 		person.setPassword(pass);
 		person.setUsername(newUsername);
 		person.setVaildated(true);
-		
+	}
+	
+	@Override
+	public void updateUserInfo(String currentUser, String newPassword, String username, String newEmail, 
+			String newPhone, String newUniversity, String newLinkedIn) {
+		// TODO Auto-generated method stub
+		Session currentSession = session.getCurrentSession();
+		Criteria criteria = currentSession.createCriteria(Person.class);
+		Person person = (Person) criteria.add(Restrictions.eq("username", currentUser)).list().get(0);
+		System.out.println("inside dao email: " + newEmail + "\tsize: " + newEmail.length());
+		person.setPassword(newPassword);
+		System.out.println("SHOULD NOT GET HERE");
+		person.setUsername(username);
+		person.setEmail(newEmail);
+		person.setPhoneNumber(newPhone);
+		person.setUnviersity(newUniversity);
+		person.setLinkedin(newLinkedIn);
+		person.setUsername(username);
 	}
 
+	@Override
+	public void createForumPost(ForumPost post) {
+		// TODO Auto-generated method stub
+		session.getCurrentSession().save(post);
+	}
+
+	
 }
