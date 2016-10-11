@@ -39,7 +39,11 @@ angular.module('routingApp').controller('loginController', function($scope, $mdD
 					if(person.id !== 0){
 						$cookies.user = person;
 						if(person.vaildated) {
-							$window.location.href = 'index.html';
+							if(person.role.roleName == "Moderate") {
+								$window.location.href = 'moderate-view.html';
+							} else {
+								$window.location.href = 'index.html';
+							}
 						} else {
 							$window.location.href = 'updateTempInfo.html';
 						}

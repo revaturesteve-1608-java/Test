@@ -83,10 +83,21 @@ public class SimpleDaoImpl implements SimpleDao{
 		}
 	}
 	
+	@Override
+	public ForumCategory getForumCategoryById(int id) {
+		return (ForumCategory) session.getCurrentSession().get(ForumCategory.class, id);
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Role> getRoles() {
 		return (List<Role>) session.getCurrentSession().createCriteria(Role.class).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ForumCategory> getForumCategory() {
+		return (List<ForumCategory>) session.getCurrentSession().createCriteria(ForumCategory.class).list();
 	}
 	
 	@Override
@@ -172,4 +183,5 @@ public class SimpleDaoImpl implements SimpleDao{
 		session.getCurrentSession().save(post);
 	}
 
+	
 }
