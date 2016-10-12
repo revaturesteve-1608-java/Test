@@ -77,6 +77,6 @@ public interface Jets3 {
 	public String[] list();
 	
 
-	public void syncBusinessDelegate(ServiceInterface businessDelegate);
+//	public void syncBusinessDelegate(ServiceInterface businessDelegate);
 
 }
