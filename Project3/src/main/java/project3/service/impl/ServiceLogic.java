@@ -18,8 +18,10 @@ import javax.imageio.ImageReadParam;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import project3.dto.Person;
 import project3.dto.Role;
@@ -31,13 +33,14 @@ import project3.simpledao.SimpleDao;
 import project3.util.Email;
 import project3.util.ProfileImage;
 
-@Component
+@Service
 public class ServiceLogic implements ServiceInterface{
 	
 	@Autowired
 	Crypt crypt;
 	
-	private Jets3 jetS3;
+	@Autowired
+	Jets3 jetS3;
 	
 	/**
 	 * Using to access the database
@@ -98,6 +101,16 @@ public class ServiceLogic implements ServiceInterface{
 //		return (data.getData());
 //	}
 	
+	/**
+	 * Encodes the byte array into base64 string
+	 *
+	 * @param imageByteArray - byte array
+	 * @return String a {@link java.lang.String}
+	 */
+	public static String encodeImage(byte[] imageByteArray) {
+		return Base64.encodeBase64URLSafeString(imageByteArray);
+	}
+	
 	// method to send an email to employee regarding reimbursement request status. 
 	//Email sent by another thread
 	private void email(String email, String message, String subject){
@@ -108,7 +121,6 @@ public class ServiceLogic implements ServiceInterface{
 			private String threadSubject = subject;
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				Email.sendEmail(threadEmail, threadMessage, threadSubject);
 			}
 		}
@@ -132,13 +144,37 @@ public class ServiceLogic implements ServiceInterface{
 			person.setPassword(maskElement(password));
 			System.out.println("password3: " + person.getPassword());
 			// set a default profile picture
-			person.setProfilePic(ProfileImage.getGravatar80pxByte(person.getEmail()));
-			System.out.println(person.getProfilePic());
-			if(person.getProfilePic() == null) {
-				person.setProfilePic(ProfileImage.getGravatar80pxByte
-						("revature.reimbursements@gmail.com"));
-				System.out.println(person.getProfilePic());
-//				jetS3.uploadProfileItem(person.getEmail(), person.getEmail());
+			jetS3.uploadProfileItem(person.getEmail(), person.getEmail());
+//			person.setProfilePic(ProfileImage.getGravatar80pxByte(person.getEmail()));
+//			System.out.println("profile pic: " + person.getProfilePic());
+//			if(person.getProfilePic() == null) {
+//				person.setProfilePic(ProfileImage.getGravatar80pxByte
+//						("revature.reimbursements@gmail.com"));
+				// Converting Image byte array into Base64 String
+//				String imageDataString = encodeImage(person.getProfilePic());
+//				System.out.println("pics: " + imageDataString);
+//				FileOutputStream imageOutFile;
+//				try {
+//					File currentDirFile = new File(".");
+//					String helper = currentDirFile.getAbsolutePath();
+//					System.out.println(helper);
+//					//convert array of bytes into file
+//				    FileOutputStream fileOuputStream =
+//			                  new FileOutputStream("testing2.png");
+//				    fileOuputStream.write(person.getProfilePic());
+//				    fileOuputStream.close();
+////					imageOutFile = new FileOutputStream("./water-drop-after-convert.png");
+//////					imageOutFile.write(person.getProfilePic());
+////					//convert byte array to file
+////					imageOutFile.
+////					imageOutFile.close();
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+
+				
+				
 //				try {
 //					System.out.println(jetS3.uploadProfileItem(person.getEmail(), "profile.png", convByteToFile(person.getProfilePic())));
 //				} catch (IOException e) {
@@ -146,17 +182,58 @@ public class ServiceLogic implements ServiceInterface{
 //					e.printStackTrace();
 //				}
 			//not done
-			} else {
-				person.setProfilePic(ProfileImage.getGravatar80pxByte
-						(person.getEmail()));
-			}
+//			} else {
+//				person.setProfilePic(ProfileImage.getGravatar80pxByte
+//						(person.getEmail()));
+//			}
 			// Save in Database
 			dao.createUser(person);
 			// Send Email to Account
 			String subject = "Welcome to Revatuer";
-			String message = "Here is your loging information <br><br>" 
-					+ "Username: " + person.getUsername() + "<br>" 
-					+ "Password: " + password;
+			String message = 
+			"<table style=\"min-width:100%;\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\">"
+			    + "<tbody>"
+					+ "<tr>"
+						+ "<td style=\"min-width:100%;padding:1px 18px;\">"
+							+ "<table style=\"min-width:100%;border-top-width:5px;border-top-style:solid;border-top-color:#F26925;\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\">"
+								+ "<tbody>"
+									+ "<tr>"
+			                        	+ "<td>"
+			                            	+ "<span></span>"
+			                            + "</td>"
+			                        + "</tr>"
+			                    + "</tbody>"
+			                + "</table>"
+			            + "</td>"
+			        + "</tr>"
+			    + "</tbody>"
+			+ "</table>"
+			+ "<h1>Welcome to RevPages !!</h1>"
+			+ "<table style=\"overflow-x:auto;max-width:100%;min-width:100%;\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\" align=\"left\">"
+            	+ "<tbody>"
+            		+ "<tr>"
+            			+ "<td style=\"padding-top:0;padding-right:18px;padding-bottom:9px;padding-left:18px;\" valign=\"top\">"
+            				+ "<h3 style=\"text-align:left;\">Hello " + person.getFirst_name() + " " + person.getLast_name() + "</h3>"
+            				+ "<p style=\"text-align:left;\"> Your account had been approve<br><br>"
+            				
+            				+ "Here is your logging information <br><br>" 
+        					+ "Username: " + person.getUsername() + "<br>" 
+        					+ "Password: " + password
+        					+ "<br>"
+        					+ "<br>"
+        					+ "Click the link below to login: "
+        					+ "<a rel=\"nofollow\" target=\"_blank\" href=\"http://ec2-54-152-99-76.compute-1.amazonaws.com:8080/Project3/login.html\">Login</a></p>"
+
+            				+ "<br>"
+            				+ "<br>"
+            				+ "<br>Regards<br>"
+            				+ "<strong>RevPages</strong><br>"
+            				+ "<a rel=\"nofollow\" target=\"_blank\" href=\"http://ec2-54-152-99-76.compute-1.amazonaws.com:8080/Project3\">https://www.revpages.com</a></p>"
+
+            			+ "</td>"
+            		+ "</tr>"
+            	+ "</tbody>"
+            + "</table>";
 			email(person.getEmail(), message, subject);
 			return "[\"User had been created\"]";
 		} else {
