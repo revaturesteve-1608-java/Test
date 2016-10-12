@@ -1,129 +1,33 @@
 <div class="jumbotron">
 	<h3>My Profile</h3><br>
 	<div data-ng-controller="profileCtrl">
-	
-		Username: 
-		<p ng-bind="person.username"></p>
-		
-		Role: 
-		<p ng-bind="person.role.roleName"></p>
-		
-		First Name: 
-		<p ng-bind="person.first_name"></p>
-		
-		Last Name: 
-		<p ng-bind="person.last_name"></p>
-		
-		Email: 
-		<p ng-bind="person.email"></p>
-		
-		Phone Number: 
-		<p ng-bind="person.phoneNumber"></p>
-		
-		University : 
-		<p ng-bind="person.unviersity"></p>
-		
-		Complex: 
-		<p ng-bind="person.complex.complexName"></p>
-		
-		Bio: 
-		<p ng-bind="person.bio"></p>
-	
-		<!-- Button trigger modal -->
-		<button type="button" class="btn btn-primary btn-lg"
-			data-toggle="modal" data-target="#myModal">Edit Profile Information</button>
-			
-		<!-- Edit Profile Modal -->
-		<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-			aria-labelledby="myModalLabel">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<!-- Modal header where the title and close button is -->
-					<div class="modal-header">
-						<!-- close button -->
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-						<h4 class="modal-title" id="myModalLabel">Edit Profile Information</h4>
-					</div>
-					<!-- The body of the modal -->
-					<div class="modal-body">
-						<form class="form-horizontal" id="components" role="form">
-							<fieldset>
-								<div class="tab-content">
-									<!-- Tabs of snippets go here -->
-									<div class="tab-pane active" id="input">
-									
-									<div class="component">
-										<!-- Text input-->
-										<div class="form-group">
-											<label class="col-md-4 control-label" for="textinput">
-												First Name</label>
-											<div class="col-md-4">
-												<input id="textinput" name="textinput" type="text"
-													placeholder="placeholder" class="form-control input-md">
-											</div>
-										</div>
-									</div>
-									
-									<div class="component">
-										<!-- Text input-->
-										<div class="form-group">
-											<label class="col-md-4 control-label" for="textinput">
-												Last Name</label>
-											<div class="col-md-4">
-												<input id="textinput" name="textinput" type="text"
-													placeholder="placeholder" class="form-control input-md">
-											</div>
-										</div>
-									</div>
-	
-									<div class="component">
-										<!-- Text input-->
-										<div class="form-group">
-											<label class="col-md-4 control-label" for="textinput">
-												Username</label>
-											<div class="col-md-4">
-												<input id="textinput" name="textinput" type="text"
-													placeholder="placeholder" class="form-control input-md">
-											</div>
-										</div>
-									</div>
-									
-									<div class="component">
-										<!-- Password input-->
-										<div class="form-group">
-											<label class="col-md-4 control-label" for="passwordinput">Password
-											</label>
-											<div class="col-md-4">
-												<input id="passwordinput" name="passwordinput"
-													type="password" placeholder="placeholder"
-													class="form-control input-md">
-											</div>
-										</div>
-									</div>
-									
-									<div class="component">
-										<!-- Email input-->
-										<div class="form-group">
-											<label class="col-md-4 control-label" for="searchinput">
-												Email Address</label>
-											<div class="col-md-4">
-												<input id="emailinput" name="emailinput" type="email"
-													placeholder="placeholder" class="form-control input-md">
-											</div>
-										</div>
-									</div>
-									
-									</div>
-								</div>
-							</fieldset>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
+
+		 <md-card md-theme="{{'dark-grey'}}" md-theme-watch="">
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">{{user.first_name}}   {{user.last_name}}</span>
+            <span class="md-subhead">{{user.username}}</span>
+            <span class="md-subhead">{{user.role.roleName}}</span>
+          </md-card-title-text>
+          <md-card-title-media>
+            <div class="md-media-lg card-media"></div>
+          </md-card-title-media>
+        </md-card-title>
+        <md-card-content>
+        	<p>{{user.bio}}</p>
+        	<h4>Personal Info</h4>
+        	<ul>
+        	<li>Email: {{user.email}}</li>
+        	<li>Validated: {{user.vaildated == 1? "yes":"no"}}</li>
+        	<li>PhoneNumber: {{user.phoneNumber}}</li>
+        	<li>School: {{user.unviersity}}</li>
+        	<li>Complex: {{user.complex.categoryName}}</li>
+        	</ul>
+        </md-card-content>
+        <md-card-actions layout="row" layout-align="end center">
+          <md-button>Go to posts</md-button>
+        </md-card-actions>
+      </md-card>
 	</div>
 </div>
 

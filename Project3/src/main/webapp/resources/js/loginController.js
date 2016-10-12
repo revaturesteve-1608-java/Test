@@ -1,69 +1,70 @@
 /**
  * 
  */
-angular.module('loginApp').controller('loginController',function($scope,  $mdDialog, $http, $window) {
+angular.module('routingApp').controller('loginController', function($scope, $mdDialog, $http, $window, $cookies, createUserService) {
 
-			/*$scope.loginUser = function(person) {
-				loginService.loginUser(person);
-			}*/
+//			$scope.loginUser = function(person) {
+//				console.log(person);
+//				loginService.loginUser(person);
+//			}
 
 			$scope.status = '  ';
 			$scope.customFullscreen = false;
 			
-			function DialogController($scope, $mdDialog) {
-			    $scope.hide = function() {
-			      $mdDialog.hide();
-			    };
-
-			    $scope.cancel = function() {
-			      $mdDialog.cancel();
-			    };
-
-			    $scope.answer = function(answer) {
-			      $mdDialog.hide(answer);
-			    };
-			  }
+			$scope.toIndex = function() {
+				$window.location.href = 'index.jsp';
+			}
 			
 			$scope.signIn = function(person) {
-				
+				console.log("here");
 				$http.post('rest/login', person).then(function(response) {
-					
 					//	console.log(typeof response.data);
 					//	console.log(response.data);
-						var person = response.data;
-						
-						console.log(person);
-						
-						customAlert();
-						
-						
+					var person = response.data;
+					
+					console.log(person);
+					console.log(person.id);
+					
+					
+					if(person.id !== 0){
+						$cookies.user = person;
 						if(person.vaildated) {
-							$window.location.href = 'index.html';
+							
+						
+							if(person.role.roleName == "Moderate") {
+								$window.location.href = 'moderate-view.html';
+							} else {
+								$window.location.href = 'index.html';
+							}
 						} else {
 							$window.location.href = 'updateTempInfo.html';
 						}
-						
-						
-					}, function(error) {
-						
-					})
+					} else {
+						console.log("where2");
+						customAlert();
+					}
+				}, function(error) {
+					customAlert();
+				})
 			
 		}
 			
-			 function showAlert() {
-			    
-				 alert = $mdDialog.alert({
-				        title: 'User is not found',
-				        textContent: 'Please try again',
-				        ok: 'Ok'
-				      });
-
-				      $mdDialog
-				        .show( alert )
-				        .finally(function() {
-				          alert = undefined;
-				        });
-			 }
+			 function showAlert(ev) {
+			    // Appending dialog to document.body to cover sidenav in docs app
+			    // Modal dialogs should fully cover application
+			    // to prevent interaction outside of dialog
+			    $mdDialog.show(
+			      $mdDialog.alert()
+			        .parent(angular.element(document.querySelector('#popupContainer')))
+			        .clickOutsideToClose(true)
+			        .title('This is an alert title')
+			        .textContent('You can specify some description text in here.')
+			        .ariaLabel('Alert Dialog Demo')
+			        .ok('Got it!')
+			        .targetEvent(ev)
+			    );
+			  };
+			 
 			 
 			 
 			 function DialogController($scope, $mdDialog) {
