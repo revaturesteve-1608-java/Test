@@ -41,7 +41,7 @@ public interface SimpleDao {
 	
 	public Person createUser(Person person);
 	
-	public void createPostReply(ForumPost post, int likes, int dislikes, boolean approval, 
+	public void createPostReply(ForumPost post, Person author, int likes, int dislikes, boolean approval, 
 			String content, Timestamp timestamp);
 	
 	public void createComplex(String complexName);
@@ -50,7 +50,7 @@ public interface SimpleDao {
 	
 	public void deletePostReply(int id);
 	
-	public void createForumPost(ForumPost post);
+	public int createForumPost(ForumPost post);
 	
 	public AwsKey getAWSKey();
 	

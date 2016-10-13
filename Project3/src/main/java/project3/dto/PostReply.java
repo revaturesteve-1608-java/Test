@@ -25,7 +25,7 @@ public class PostReply {
 	@SequenceGenerator(name="postReplySeq", sequenceName="postReply_Seq", allocationSize=1)
 	@GeneratedValue(generator="postReplySeq", strategy=GenerationType.SEQUENCE)
 	private int id;
-	
+
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="fp_id")
 	private ForumPost post;
@@ -57,6 +57,18 @@ public class PostReply {
 			boolean approval, String content, Timestamp timestamp) {
 		super();
 		this.id = id;
+		this.post = post;
+		this.author = author;
+		this.likes = likes;
+		this.dislikes = dislikes;
+		this.approval = approval;
+		this.content = content;
+		this.timestamp = timestamp;
+	}
+
+	public PostReply(ForumPost post, Person author, List<Likeable> likes, List<DisLikeable> dislikes, boolean approval, String content,
+			Timestamp timestamp) {
+		super();
 		this.post = post;
 		this.author = author;
 		this.likes = likes;

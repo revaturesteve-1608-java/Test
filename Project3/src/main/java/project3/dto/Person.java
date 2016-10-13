@@ -72,7 +72,7 @@ public class Person {
 	}
 	
 	public Person(int id, String first_name, String last_name, String username, String password, String email,
-			Role role, String profilePic, Complex complex, String phoneNumber, String bio, String unviersity,
+			Role role, String profilePic, Complex complex, String phoneNumber, String bio, String university,
 			boolean vaildated, String linkedin, int totalLikes) {
 		super();
 		this.id = id;
@@ -93,7 +93,7 @@ public class Person {
 	}
 
 	public Person(String first_name, String last_name, String username, String password, String email, Role role,
-			String profilePic, Complex complex, String phoneNumber, String bio, String unviersity, boolean vaildated,
+			String profilePic, Complex complex, String phoneNumber, String bio, String university, boolean vaildated,
 			String linkedin) {
 		super();
 		this.first_name = first_name;
@@ -210,7 +210,6 @@ public class Person {
 	public void setBio(String bio) {
 		this.bio = bio;
 	}
-
 	public String getUnviersity() {
 		return university;
 	}
