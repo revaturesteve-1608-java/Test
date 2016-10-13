@@ -30,12 +30,14 @@ public class PostReply {
 	@JoinColumn(name="u_id")
 	private Person author;
 	
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	@JoinColumn(name="like_id")
+	@ManyToOne
+	@JoinColumn(name="fp_id")
+	private ForumPost post;
+	
+	@OneToMany(mappedBy="reply", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	private List<LikeableReply> likes;
 	
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	@JoinColumn(name="dislike_id")
+	@OneToMany(mappedBy="reply", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	private List<DisLikeableReply> dislikes;
 	
 	@Column(name="pr_approval")
@@ -51,11 +53,12 @@ public class PostReply {
 		
 	}
 
-	public PostReply(int id, Person author, List<LikeableReply> likes, List<DisLikeableReply> dislikes,
+	public PostReply(int id, Person author, ForumPost post, List<LikeableReply> likes, List<DisLikeableReply> dislikes,
 			boolean approval, String content, Timestamp timestamp) {
 		super();
 		this.id = id;
 		this.author = author;
+		this.post = post;
 		this.likes = likes;
 		this.dislikes = dislikes;
 		this.approval = approval;
@@ -130,9 +133,17 @@ public class PostReply {
 		this.author = author;
 	}
 
+	public ForumPost getPost() {
+		return post;
+	}
+
+	public void setPost(ForumPost post) {
+		this.post = post;
+	}
+
 	@Override
 	public String toString() {
-		return "PostReply [id=" + id + ", author=" + author + ", likes=" + likes + ", dislikes="
+		return "PostReply [id=" + id + ", author=" + author + ", post=" + post + ", likes=" + likes + ", dislikes="
 				+ dislikes + ", approval=" + approval + ", content=" + content + ", timestamp=" + timestamp + "]";
 	}
 }
