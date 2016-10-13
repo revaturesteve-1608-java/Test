@@ -160,9 +160,10 @@ public class SimpleDaoImpl implements SimpleDao{
 
 	@Override
 	public void updateTempPerson(String username, String pass, String newUsername) {
-		// TODO Auto-generated method stub
 		Session currentSession = session.getCurrentSession();
 		Criteria criteria = currentSession.createCriteria(Person.class);
+		criteria.setFetchMode("role", FetchMode.JOIN);
+		criteria.setFetchMode("complex", FetchMode.JOIN);
 		Person person = (Person) criteria.add(Restrictions.eq("username", username)).list().get(0);
 		person.setPassword(pass);
 		person.setUsername(newUsername);
@@ -172,7 +173,6 @@ public class SimpleDaoImpl implements SimpleDao{
 	@Override
 	public void updateUserInfo(String currentUser, String newPassword, String username, String newEmail, 
 			String newPhone, String newUniversity, String newLinkedIn) {
-		// TODO Auto-generated method stub
 		Session currentSession = session.getCurrentSession();
 		Criteria criteria = currentSession.createCriteria(Person.class);
 		Person person = (Person) criteria.add(Restrictions.eq("username", currentUser)).list().get(0);

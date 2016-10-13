@@ -8,38 +8,32 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="Likeable")
-public class Likeable {
+@Table(name="LikeableReply")
+public class LikeableReply {
 
 	@Id
-	@Column(name="like_id")
-	@SequenceGenerator(name="likeableSeq", sequenceName="Likeable_Seq", allocationSize=1)
-	@GeneratedValue(generator="likeableSeq", strategy=GenerationType.SEQUENCE)
+	@Column(name="likereply_id")
+	@SequenceGenerator(name="likeablereplySeq", sequenceName="Likeablereply_Seq", allocationSize=1)
+	@GeneratedValue(generator="likeablereplySeq", strategy=GenerationType.SEQUENCE)
 	private int id;
 	
 	@OneToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)  
 	@JoinColumn(name="u_id")
 	private Person author;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="pr_id")
-	private PostReply like_reply;
-	
-	public Likeable() {
+	public LikeableReply() {
 		
 	}
 
-	public Likeable(int id, Person author, PostReply like_reply) {
+	public LikeableReply(int id, Person author) {
 		super();
 		this.id = id;
 		this.author = author;
-		this.like_reply = like_reply;
 	}
 
 	public int getId() {
@@ -58,16 +52,8 @@ public class Likeable {
 		this.author = author;
 	}
 
-	public PostReply getLike_reply() {
-		return like_reply;
-	}
-
-	public void setLike_reply(PostReply like_reply) {
-		this.like_reply = like_reply;
-	}
-
 	@Override
 	public String toString() {
-		return "Likeable [id=" + id + ", author=" + author + ", like_reply=" + like_reply + "]";
+		return "Likeable [id=" + id + ", author=" + author + "]";
 	}
 }

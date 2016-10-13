@@ -210,12 +210,13 @@ public class Person {
 	public void setBio(String bio) {
 		this.bio = bio;
 	}
-	public String getUnviersity() {
+
+	public String getUniversity() {
 		return university;
 	}
 
-	public void setUnviersity(String unviersity) {
-		this.university = unviersity;
+	public void setUniversity(String university) {
+		this.university = university;
 	}
 
 	public boolean isVaildated() {

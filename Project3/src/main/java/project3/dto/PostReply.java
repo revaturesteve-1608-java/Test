@@ -25,20 +25,18 @@ public class PostReply {
 	@SequenceGenerator(name="postReplySeq", sequenceName="postReply_Seq", allocationSize=1)
 	@GeneratedValue(generator="postReplySeq", strategy=GenerationType.SEQUENCE)
 	private int id;
-
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="fp_id")
-	private ForumPost post;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="u_id")
 	private Person author;
 	
-	@OneToMany(mappedBy="like_reply", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	private List<Likeable> likes;
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name="like_id")
+	private List<LikeableReply> likes;
 	
-	@OneToMany(mappedBy="dislike_reply", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	private List<DisLikeable> dislikes;
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name="dislike_id")
+	private List<DisLikeableReply> dislikes;
 	
 	@Column(name="pr_approval")
 	private boolean approval;
@@ -53,11 +51,10 @@ public class PostReply {
 		
 	}
 
-	public PostReply(int id, ForumPost post, Person author, List<Likeable> likes, List<DisLikeable> dislikes,
+	public PostReply(int id, Person author, List<LikeableReply> likes, List<DisLikeableReply> dislikes,
 			boolean approval, String content, Timestamp timestamp) {
 		super();
 		this.id = id;
-		this.post = post;
 		this.author = author;
 		this.likes = likes;
 		this.dislikes = dislikes;
@@ -66,10 +63,9 @@ public class PostReply {
 		this.timestamp = timestamp;
 	}
 
-	public PostReply(ForumPost post, Person author, List<Likeable> likes, List<DisLikeable> dislikes, boolean approval, String content,
+	public PostReply(ForumPost post, Person author, List<LikeableReply> likes, List<DisLikeableReply> dislikes, boolean approval, String content,
 			Timestamp timestamp) {
 		super();
-		this.post = post;
 		this.author = author;
 		this.likes = likes;
 		this.dislikes = dislikes;
@@ -86,27 +82,19 @@ public class PostReply {
 		this.id = id;
 	}
 
-	public ForumPost getPost() {
-		return post;
-	}
-
-	public void setPost(ForumPost post) {
-		this.post = post;
-	}
-
-	public List<Likeable> getLikes() {
+	public List<LikeableReply> getLikes() {
 		return likes;
 	}
 
-	public List<DisLikeable> getDislikes() {
+	public List<DisLikeableReply> getDislikes() {
 		return dislikes;
 	}
 
-	public void setLikes(List<Likeable> likes) {
+	public void setLikes(List<LikeableReply> likes) {
 		this.likes = likes;
 	}
 
-	public void setDislikes(List<DisLikeable> dislikes) {
+	public void setDislikes(List<DisLikeableReply> dislikes) {
 		this.dislikes = dislikes;
 	}
 
@@ -144,7 +132,7 @@ public class PostReply {
 
 	@Override
 	public String toString() {
-		return "PostReply [id=" + id + ", post=" + post + ", author=" + author + ", likes=" + likes + ", dislikes="
+		return "PostReply [id=" + id + ", author=" + author + ", likes=" + likes + ", dislikes="
 				+ dislikes + ", approval=" + approval + ", content=" + content + ", timestamp=" + timestamp + "]";
 	}
 }
