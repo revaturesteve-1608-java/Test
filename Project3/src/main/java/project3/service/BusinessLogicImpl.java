@@ -1,5 +1,6 @@
 package project3.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -64,14 +65,24 @@ public class BusinessLogicImpl implements BusinessLogic{
 
 	@Override
 	public List<ForumPost> getAllPosts() {
-		// TODO Auto-generated method stub
-		return dao.getAllPosts();
+		
+		return getRidOfDupes(dao.getAllPosts());
 	}
 
 	@Override
-	public void createReply(String replyContent, int postId) {
+	public void createReply(String replyContent, int postId, String username) {
 		// TODO Auto-generated method stub
 		ForumPost post = dao.getPostById(postId);
-		dao.createPostReply(post, 0, 0, false, replyContent, GetTimestamp.getCurrentTime());
+		Person author = dao.getPersonByUsername(username);
+		dao.createPostReply(post, author, 0, 0, false, replyContent, GetTimestamp.getCurrentTime());
+	}
+	
+	private List<ForumPost> getRidOfDupes(List<ForumPost> posts){
+		List<ForumPost> filteredList = new ArrayList<>();
+		for (ForumPost post: posts) {
+			if (!filteredList.contains(post))
+				filteredList.add(post);
+		}
+		return filteredList;
 	}
 }

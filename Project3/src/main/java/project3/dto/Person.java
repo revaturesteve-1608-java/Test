@@ -55,8 +55,8 @@ public class Person {
 	@Column(name="u_bio")
 	private String bio;
 	
-	@Column(name="u_unviersity")
-	private String unviersity;
+	@Column(name="u_university")
+	private String university;
 	
 	@Column(name="u_vaildated")
 	private boolean vaildated;
@@ -72,7 +72,7 @@ public class Person {
 	}
 	
 	public Person(int id, String first_name, String last_name, String username, String password, String email,
-			Role role, String profilePic, Complex complex, String phoneNumber, String bio, String unviersity,
+			Role role, String profilePic, Complex complex, String phoneNumber, String bio, String university,
 			boolean vaildated, String linkedin, int totalLikes) {
 		super();
 		this.id = id;
@@ -86,14 +86,14 @@ public class Person {
 		this.complex = complex;
 		this.phoneNumber = phoneNumber;
 		this.bio = bio;
-		this.unviersity = unviersity;
+		this.university = university;
 		this.vaildated = vaildated;
 		this.linkedin = linkedin;
 		this.totalLikes = totalLikes;
 	}
 
 	public Person(String first_name, String last_name, String username, String password, String email, Role role,
-			String profilePic, Complex complex, String phoneNumber, String bio, String unviersity, boolean vaildated,
+			String profilePic, Complex complex, String phoneNumber, String bio, String university, boolean vaildated,
 			String linkedin) {
 		super();
 		this.first_name = first_name;
@@ -106,7 +106,7 @@ public class Person {
 		this.complex = complex;
 		this.phoneNumber = phoneNumber;
 		this.bio = bio;
-		this.unviersity = unviersity;
+		this.university = university;
 		this.vaildated = vaildated;
 		this.linkedin = linkedin;
 	}
@@ -211,12 +211,12 @@ public class Person {
 		this.bio = bio;
 	}
 
-	public String getUnviersity() {
-		return unviersity;
+	public String getUniversity() {
+		return university;
 	}
 
-	public void setUnviersity(String unviersity) {
-		this.unviersity = unviersity;
+	public void setUniversity(String university) {
+		this.university = university;
 	}
 
 	public boolean isVaildated() {
@@ -247,8 +247,8 @@ public class Person {
 	public String toString() {
 		return "Person [id=" + id + ", first_name=" + first_name + ", last_name=" + last_name + ", username=" + username
 				+ ", password=" + password + ", email=" + email + ", role=" + role + ", profilePic=" + profilePic
-				+ ", complex=" + complex + ", phoneNumber=" + phoneNumber + ", bio=" + bio + ", unviersity="
-				+ unviersity + ", vaildated=" + vaildated + ", linkedin=" + linkedin + ", totalLikes=" + totalLikes
+				+ ", complex=" + complex + ", phoneNumber=" + phoneNumber + ", bio=" + bio + ", university="
+				+ university + ", vaildated=" + vaildated + ", linkedin=" + linkedin + ", totalLikes=" + totalLikes
 				+ "]";
 	}
 }

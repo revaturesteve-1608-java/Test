@@ -19,5 +19,5 @@ public interface BusinessLogic {
 	
 	public List<ForumPost> getAllPosts();
 	
-	public void createReply(String replyContent, int postId);
+	public void createReply(String replyContent, int postId, String username);
 }

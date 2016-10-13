@@ -85,7 +85,7 @@ public class Controller1 {
 			newPhone = currentUser.getPhoneNumber();
 		}
 		if(information[5]==null || "".equals(information[1])){
-			newUniversity = currentUser.getUnviersity();
+			newUniversity = currentUser.getUniversity();
 		}
 		if(information[6]==null || "".equals(information[1])){
 			newLinkedIn = currentUser.getLinkedin();

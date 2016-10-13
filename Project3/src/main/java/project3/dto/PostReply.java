@@ -28,6 +28,9 @@ public class PostReply {
 	private ForumPost post;
 	
 	// add author of the reply
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="u_id")
+	private Person author;
 	
 	@Column(name="pr_likes")
 	private int likes;
@@ -60,9 +63,11 @@ public class PostReply {
 		this.timestamp = timestamp;
 	}
 
-	public PostReply(ForumPost post, int likes, int dislikes, boolean approval, String content, Timestamp timestamp) {
+	public PostReply(ForumPost post, Person author, int likes, int dislikes, boolean approval, String content,
+			Timestamp timestamp) {
 		super();
 		this.post = post;
+		this.author = author;
 		this.likes = likes;
 		this.dislikes = dislikes;
 		this.approval = approval;
@@ -84,6 +89,14 @@ public class PostReply {
 
 	public void setPost(ForumPost post) {
 		this.post = post;
+	}
+
+	public Person getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(Person author) {
+		this.author = author;
 	}
 
 	public int getLikes() {

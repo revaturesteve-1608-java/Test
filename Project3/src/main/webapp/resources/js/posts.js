@@ -11,18 +11,16 @@ angular.module('posts', ['textAngular', 'infinite-scroll'])
 	$scope.emptyhtml = '';
 	$scope.disabled = false;
 	console.log($scope.htmlcontent);
-	
-	$scope.count=1;
 	$scope.addReply = function(userReply, postId){
 		console.log("the postId: " + postId)
 		console.log("reply: " + userReply)
 		var getElem = "." + postId;
 		var elem = angular.element(getElem);
 		console.log("elements: " + elem)
-		var replyInfo = [userReply, postId]
+		var replyInfo = [userReply, postId, $scope.user.username]
 		postsService.createReply(replyInfo)
 		
-		var newReply = '<div id="singleReply" class="row"> <div class="col-md-8">' + userReply + '</div><div class="col-md-4">'
+		var newReply = '<div id="singleReply" class="row"> <div id="username">' + $scope.user.username + '</div> <div class="col-md-8">' + userReply + '</div><div class="col-md-4">'
 		+ '<button type="button" aria-label="Right Align"> <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> '
 		+ '</button></div></div>'
 		var buttonListener = $compile(newReply)($scope);
@@ -31,14 +29,15 @@ angular.module('posts', ['textAngular', 'infinite-scroll'])
 	}
 	$scope.addPost = function(postTitle, postContent){
 		
-		var postInfo = [postTitle, postContent/*, $scope.user.username*/]
+		var postInfo = [postTitle, postContent, $scope.user.username]
 		console.log(postContent)
+		console.log("username: " + $scope.user.username)
 		postsService.createPost(postInfo, function(response){
 			var postId = response.data;
 			console.log("postId in the controller: " + postId);
 			
 			var elem = angular.element('#newPost');
-			var append = '<div id="eachPost"><ul class="list-group"><li class="list-group-item"><div><p id="theUsername">'+'TEMPUSERNAME'+'</p>'
+			var append = '<div id="eachPost"><ul class="list-group"><li class="list-group-item"><div><p id="theUsername">'+ $scope.user.username +'</p>'
 				+'</div></li><li class="list-group-item"><div><p id="thePost">'+ postContent + '</p></div></li><li class="list-group-item">'
 				+'<div class="'+ postId + '"><div class="replies" class="row" ><div class="col-md-8">Morbi leo risus</div>'
 				+'<div class="col-md-4"><button type="button" class="btn btn-default" aria-label="Right Align">'

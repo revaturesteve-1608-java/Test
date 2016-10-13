@@ -81,7 +81,7 @@ textarea.ta-bind {
 						<li class="list-group-item">
 							<div class="row">
 								<div>
-									<p id="theUsername">TempUsername</p>
+									<p id="theUsername">{{user.username}}</p>
 								</div>
 							</div>
 						</li>
@@ -129,24 +129,8 @@ textarea.ta-bind {
 
 							<li class="list-group-item">
 								<div class="{{postContainer.postId}}">
-									<div class="replies" class="row">
-										<div class="col-md-8">Morbi leo risus</div>
-										<div class="col-md-4">
-											<button type="button" class="btn btn-default"
-												aria-label="Right Align">
-												<span class="glyphicon glyphicon-thumbs-up"
-													aria-hidden="true"></span>
-											</button>
-											<button type="button" class="btn btn-default"
-												aria-label="Right Align">
-												<span class="glyphicon glyphicon-thumbs-down"
-													aria-hidden="true"></span>
-											</button>
-										</div>
-									</div>
-
-									<div id="singleReply" class="row">
-										<div class="col-md-8">Porta ac consectetur ac</div>
+									<div id="singleReply" class="row" ng-repeat="replies in postContainer.replyContent">
+										<div class="col-md-8">{{replies}}</div>
 										<div class="col-md-4">
 											<button type="button" class="btn btn-default"
 												aria-label="Right Align">

@@ -42,13 +42,14 @@ public class SimpleDaoImpl implements SimpleDao{
 	@Override
 	public List<ForumPost> getAllPosts() {
 		Criteria criteria = session.getCurrentSession().createCriteria(ForumPost.class);
-//		criteria.setFetchMode("author", FetchMode.EAGER);
+		criteria.setFetchMode("author", FetchMode.JOIN);
 //		criteria.setFetchMode("role", FetchMode.EAGER);
 //		criteria.setFetchMode("complex", FetchMode.EAGER);
 		List<ForumPost> posts = criteria.list();
-		for(ForumPost p: posts)
-			p.toString();
-			
+		System.out.println("length of posts list: " + posts.size() + "\tpostId1: " + posts.get(0).getId() + "\tpostId2: " + posts.get(1).getId());
+//		for(ForumPost p: posts)
+//			sysou;
+	
 		return criteria.list();
 	}
 
@@ -131,9 +132,9 @@ public class SimpleDaoImpl implements SimpleDao{
 	}
 
 	@Override
-	public void createPostReply(ForumPost post, int likes, int dislikes, boolean approval, 
+	public void createPostReply(ForumPost post, Person author, int likes, int dislikes, boolean approval, 
 			String content, Timestamp timestamp) {
-		PostReply newReply = new PostReply(post, likes, dislikes, approval, content, timestamp);
+		PostReply newReply = new PostReply(post, author, likes, dislikes, approval, content, timestamp);
 		session.getCurrentSession().save(newReply);
 	}
 
@@ -181,7 +182,7 @@ public class SimpleDaoImpl implements SimpleDao{
 		person.setUsername(username);
 		person.setEmail(newEmail);
 		person.setPhoneNumber(newPhone);
-		person.setUnviersity(newUniversity);
+		person.setUniversity(newUniversity);
 		person.setLinkedin(newLinkedIn);
 		person.setUsername(username);
 	}
