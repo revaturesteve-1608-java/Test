@@ -133,8 +133,8 @@ public class SimpleDaoImpl implements SimpleDao{
 	@Override
 	public void createPostReply(ForumPost post, int likes, int dislikes, boolean approval, 
 			String content, Timestamp timestamp) {
-		PostReply newReply = new PostReply(post, likes, dislikes, approval, content, timestamp);
-		session.getCurrentSession().save(newReply);
+//		PostReply newReply = new PostReply(post, likes, dislikes, approval, content, timestamp);
+//		session.getCurrentSession().save(newReply);
 	}
 
 	@Override
