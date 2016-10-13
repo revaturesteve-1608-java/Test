@@ -191,6 +191,7 @@ public class Jets3Impl implements Jets3{
 			String bucketName = bucket.getName();
 			S3Object s3Obj = new S3Object(folderPath + fileName);
 			System.out.println("s3obj" + s3Obj);
+			s3Obj.setAcl(AccessControlList.REST_CANNED_PUBLIC_READ);
 			S3.copyObject(bucketName, "resources/img/default.png", bucketName, s3Obj, false);
 			return 
 				HTTP + ADDRESS + BUCKET + "/" + folderPath + fileName;

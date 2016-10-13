@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -26,14 +27,19 @@ public class LikeableReply {
 	@JoinColumn(name="u_id")
 	private Person author;
 	
+	@ManyToOne
+	@JoinColumn(name="pr_id")
+	private PostReply reply;
+	
 	public LikeableReply() {
 		
 	}
 
-	public LikeableReply(int id, Person author) {
+	public LikeableReply(int id, Person author, PostReply reply) {
 		super();
 		this.id = id;
 		this.author = author;
+		this.reply = reply;
 	}
 
 	public int getId() {
@@ -52,8 +58,16 @@ public class LikeableReply {
 		this.author = author;
 	}
 
+	public PostReply getReply() {
+		return reply;
+	}
+
+	public void setReply(PostReply reply) {
+		this.reply = reply;
+	}
+
 	@Override
 	public String toString() {
-		return "Likeable [id=" + id + ", author=" + author + "]";
+		return "LikeableReply [id=" + id + ", author=" + author + ", reply=" + reply + "]";
 	}
 }

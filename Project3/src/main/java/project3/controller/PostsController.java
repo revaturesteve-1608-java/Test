@@ -89,6 +89,7 @@ public class PostsController {
 		int postId = Integer.parseInt(postInfo[1]);
 		System.out.println("post id in the controller: " + postId);
 		service.createReply(replyContent, postId, username);
+	}
 		
 //		List<ForumPost> posts = service.getAllPosts();
 //		System.out.println("id: " + posts.get(0).getId() + "\ttitle: " + posts.get(0).getTitle() + "\tcontent: " + posts.get(0).getContent());

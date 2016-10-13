@@ -90,18 +90,6 @@ public class ServiceLogic implements ServiceInterface{
 		return imageFile;
 	}
 	
-//	private byte[] extractBytes (String ImageName) throws IOException {
-//		// open image
-//		File imgPath = new File(ImageName);
-//		BufferedImage bufferedImage = ImageIO.read(imgPath);
-//		
-//		// get DataBufferBytes from Raster
-//		WritableRaster raster = bufferedImage.getRaster();
-//		DataBufferByte data   = (DataBufferByte) raster.getDataBuffer();
-//		
-//		return (data.getData());
-//	}
-	
 	/**
 	 * Encodes the byte array into base64 string
 	 *
@@ -194,7 +182,7 @@ public class ServiceLogic implements ServiceInterface{
 					key.getAccessKey(), key.getSecretAccessKey()));
 			dao.updatePersonPic(person);
 			// Send Email to Account
-			String subject = "Welcome to Revatuer";
+			String subject = "Welcome to Revature";
 			String message = 
 			"<table style=\"min-width:100%;\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\">"
 			    + "<tbody>"
@@ -261,7 +249,6 @@ public class ServiceLogic implements ServiceInterface{
 		}
 		return null;
 	}
-	
 	
 
 }
