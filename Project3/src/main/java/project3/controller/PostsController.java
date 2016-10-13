@@ -76,7 +76,7 @@ public class PostsController {
 //			allPosts.add(p);
 //			System.out.println(p.getPostContent());
 //		new ResponseEntity<List<PostContainer>>(allPosts, HttpStatus.OK)
-//		}
+		}
 
 	@RequestMapping(value="/getPostById", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PostContainer> getPost(@RequestParam("id") int id){
@@ -86,7 +86,10 @@ public class PostsController {
 		ForumPost post = service.getPostById(id);
 		//System.out.println(forumPost.toString());
 		//System.out.println(post.toString());
-		PostContainer pos = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId());
+		List<String> content = new ArrayList<>();
+		for(PostReply reply: post.getReplys())
+			content.add(reply.getContent());
+		PostContainer pos = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), content);
 		//ForumPost forumPost = new ForumPost();
 		//PostContainer pos = new PostContainer();
 		return new ResponseEntity<PostContainer>(pos, HttpStatus.OK);

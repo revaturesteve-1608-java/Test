@@ -146,10 +146,10 @@
 				<p>Please update your information</p> <br>
 				
 				<div id="updateTempCtrl" data-ng-controller="updateTempCtrl">
-					New Username: <input class="form-group" id="username" type="username" maxlength="40" placeholder="New Username" ng-model="username" value={{user.username}}> <br><br>
-					Temporary Password: <input class="form-group" id="password" type="password" maxlength="40" placeholder="Temporary Password" ng-model="oldPassword" value={{user.password}}> <br><br>
-					New Password: <input class="form-group" id="password" type="password" maxlength="40" placeholder="New Password" ng-model="newPassword"> <br><br>
-					<button type="button" class="btn btn-primary" ng-click="updateInfo(oldPassword, newPassword, username)">update</button>
+					New Username: <input class="form-group" id="username" type="username" maxlength="40" placeholder="New Username" ng-model="username"> <br><br>
+					Temporary Password: <input class="form-group" id="password" type="password" minlength="6" placeholder="Temporary Password" ng-model="oldPassword" ng-change="checkingPassword(oldPassword)"> <br><br>
+					New Password: <input class="form-group" id="password" type="password" minlength="6" placeholder="New Password" ng-model="newPassword" ng-disabled="checked ==false;"> <br><br>
+					<button type="button" class="btn btn-primary" ng-click="updateInfo(oldPassword, newPassword, username)" ng-disabled="checked ==false;">update</button>
 			</div>
 		</div>
 	</div>

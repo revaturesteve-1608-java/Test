@@ -27,8 +27,6 @@ angular.module('posts', ['textAngular', 'infinite-scroll'])
 		elem.append(buttonListener);
 		angular.element('#theRepyTextBox #replyText').val("");
 	}
-
-
 	$scope.addPost = function(postTitle, postContent){
 		
 		var postInfo = [postTitle, postContent, $scope.user.username]

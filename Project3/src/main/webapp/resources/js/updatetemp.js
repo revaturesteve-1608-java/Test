@@ -6,7 +6,18 @@ angular.module('routingApp')
 
 .controller('updateTempCtrl', function($scope, updateTempDataService, $window){
 	console.log('FIRST IN CONTROLLER')
+	$scope.checked;
+	$scope.checkingPassword = function(oldPassword){
+		console.log("click event happened. password changed")
+		if(oldPassword !== "12345"){
+			$scope.checked = false;
+		} else{
+			$scope.checked =  true;
+		}
+	}
+	
 	$scope.updateInfo = function(oldPassword, newPassword, username){
+		
 		console.log('EVENT LISTENER WORKED')
 		console.log("oldpass: " + oldPassword);
 		console.log("newpass: " + newPassword);
@@ -39,7 +50,6 @@ angular.module('routingApp')
 			console.log($q.reject(error));
 		});
 	}
-	
 	this.getUser = function(callback){
 		$http.get('rest/user').then(callback)
 	}

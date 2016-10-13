@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import project3.dto.Person;
 import project3.service.BusinessLogic;
@@ -29,7 +30,6 @@ public class Controller1 {
 	public ResponseEntity<String> updateTempUser(@RequestBody String[] usernamePass, ModelMap map){
 //		System.out.println("HEY IT GOT INTO CONTROLLER");
 		String testUsername = usernamePass[3];
-		System.out.println("current user: " + testUsername);
 		System.out.println("inside controller oldPass: " + usernamePass[0]);
 		System.out.println("inside controller newPass: " + usernamePass[1]);
 		System.out.println("inside controller oldPass: " + usernamePass[2]);
@@ -85,7 +85,7 @@ public class Controller1 {
 			newPhone = currentUser.getPhoneNumber();
 		}
 		if(information[5]==null || "".equals(information[1])){
-			newUniversity = currentUser.getUniversity();
+			newUniversity = currentUser.getUnviersity();
 		}
 		if(information[6]==null || "".equals(information[1])){
 			newLinkedIn = currentUser.getLinkedin();
