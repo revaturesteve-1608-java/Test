@@ -86,7 +86,7 @@ public class Person {
 		this.complex = complex;
 		this.phoneNumber = phoneNumber;
 		this.bio = bio;
-		this.university = unviersity;
+		this.university = university;
 		this.vaildated = vaildated;
 		this.linkedin = linkedin;
 		this.totalLikes = totalLikes;
@@ -106,7 +106,7 @@ public class Person {
 		this.complex = complex;
 		this.phoneNumber = phoneNumber;
 		this.bio = bio;
-		this.university = unviersity;
+		this.university = university;
 		this.vaildated = vaildated;
 		this.linkedin = linkedin;
 	}
@@ -210,12 +210,13 @@ public class Person {
 	public void setBio(String bio) {
 		this.bio = bio;
 	}
-	public String getUnviersity() {
+
+	public String getUniversity() {
 		return university;
 	}
 
-	public void setUnviersity(String unviersity) {
-		this.university = unviersity;
+	public void setUniversity(String university) {
+		this.university = university;
 	}
 
 	public boolean isVaildated() {

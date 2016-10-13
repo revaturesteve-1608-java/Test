@@ -8,6 +8,8 @@ import project3.dto.Person;
 
 public interface BusinessLogic {
 	
+	public Person getPersonById(int id);
+	
 	public Person getPersonByUsername(String username);
 	
 	public String updateTempPerson(String username, String pass, String oldPass, String newUsername);
