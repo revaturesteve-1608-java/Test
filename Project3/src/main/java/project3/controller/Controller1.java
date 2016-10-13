@@ -1,6 +1,9 @@
 package project3.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,24 +23,28 @@ public class Controller1 {
 	@Autowired
 	BusinessLogic service;
 	
-	@RequestMapping(value="/updateTemp", method=RequestMethod.POST)
+	@RequestMapping(value="/updateTemp", method=RequestMethod.POST,
+			consumes=MediaType.APPLICATION_JSON_VALUE, 
+			produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public boolean updateTempUser(@RequestBody String[] usernamePass, ModelMap map){
+	public ResponseEntity<String> updateTempUser(@RequestBody String[] usernamePass, ModelMap map){
 //		System.out.println("HEY IT GOT INTO CONTROLLER");
 		String testUsername = usernamePass[3];
 		System.out.println("inside controller oldPass: " + usernamePass[0]);
 		System.out.println("inside controller newPass: " + usernamePass[1]);
+		System.out.println("inside controller oldPass: " + usernamePass[2]);
+		System.out.println("inside controller username: " + usernamePass[3]);
 //		System.out.println("inside controller firstname: " + person.getFirst_name());
 //		System.out.println("inside controller lastname: " + person.getLast_name());
 //		System.out.println("inside controller email: " + person.getEmail());
 		
-		boolean updated = service.updateTempPerson(testUsername, usernamePass[1], usernamePass[0], usernamePass[2]);
-		if(updated == true){
+		String updatedStatus = service.updateTempPerson(testUsername, usernamePass[1], usernamePass[0], usernamePass[2]);
+		if(updatedStatus.equals("Updated")){
 			Person updatedPerson = service.getPersonByUsername(usernamePass[2]);
 			map.addAttribute("person", updatedPerson);
-			return updated;
 		}
-		return updated;
+		System.out.println(updatedStatus);
+		return new ResponseEntity<String>(updatedStatus, HttpStatus.OK);
 		
 		
 //		Person person = service.getPersonByUsername(username);

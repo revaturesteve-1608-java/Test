@@ -23,7 +23,7 @@ public class PostReply {
 	@GeneratedValue(generator="postReplySeq", strategy=GenerationType.SEQUENCE)
 	private int id;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="fp_id")
 	private ForumPost post;
 	

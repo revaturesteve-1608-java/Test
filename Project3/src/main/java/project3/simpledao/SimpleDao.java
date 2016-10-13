@@ -3,6 +3,7 @@ package project3.simpledao;
 import java.sql.Timestamp;
 import java.util.List;
 
+import project3.dto.AwsKey;
 import project3.dto.Complex;
 import project3.dto.ForumCategory;
 import project3.dto.ForumPost;
@@ -33,12 +34,12 @@ public interface SimpleDao {
 			String newPhone, String newUniversity, String newLinkedIn);
 	
 	public void createPerson(String first_name, String last_name, String username, String password, String email, Role role,
-			byte[] profilePic, Complex complex, String phoneNumber, String bio, String unviersity, boolean vaildated,
+			String profilePic, Complex complex, String phoneNumber, String bio, String unviersity, boolean vaildated,
 			String linkedin);
 	
 	public void createForumCategory(String categoryName);
 	
-	public void createUser(Person person);
+	public Person createUser(Person person);
 	
 	public void createPostReply(ForumPost post, int likes, int dislikes, boolean approval, 
 			String content, Timestamp timestamp);
@@ -50,4 +51,8 @@ public interface SimpleDao {
 	public void deletePostReply(int id);
 	
 	public void createForumPost(ForumPost post);
+	
+	public AwsKey getAWSKey();
+	
+	public void updatePersonPic(Person person);
 }
