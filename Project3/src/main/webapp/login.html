@@ -6,22 +6,30 @@
 <link rel="stylesheet" type="text/css" href="resources/css/homepage.css" />
 <link rel="stylesheet" type="text/css"
 	href="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.1/angular-material.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
 <style>
 </style>
 <body>
-
+	
 	<div data-ng-app="routingApp" data-ng-controller="loginController"
 		data-ng-cloak="" id="popupContainer">
-
+		<nav class="navbar navbar-default"  >
+			<ul class="nav navbar-nav navbar-right">
+				<li>
+				<button type="submit" class="btn btn-info"
+					data-ng-click="toIndex()">Go to Index </button>
+				</li>
+			</ul>
+		</nav>
+		
 		<div class="container">
 			<label id="title">Welcome to RevPages</label><br> <label
-				for="user" class="input">UserName</label><br> <input
-				type="text" name="user" placeholder="Username"
-				data-ng-model="person.username"><br> <label
-				for="password" class="input">Password</label><br> <input
-				type="password" name="password" placeholder="Password"
-				data-ng-model="person.password"><br>
+				for="user" class="input">UserName</label><br> 
+				<input type="text" name="user"
+				data-ng-model="person.username"><br> 
+				<label for="password" class="input">Password</label><br> 
+				<input type="password" name="password"  data-ng-model="person.password"><br>
 			<button type="submit" class="button-primary"
 				data-ng-click="signIn(person)">Login</button>
 		</div>

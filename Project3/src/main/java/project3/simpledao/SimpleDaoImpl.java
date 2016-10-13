@@ -13,6 +13,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import project3.dto.AwsKey;
 import project3.dto.Complex;
 import project3.dto.ForumCategory;
 import project3.dto.ForumPost;
@@ -108,14 +109,15 @@ public class SimpleDaoImpl implements SimpleDao{
 	}
 	
 	@Override
-	public void createUser(Person person) {
+	public Person createUser(Person person) {
 		session.getCurrentSession().save(person);
+		return (Person) session.getCurrentSession().merge(person);
 	}
 
 	//not using this method
 	@Override
 	public void createPerson(String first_name, String last_name, String username, String password, String email, Role role,
-			byte[] profilePic, Complex complex, String phoneNumber, String bio, String unviersity, boolean vaildated,
+			String profilePic, Complex complex, String phoneNumber, String bio, String unviersity, boolean vaildated,
 			String linkedin) {
 		Person newPerson = new Person(first_name, last_name, username, password, email, role, profilePic, 
 				complex, phoneNumber, bio, unviersity, vaildated, linkedin);
@@ -186,12 +188,23 @@ public class SimpleDaoImpl implements SimpleDao{
 
 	@Override
 	public int createForumPost(ForumPost post) {
-		// TODO Auto-generated method stub
 		session.getCurrentSession().save(post);
 		ForumPost newForumPost = (ForumPost) session.getCurrentSession().merge(post);
 		System.out.println("id assigned to new post: " + newForumPost.getId());
 		return newForumPost.getId();
 	}
 
+	@Override
+	public AwsKey getAWSKey() {
+		return (AwsKey) session.getCurrentSession().get(AwsKey.class, 1);
+	}
+
+	@Override
+	public void updatePersonPic(Person person) {
+		Session currentSession = session.getCurrentSession();
+		Criteria criteria = currentSession.createCriteria(Person.class);
+		Person tempPerson = (Person) criteria.add(Restrictions.eq("username", person.getUsername())).list().get(0);
+		tempPerson.setProfilePic(person.getProfilePic());
+	}
 	
 }

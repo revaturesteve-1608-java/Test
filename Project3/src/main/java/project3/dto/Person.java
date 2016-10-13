@@ -1,7 +1,5 @@
 package project3.dto;
 
-import java.util.Arrays;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -46,8 +43,7 @@ public class Person {
 	private Role role;
 	
 	@Column(name="u_picture")
-	@Lob
-	private byte[] profilePic; // change to string which represents the URL to the picture
+	private String profilePic;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="c_id")
@@ -68,14 +64,16 @@ public class Person {
 	@Column(name="u_linkedin")
 	private String linkedin;
 	
+	@Column(name="u_totalLikes")
+	private int totalLikes;
+	
 	public Person() {
 		
 	}
-
-	public Person(int id, String first_name, String last_name, String username, 
-			String password, String email, Role role, byte[] profilePic, Complex complex,
-			String phoneNumber, String bio, String unviersity,
-			boolean vaildated, String linkedin) {
+	
+	public Person(int id, String first_name, String last_name, String username, String password, String email,
+			Role role, String profilePic, Complex complex, String phoneNumber, String bio, String unviersity,
+			boolean vaildated, String linkedin, int totalLikes) {
 		super();
 		this.id = id;
 		this.first_name = first_name;
@@ -91,10 +89,11 @@ public class Person {
 		this.unviersity = unviersity;
 		this.vaildated = vaildated;
 		this.linkedin = linkedin;
+		this.totalLikes = totalLikes;
 	}
-	
+
 	public Person(String first_name, String last_name, String username, String password, String email, Role role,
-			byte[] profilePic, Complex complex, String phoneNumber, String bio, String unviersity, boolean vaildated,
+			String profilePic, Complex complex, String phoneNumber, String bio, String unviersity, boolean vaildated,
 			String linkedin) {
 		super();
 		this.first_name = first_name;
@@ -180,11 +179,11 @@ public class Person {
 		this.role = role;
 	}
 
-	public byte[] getProfilePic() {
+	public String getProfilePic() {
 		return profilePic;
 	}
 
-	public void setProfilePic(byte[] profilePic) {
+	public void setProfilePic(String profilePic) {
 		this.profilePic = profilePic;
 	}
 
@@ -236,14 +235,20 @@ public class Person {
 		this.linkedin = linkedin;
 	}
 
+	public int getTotalLikes() {
+		return totalLikes;
+	}
+
+	public void setTotalLikes(int totalLikes) {
+		this.totalLikes = totalLikes;
+	}
+
 	@Override
 	public String toString() {
-		return "Person [id=" + id + ", first_name=" + first_name + ", last_name=" 
-				+ last_name + ", username=" + username
-				+ ", password=" + password + ", email=" + email + ", role=" + role 
-				+ ", profilePic=" + Arrays.toString(profilePic) + ", complex=" 
-				+ complex + ", phoneNumber=" + phoneNumber + ", bio=" + bio
-				+ ", unviersity=" + unviersity + ", vaildated=" + vaildated 
-				+ ", linkedin=" + linkedin + "]";
+		return "Person [id=" + id + ", first_name=" + first_name + ", last_name=" + last_name + ", username=" + username
+				+ ", password=" + password + ", email=" + email + ", role=" + role + ", profilePic=" + profilePic
+				+ ", complex=" + complex + ", phoneNumber=" + phoneNumber + ", bio=" + bio + ", unviersity="
+				+ unviersity + ", vaildated=" + vaildated + ", linkedin=" + linkedin + ", totalLikes=" + totalLikes
+				+ "]";
 	}
 }

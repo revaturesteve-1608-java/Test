@@ -49,6 +49,8 @@ public interface Jets3 {
 	
 	public String uploadProfileItem(String folderPath, String fileName);
 	
+	public String uploadProfileItem(String loginName, String fileName, String publicKey, String privateKey);
+	
 	public String uploadProfileItem(String loginName, File file);
 	
 	/**
@@ -77,6 +79,6 @@ public interface Jets3 {
 	public String[] list();
 	
 
-	public void syncBusinessDelegate(ServiceInterface businessDelegate);
+//	public void syncBusinessDelegate(ServiceInterface businessDelegate);
 
 }
