@@ -63,10 +63,9 @@ public class PostReply {
 		this.timestamp = timestamp;
 	}
 
-	public PostReply(ForumPost post, Person author, List<Likeable> likes, List<DisLikeable> dislikes, boolean approval, String content,
+	public PostReply(ForumPost post, Person author, List<LikeableReply> likes, List<DisLikeableReply> dislikes, boolean approval, String content,
 			Timestamp timestamp) {
 		super();
-		this.post = post;
 		this.author = author;
 		this.likes = likes;
 		this.dislikes = dislikes;
