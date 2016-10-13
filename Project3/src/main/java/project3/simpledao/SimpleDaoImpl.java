@@ -142,7 +142,7 @@ public class SimpleDaoImpl implements SimpleDao{
 		System.out.println("forum post id: " + post.getId());
 		System.out.println("forum author username: " + post.getAuthor().getId());
 		Person getAuthorAgain = (Person) currentSession.get(Person.class, author.getId());
-		PostReply newReply = new PostReply(getAuthorAgain, likes, dislikes, approval, content, timestamp);
+		PostReply newReply = new PostReply(post, getAuthorAgain, likes, dislikes, approval, content, timestamp);
 //		System.out.println("we");
 //		session.getCurrentSession().save(newReply);
 //		System.out.println("here");

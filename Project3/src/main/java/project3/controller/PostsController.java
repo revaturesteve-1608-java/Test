@@ -90,17 +90,6 @@ public class PostsController {
 		System.out.println("post id in the controller: " + postId);
 		service.createReply(replyContent, postId, username);
 	}
-		
-//		List<ForumPost> posts = service.getAllPosts();
-//		System.out.println("id: " + posts.get(0).getId() + "\ttitle: " + posts.get(0).getTitle() + "\tcontent: " + posts.get(0).getContent());
-//		System.out.println("author: " + posts.get(0).getAuthor().getRole().getRoleName());
-//		List<PostContainer> allPosts = new ArrayList<>();
-//		for(ForumPost post: posts){
-//			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId());
-//			allPosts.add(p);
-//			System.out.println(p.getPostContent());
-//		new ResponseEntity<List<PostContainer>>(allPosts, HttpStatus.OK)
-		}
 
 	@RequestMapping(value="/getPostById", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PostContainer> getPost(@RequestParam("id") int id){
