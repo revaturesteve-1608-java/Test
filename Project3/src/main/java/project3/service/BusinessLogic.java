@@ -26,4 +26,6 @@ public interface BusinessLogic {
 	public void createReply(String replyContent, int postId, String username);
 	
 	public ForumPost getPostById(int id);
+	
+	public List<ForumPost> getMorePosts(int firstResult);
 }

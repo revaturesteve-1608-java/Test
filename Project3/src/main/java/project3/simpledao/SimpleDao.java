@@ -5,8 +5,10 @@ import java.util.List;
 
 import project3.dto.AwsKey;
 import project3.dto.Complex;
+import project3.dto.DisLikeableReply;
 import project3.dto.ForumCategory;
 import project3.dto.ForumPost;
+import project3.dto.LikeableReply;
 import project3.dto.Person;
 import project3.dto.Role;
 
@@ -40,7 +42,7 @@ public interface SimpleDao {
 	
 	public Person createUser(Person person);
 	
-	public void createPostReply(ForumPost post, Person author, int likes, int dislikes, boolean approval, 
+	public void createPostReply(int post, Person author, List<LikeableReply> likes, List<DisLikeableReply> dislikes, boolean approval, 
 			String content, Timestamp timestamp);
 	
 	public void createComplex(String complexName);
@@ -54,4 +56,6 @@ public interface SimpleDao {
 	public AwsKey getAWSKey();
 	
 	public void updatePersonPic(Person person);
+	
+	public List<ForumPost> getMorePosts(int firstResult);
 }
