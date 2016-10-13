@@ -170,9 +170,4 @@ public class BusinessLogicImpl implements BusinessLogic{
 		dao.addLike(post, like);*/
 	}
 	
-	@Override
-	public Person updatePassword(Person person, String newpassword) {
-		return null;
-	}
-	
 }

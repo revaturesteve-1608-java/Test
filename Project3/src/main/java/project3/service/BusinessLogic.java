@@ -34,6 +34,5 @@ public interface BusinessLogic {
 
 	public void addLike(ForumPost post, Person person);
 
-	public Person updatePassword(Person person, String newpassword);
-
+	
 }
