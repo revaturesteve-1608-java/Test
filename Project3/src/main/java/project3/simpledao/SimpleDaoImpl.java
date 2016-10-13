@@ -185,9 +185,12 @@ public class SimpleDaoImpl implements SimpleDao{
 	}
 
 	@Override
-	public void createForumPost(ForumPost post) {
+	public int createForumPost(ForumPost post) {
 		// TODO Auto-generated method stub
 		session.getCurrentSession().save(post);
+		ForumPost newForumPost = (ForumPost) session.getCurrentSession().merge(post);
+		System.out.println("id assigned to new post: " + newForumPost.getId());
+		return newForumPost.getId();
 	}
 
 	

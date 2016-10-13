@@ -47,7 +47,7 @@ public class Person {
 	
 	@Column(name="u_picture")
 	@Lob
-	private byte[] profilePic;
+	private byte[] profilePic; // change to string which represents the URL to the picture
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="c_id")

@@ -23,9 +23,11 @@ public class PostReply {
 	@GeneratedValue(generator="postReplySeq", strategy=GenerationType.SEQUENCE)
 	private int id;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY) // take this out
 	@JoinColumn(name="fp_id")
 	private ForumPost post;
+	
+	// add author of the reply
 	
 	@Column(name="pr_likes")
 	private int likes;

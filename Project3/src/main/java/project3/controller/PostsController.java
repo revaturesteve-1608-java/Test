@@ -24,14 +24,15 @@ public class PostsController {
 	BusinessLogic service;
 	
 	@RequestMapping(value="/createPost", method=RequestMethod.POST)
-	public void createPost(@RequestBody String[] postInfo){
+	public ResponseEntity<Integer> createPost(@RequestBody String[] postInfo){
 		System.out.println("title: " + postInfo[0]);
 		String title = postInfo[0];
 		String content = postInfo[1];
 		System.out.println("content: " + postInfo[1]);
 		Person author = service.getPersonByUsername("123@email.com");
 		System.out.println(author.getUsername());
-		service.createForumPost(content, title, author, null);
+		int postId = service.createForumPost(content, title, author, null);
+		return new ResponseEntity<Integer>(postId, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value="/getPosts", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
@@ -43,7 +44,29 @@ public class PostsController {
 		for(ForumPost post: posts){
 			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId());
 			allPosts.add(p);
+			System.out.println(p.getPostContent());
 		}
 		return new ResponseEntity<List<PostContainer>>(allPosts, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/createReply", method=RequestMethod.POST)
+	public void createReply(@RequestBody String[] postInfo){
+		System.out.println("GOT INTO CREATEREPLY");
+		System.out.println(postInfo[0]);
+		System.out.println(postInfo[1]);
+		String replyContent = postInfo[0];
+		int postId = Integer.parseInt(postInfo[1]);
+		service.createReply(replyContent, postId);
+		
+//		List<ForumPost> posts = service.getAllPosts();
+//		System.out.println("id: " + posts.get(0).getId() + "\ttitle: " + posts.get(0).getTitle() + "\tcontent: " + posts.get(0).getContent());
+//		System.out.println("author: " + posts.get(0).getAuthor().getRole().getRoleName());
+//		List<PostContainer> allPosts = new ArrayList<>();
+//		for(ForumPost post: posts){
+//			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId());
+//			allPosts.add(p);
+//			System.out.println(p.getPostContent());
+//		new ResponseEntity<List<PostContainer>>(allPosts, HttpStatus.OK)
+//		}
 	}
 }

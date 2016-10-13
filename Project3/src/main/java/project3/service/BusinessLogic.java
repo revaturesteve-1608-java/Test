@@ -15,7 +15,9 @@ public interface BusinessLogic {
 	public void updateUserInfo(String currentUser, String newPassword, String username, String newEmail, 
 			String newPhone, String newUniversity, String newLinkedIn);
 	
-	public void createForumPost(String content, String title, Person author, List<ForumCategory> categories);
+	public int createForumPost(String content, String title, Person author, List<ForumCategory> categories);
 	
 	public List<ForumPost> getAllPosts();
+	
+	public void createReply(String replyContent, int postId);
 }

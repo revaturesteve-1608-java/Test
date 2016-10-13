@@ -49,5 +49,5 @@ public interface SimpleDao {
 	
 	public void deletePostReply(int id);
 	
-	public void createForumPost(ForumPost post);
+	public int createForumPost(ForumPost post);
 }

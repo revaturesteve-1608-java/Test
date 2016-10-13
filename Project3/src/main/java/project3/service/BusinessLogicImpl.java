@@ -50,16 +50,23 @@ public class BusinessLogicImpl implements BusinessLogic{
 	}
 
 	@Override
-	public void createForumPost(String content, String title, Person author, List<ForumCategory> categories) {
+	public int createForumPost(String content, String title, Person author, List<ForumCategory> categories) {
 		// TODO Auto-generated method stub
 		ForumPost post = new ForumPost(author, title, content, GetTimestamp.getCurrentTime(), false);
 //		post.setCategory(categories);
-		dao.createForumPost(post);
+		return dao.createForumPost(post);
 	}
 
 	@Override
 	public List<ForumPost> getAllPosts() {
 		// TODO Auto-generated method stub
 		return dao.getAllPosts();
+	}
+
+	@Override
+	public void createReply(String replyContent, int postId) {
+		// TODO Auto-generated method stub
+		ForumPost post = dao.getPostById(postId);
+		dao.createPostReply(post, 0, 0, false, replyContent, GetTimestamp.getCurrentTime());
 	}
 }
