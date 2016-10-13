@@ -136,9 +136,4 @@ public class BusinessLogicImpl implements BusinessLogic{
 		return dao.getPostById(id);
 	}
 	
-	@Override
-	public Person updatePassword(Person person, String newpassword) {
-		return null;
-	}
-	
 }
