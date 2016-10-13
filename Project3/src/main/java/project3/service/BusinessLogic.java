@@ -20,4 +20,6 @@ public interface BusinessLogic {
 	public void createForumPost(String content, String title, Person author, List<ForumCategory> categories);
 	
 	public List<ForumPost> getAllPosts();
+	
+	public ForumPost getPostById(int id);
 }

@@ -69,7 +69,13 @@ public class BusinessLogicImpl implements BusinessLogic{
 
 	@Override
 	public List<ForumPost> getAllPosts() {
-		// TODO Auto-generated method stub
 		return dao.getAllPosts();
 	}
+
+	@Override
+	public ForumPost getPostById(int id) {
+		return dao.getPostById(id);
+	}
+	
+	
 }

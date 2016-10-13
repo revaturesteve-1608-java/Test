@@ -25,6 +25,11 @@ app.config(function($routeProvider) {
         controller : "newUserCtrl"
     })
     
+    .when('/post', {
+        templateUrl : 'views/viewPost.html',
+        controller : "postCtrl"
+    })
+    
     .otherwise({
         redirectTo : '/'
     });
@@ -112,6 +117,14 @@ app.service('createUserService', function($http, $q, $window) {
 		}, function(error) {
 			console.log($q.reject(error));
 		});
+	}
+	
+	this.getPosts = function(callback){
+		$http.get("rest/getPosts").then(callback)
+	}
+	
+	this.getForm = function(callback){
+		$http.get("rest/getForm").then(callback)
 	}
 	
 	
