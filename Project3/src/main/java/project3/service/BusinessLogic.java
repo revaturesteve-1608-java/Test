@@ -26,6 +26,4 @@ public interface BusinessLogic {
 	public void createReply(String replyContent, int postId, String username);
 	
 	public ForumPost getPostById(int id);
-	
-	public Person updatePassword(Person person, String newpassword);
 }
