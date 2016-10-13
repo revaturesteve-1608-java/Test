@@ -66,6 +66,7 @@ public class PostsController {
 		System.out.println("third param: " + postInfo[2]);
 		int postId = Integer.parseInt(postInfo[1]);
 		service.createReply(replyContent, postId, username);
+	}
 		
 //		List<ForumPost> posts = service.getAllPosts();
 //		System.out.println("id: " + posts.get(0).getId() + "\ttitle: " + posts.get(0).getTitle() + "\tcontent: " + posts.get(0).getContent());
@@ -86,7 +87,8 @@ public class PostsController {
 		ForumPost post = service.getPostById(id);
 		//System.out.println(forumPost.toString());
 		//System.out.println(post.toString());
-		PostContainer pos = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId());
+		PostContainer pos = new PostContainer();
+//		PostContainer pos = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId());
 		//ForumPost forumPost = new ForumPost();
 		//PostContainer pos = new PostContainer();
 		return new ResponseEntity<PostContainer>(pos, HttpStatus.OK);
