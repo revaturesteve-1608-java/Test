@@ -8,7 +8,7 @@ angular.module('routingApp')
 .controller("profileCtrl", function($scope, createUserService) {
 	$scope.createUser = function(person) {
 		console.log('About to create ' + person.first_name);
-		createUserService.createUser(person);
+		profileService.createUser(person);
 	}
 	
 	$scope.user;
@@ -52,9 +52,9 @@ app.service('profileService', function($http, $q, $window) {
 		});
 	}
 	
-	this.getRoles = function(callback) {
+	this.getPerson = function(callback) {
 		// callback is a function that takes a response
-		$http.post('rest/getRoles').then(callback);
+		$http.post('rest/getPerson').then(callback);
 	}
 	
 	
