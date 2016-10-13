@@ -86,7 +86,7 @@ public class Person {
 		this.complex = complex;
 		this.phoneNumber = phoneNumber;
 		this.bio = bio;
-		this.university = unviersity;
+		this.university = university;
 		this.vaildated = vaildated;
 		this.linkedin = linkedin;
 		this.totalLikes = totalLikes;
@@ -106,7 +106,7 @@ public class Person {
 		this.complex = complex;
 		this.phoneNumber = phoneNumber;
 		this.bio = bio;
-		this.university = unviersity;
+		this.university = university;
 		this.vaildated = vaildated;
 		this.linkedin = linkedin;
 	}

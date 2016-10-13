@@ -182,7 +182,7 @@ public class SimpleDaoImpl implements SimpleDao{
 		person.setUsername(username);
 		person.setEmail(newEmail);
 		person.setPhoneNumber(newPhone);
-		person.setUniversity(newUniversity);
+		person.setUnviersity(newUniversity);
 		person.setLinkedin(newLinkedIn);
 		person.setUsername(username);
 	}
