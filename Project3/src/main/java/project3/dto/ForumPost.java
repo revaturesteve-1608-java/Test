@@ -42,16 +42,19 @@ public class ForumPost {
 	@Column(name="fp_timestamp")
 	private Timestamp timestamp;
 	
-	@Column(name="pr_likes")
-	private int likes;
-	
-	@Column(name="pr_dislikes")
-	private int dislikes;
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name="likepost_id")
+	private List<LikeablePost> likes;
+
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name="dislikepost_id")
+	private List<DisLikeablePost> dislikes;
 	
 	@Column(name="fp_resolved")
 	private boolean resolved;
 	
-	@OneToMany(mappedBy="post", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@JoinColumn(name="pr_id")
 	private List<PostReply> replys;
 	
 	@ManyToMany
@@ -71,9 +74,9 @@ public class ForumPost {
 		this.resolved = resolved;
 	}
 
-	public ForumPost(int id, Person author, String title, String content, Timestamp timestamp, int likes, int dislikes,
-			boolean resolved, List<PostReply> replys, List<ForumCategory> category) {
-		this();
+	public ForumPost(int id, Person author, String title, String content, Timestamp timestamp, List<LikeablePost> likes,
+			List<DisLikeablePost> dislikes, boolean resolved, List<PostReply> replys, List<ForumCategory> category) {
+		super();
 		this.id = id;
 		this.author = author;
 		this.title = title;
@@ -150,19 +153,19 @@ public class ForumPost {
 		this.category = category;
 	}
 
-	public int getLikes() {
+	public List<LikeablePost> getLikes() {
 		return likes;
 	}
 
-	public void setLikes(int likes) {
+	public void setLikes(List<LikeablePost> likes) {
 		this.likes = likes;
 	}
 
-	public int getDislikes() {
+	public List<DisLikeablePost> getDislikes() {
 		return dislikes;
 	}
 
-	public void setDislikes(int dislikes) {
+	public void setDislikes(List<DisLikeablePost> dislikes) {
 		this.dislikes = dislikes;
 	}
 
