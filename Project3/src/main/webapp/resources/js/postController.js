@@ -23,4 +23,14 @@ app.controller("postCtrl", function($scope, $location, $http) {
 	.error(function(data, status, headers, config) {
 	alert( "failure message: " + JSON.stringify({data: data}));
 	});
+	
+	
+	$scope.dislike = function(user) {
+		
+	}
+	
+	$scope.like = function(user) {
+		
+	}
+	
 });
