@@ -45,17 +45,17 @@ public class SimpleDaoImpl implements SimpleDao{
 		criteria.setFetchMode("author", FetchMode.JOIN);
 //		criteria.setFetchMode("role", FetchMode.EAGER);
 //		criteria.setFetchMode("complex", FetchMode.EAGER);
+		System.out.println("=============================here====================================");
 		List<ForumPost> posts = criteria.list();
 		System.out.println("length of posts list: " + posts.size() + "\tpostId1: " + posts.get(0).getId() + "\tpostId2: " + posts.get(1).getId());
-//		for(ForumPost p: posts)
-//			sysou;
-	
 		return criteria.list();
 	}
 
 	@Override
 	public ForumPost getPostById(int id) {
 		ForumPost post = (ForumPost) session.getCurrentSession().get(ForumPost.class, id);
+		System.out.println(post.toString());
+		System.out.println("--------here---");
 		return post;
 	}
 
@@ -134,8 +134,8 @@ public class SimpleDaoImpl implements SimpleDao{
 	@Override
 	public void createPostReply(ForumPost post, Person author, int likes, int dislikes, boolean approval, 
 			String content, Timestamp timestamp) {
-		PostReply newReply = new PostReply(post, author, likes, dislikes, approval, content, timestamp);
-		session.getCurrentSession().save(newReply);
+//		PostReply newReply = new PostReply(post, likes, dislikes, approval, content, timestamp);
+//		session.getCurrentSession().save(newReply);
 	}
 
 	@Override

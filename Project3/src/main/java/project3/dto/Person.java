@@ -86,7 +86,7 @@ public class Person {
 		this.complex = complex;
 		this.phoneNumber = phoneNumber;
 		this.bio = bio;
-		this.university = university;
+		this.university = unviersity;
 		this.vaildated = vaildated;
 		this.linkedin = linkedin;
 		this.totalLikes = totalLikes;
@@ -106,7 +106,7 @@ public class Person {
 		this.complex = complex;
 		this.phoneNumber = phoneNumber;
 		this.bio = bio;
-		this.university = university;
+		this.university = unviersity;
 		this.vaildated = vaildated;
 		this.linkedin = linkedin;
 	}
@@ -210,13 +210,12 @@ public class Person {
 	public void setBio(String bio) {
 		this.bio = bio;
 	}
-
-	public String getUniversity() {
+	public String getUnviersity() {
 		return university;
 	}
 
-	public void setUniversity(String university) {
-		this.university = university;
+	public void setUnviersity(String unviersity) {
+		this.university = unviersity;
 	}
 
 	public boolean isVaildated() {
@@ -247,7 +246,7 @@ public class Person {
 	public String toString() {
 		return "Person [id=" + id + ", first_name=" + first_name + ", last_name=" + last_name + ", username=" + username
 				+ ", password=" + password + ", email=" + email + ", role=" + role + ", profilePic=" + profilePic
-				+ ", complex=" + complex + ", phoneNumber=" + phoneNumber + ", bio=" + bio + ", university="
+				+ ", complex=" + complex + ", phoneNumber=" + phoneNumber + ", bio=" + bio + ", unviersity="
 				+ university + ", vaildated=" + vaildated + ", linkedin=" + linkedin + ", totalLikes=" + totalLikes
 				+ "]";
 	}

@@ -83,6 +83,13 @@ public class BusinessLogicImpl implements BusinessLogic{
 			if (!filteredList.contains(post))
 				filteredList.add(post);
 		}
-		return filteredList;
+		return filteredList
 	}
+
+	@Override
+	public ForumPost getPostById(int id) {
+		return dao.getPostById(id);
+	}
+	
+	
 }
