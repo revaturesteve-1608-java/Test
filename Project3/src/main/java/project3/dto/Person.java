@@ -55,8 +55,8 @@ public class Person {
 	@Column(name="u_bio")
 	private String bio;
 	
-	@Column(name="u_unviersity")
-	private String unviersity;
+	@Column(name="u_university")
+	private String university;
 	
 	@Column(name="u_vaildated")
 	private boolean vaildated;
@@ -86,7 +86,7 @@ public class Person {
 		this.complex = complex;
 		this.phoneNumber = phoneNumber;
 		this.bio = bio;
-		this.unviersity = unviersity;
+		this.university = unviersity;
 		this.vaildated = vaildated;
 		this.linkedin = linkedin;
 		this.totalLikes = totalLikes;
@@ -106,7 +106,7 @@ public class Person {
 		this.complex = complex;
 		this.phoneNumber = phoneNumber;
 		this.bio = bio;
-		this.unviersity = unviersity;
+		this.university = unviersity;
 		this.vaildated = vaildated;
 		this.linkedin = linkedin;
 	}
@@ -212,11 +212,11 @@ public class Person {
 	}
 
 	public String getUnviersity() {
-		return unviersity;
+		return university;
 	}
 
 	public void setUnviersity(String unviersity) {
-		this.unviersity = unviersity;
+		this.university = unviersity;
 	}
 
 	public boolean isVaildated() {
@@ -248,7 +248,7 @@ public class Person {
 		return "Person [id=" + id + ", first_name=" + first_name + ", last_name=" + last_name + ", username=" + username
 				+ ", password=" + password + ", email=" + email + ", role=" + role + ", profilePic=" + profilePic
 				+ ", complex=" + complex + ", phoneNumber=" + phoneNumber + ", bio=" + bio + ", unviersity="
-				+ unviersity + ", vaildated=" + vaildated + ", linkedin=" + linkedin + ", totalLikes=" + totalLikes
+				+ university + ", vaildated=" + vaildated + ", linkedin=" + linkedin + ", totalLikes=" + totalLikes
 				+ "]";
 	}
 }
