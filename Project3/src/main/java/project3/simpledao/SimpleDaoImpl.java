@@ -15,8 +15,10 @@ import org.springframework.stereotype.Repository;
 
 import project3.dto.AwsKey;
 import project3.dto.Complex;
+import project3.dto.DisLikeablePost;
 import project3.dto.ForumCategory;
 import project3.dto.ForumPost;
+import project3.dto.LikeablePost;
 import project3.dto.Person;
 import project3.dto.PostReply;
 import project3.dto.Role;
@@ -206,6 +208,19 @@ public class SimpleDaoImpl implements SimpleDao{
 		Criteria criteria = currentSession.createCriteria(Person.class);
 		Person tempPerson = (Person) criteria.add(Restrictions.eq("username", person.getUsername())).list().get(0);
 		tempPerson.setProfilePic(person.getProfilePic());
+	}
+
+	@Override
+	public void addDislike(ForumPost post, DisLikeablePost dislike) {
+		//session.getCurrentSession().save(dislike);
+		session.getCurrentSession().update(post);
+		
+	}
+
+	@Override
+	public void addLike(ForumPost post, LikeablePost like) {
+		
+		session.getCurrentSession().update(post);
 	}
 	
 }

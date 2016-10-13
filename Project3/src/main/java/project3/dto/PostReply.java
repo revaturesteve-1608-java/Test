@@ -30,11 +30,11 @@ public class PostReply {
 	@JoinColumn(name="u_id")
 	private Person author;
 	
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="like_id")
 	private List<LikeableReply> likes;
 	
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="dislike_id")
 	private List<DisLikeableReply> dislikes;
 	

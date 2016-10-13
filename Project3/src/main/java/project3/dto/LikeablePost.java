@@ -29,6 +29,15 @@ public class LikeablePost {
 	public LikeablePost() {
 		
 	}
+	
+	
+
+	public LikeablePost(Person author) {
+		super();
+		this.author = author;
+	}
+
+
 
 	public LikeablePost(int id, Person author) {
 		super();

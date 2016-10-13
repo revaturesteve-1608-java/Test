@@ -42,11 +42,11 @@ public class ForumPost {
 	@Column(name="fp_timestamp")
 	private Timestamp timestamp;
 	
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="likepost_id")
 	private List<LikeablePost> likes;
 
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="dislikepost_id")
 	private List<DisLikeablePost> dislikes;
 	

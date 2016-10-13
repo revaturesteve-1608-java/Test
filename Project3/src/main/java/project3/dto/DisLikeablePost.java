@@ -29,6 +29,15 @@ public class DisLikeablePost {
 	public DisLikeablePost() {
 		
 	}
+	
+	
+
+	public DisLikeablePost(Person author) {
+		super();
+		this.author = author;
+	}
+
+
 
 	public DisLikeablePost(int id, Person author) {
 		super();
