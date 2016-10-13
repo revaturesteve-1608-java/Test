@@ -8,8 +8,10 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import project3.dto.DisLikeableReply;
 import project3.dto.ForumCategory;
 import project3.dto.ForumPost;
+import project3.dto.LikeableReply;
 import project3.dto.Person;
 import project3.simpledao.SimpleDao;
 import project3.util.GetTimestamp;
@@ -77,9 +79,10 @@ public class BusinessLogicImpl implements BusinessLogic{
 	@Override
 	public void createReply(String replyContent, int postId, String username) {
 		// TODO Auto-generated method stub
-		ForumPost post = dao.getPostById(postId);
+//		ForumPost post = dao.getPostById(postId);
+//		System.out.println("postId in the service method: " + post.getId());
 		Person author = dao.getPersonByUsername(username);
-		dao.createPostReply(post, author, 0, 0, false, replyContent, GetTimestamp.getCurrentTime());
+		dao.createPostReply(postId, author, new ArrayList<LikeableReply>(), new ArrayList<DisLikeableReply>(), false, replyContent, GetTimestamp.getCurrentTime());
 	}
 	
 	private List<ForumPost> getRidOfDupes(List<ForumPost> posts){
@@ -94,6 +97,12 @@ public class BusinessLogicImpl implements BusinessLogic{
 	@Override
 	public ForumPost getPostById(int id) {
 		return dao.getPostById(id);
+	}
+
+	@Override
+	public List<ForumPost> getMorePosts(int firstResult) {
+		// TODO Auto-generated method stub
+		return dao.getMorePosts(firstResult);
 	}
 	
 	
