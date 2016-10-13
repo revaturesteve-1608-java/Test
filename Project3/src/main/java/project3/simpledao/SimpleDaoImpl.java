@@ -44,16 +44,20 @@ public class SimpleDaoImpl implements SimpleDao{
 //		criteria.setFetchMode("author", FetchMode.EAGER);
 //		criteria.setFetchMode("role", FetchMode.EAGER);
 //		criteria.setFetchMode("complex", FetchMode.EAGER);
+		System.out.println("=============================here====================================");
 		List<ForumPost> posts = criteria.list();
-		for(ForumPost p: posts)
+		for(ForumPost p: posts) {
+			System.out.println(" in lohere");
 			p.toString();
-			
+		}
 		return criteria.list();
 	}
 
 	@Override
 	public ForumPost getPostById(int id) {
 		ForumPost post = (ForumPost) session.getCurrentSession().get(ForumPost.class, id);
+		System.out.println(post.toString());
+		System.out.println("--------here---");
 		return post;
 	}
 

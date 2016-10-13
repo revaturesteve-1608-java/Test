@@ -11,7 +11,7 @@ angular.module('updateUserInfo', [])
 		console.log("oldpass: " + oldPassword);
 		console.log("newpass: " + newPassword);
 					
-		var information = [oldPassword, newPassword, username, newEmail, newPhone, newUniversity, newLinkedIn/*, $scope.user.username*/]
+		var information = [oldPassword, newPassword, username, newEmail, newPhone, newUniversity, newLinkedIn]
 		console.log(information);
 		updateUserData.update(information);
 	}
