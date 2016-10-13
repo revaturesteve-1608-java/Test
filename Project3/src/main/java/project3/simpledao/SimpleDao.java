@@ -3,7 +3,9 @@ package project3.simpledao;
 import java.sql.Timestamp;
 import java.util.List;
 
+import project3.dto.AwsKey;
 import project3.dto.Complex;
+import project3.dto.ForumCategory;
 import project3.dto.ForumPost;
 import project3.dto.Person;
 import project3.dto.Role;
@@ -20,7 +22,11 @@ public interface SimpleDao {
 
 	public Person getPersonByUsername(String username);
 	
+	public ForumCategory getForumCategoryById(int id);
+	
 	public List<Role> getRoles();
+	
+	public List<ForumCategory> getForumCategory();
 	
 	public void updateTempPerson(String username, String pass, String newUsername);
 	
@@ -28,14 +34,14 @@ public interface SimpleDao {
             String newPhone, String newUniversity, String newLinkedIn);
 	
 	public void createPerson(String first_name, String last_name, String username, String password, String email, Role role,
-			byte[] profilePic, Complex complex, String phoneNumber, String bio, String unviersity, boolean vaildated,
+			String profilePic, Complex complex, String phoneNumber, String bio, String unviersity, boolean vaildated,
 			String linkedin);
 	
 	public void createForumCategory(String categoryName);
 	
-	public void createUser(Person person);
+	public Person createUser(Person person);
 	
-	public void createPostReply(ForumPost post, int likes, int dislikes, boolean approval, 
+	public void createPostReply(ForumPost post, Person author, int likes, int dislikes, boolean approval, 
 			String content, Timestamp timestamp);
 	
 	public void createComplex(String complexName);
@@ -44,5 +50,9 @@ public interface SimpleDao {
 	
 	public void deletePostReply(int id);
 	
-	public void createForumPost(ForumPost post);
+	public int createForumPost(ForumPost post);
+	
+	public AwsKey getAWSKey();
+	
+	public void updatePersonPic(Person person);
 }

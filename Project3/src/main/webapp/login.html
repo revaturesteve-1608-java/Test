@@ -6,22 +6,30 @@
 <link rel="stylesheet" type="text/css" href="resources/css/homepage.css" />
 <link rel="stylesheet" type="text/css"
 	href="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.1/angular-material.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
 <style>
 </style>
 <body>
-
+	
 	<div data-ng-app="routingApp" data-ng-controller="loginController"
 		data-ng-cloak="" id="popupContainer">
-
+		<nav class="navbar navbar-default"  >
+			<ul class="nav navbar-nav navbar-right">
+				<li>
+				<button type="submit" class="btn btn-info"
+					data-ng-click="toIndex()">Go to Index </button>
+				</li>
+			</ul>
+		</nav>
+		
 		<div class="container">
 			<label id="title">Welcome to RevPages</label><br> <label
-				for="user" class="input">UserName</label><br> <input
-				type="text" name="user" placeholder="Username"
-				data-ng-model="person.username"><br> <label
-				for="password" class="input">Password</label><br> <input
-				type="password" name="password" placeholder="Password"
-				data-ng-model="person.password"><br>
+				for="user" class="input">UserName</label><br> 
+				<input type="text" name="user"
+				data-ng-model="person.username"><br> 
+				<label for="password" class="input">Password</label><br> 
+				<input type="password" name="password"  data-ng-model="person.password"><br>
 			<button type="submit" class="button-primary"
 				data-ng-click="signIn(person)">Login</button>
 		</div>
@@ -49,10 +57,8 @@
 <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.js'></script>
 <script src="scripts/angular-route.min.js"></script>
 <!-- angular cookies -->
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular-cookies.js"></script>
-<script type="text/javascript"
-	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-cookies.js"></script>
+
 <script type="text/javascript"
 	src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap.min.js"></script>
 <script type="text/javascript"
@@ -67,7 +73,7 @@
 	src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/svg-assets-cache.js"></script>
 <script type="text/javascript"
 	src="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.1/angular-material.js"></script>
-<script type="text/javascript" src="resources/js/loginApp.js"></script>
+
 <script src="resources/js/app.js"></script>
 <script type="text/javascript" src="resources/js/loginController.js"></script>
 

@@ -23,7 +23,7 @@
 	<div class="carousel-inner" role="listbox">
 		<div class="item active">
 			<img src="resources/imgs/emily-higgins.jpg" alt="Revature">
-			<div class="carousel-caption" data-ng-controller="indexCtrl">
+			<div class="carousel-caption" data-ng-controller="frontCtrl">
 				<h3>StackOverFlow</h3>
 				<button type="submit" class="btn btn-primary" data-ng-click="homePage()">Log in</button>
 				<br />
@@ -32,7 +32,7 @@
 
 		<div class="item">
 			<img src="resources/imgs/chris-olney.jpg" alt="Chris Olney">
-			<div class="carousel-caption" data-ng-controller="indexCtrl">
+			<div class="carousel-caption" data-ng-controller="frontCtrl">
 				<h3>StackOverFlow</h3>
 				<button type="submit" class="btn btn-primary" data-ng-click="homePage()">Log in</button>
 				<br />
@@ -41,7 +41,7 @@
 
 		<div class="item">
 			<img src="resources/imgs/robert-rolle-business-development-manager.jpg" alt="robert-rolle">
-			<div class="carousel-caption" data-ng-controller="indexCtrl">
+			<div class="carousel-caption" data-ng-controller="frontCtrl">
 				<h3>StackOverFlow</h3>
 				<button type="submit" class="btn btn-primary" data-ng-click="homePage()">Log in</button>
 				<br />

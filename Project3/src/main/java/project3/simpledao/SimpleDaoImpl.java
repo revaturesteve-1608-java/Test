@@ -13,6 +13,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import project3.dto.AwsKey;
 import project3.dto.Complex;
 import project3.dto.ForumCategory;
 import project3.dto.ForumPost;
@@ -41,12 +42,20 @@ public class SimpleDaoImpl implements SimpleDao{
 	@Override
 	public List<ForumPost> getAllPosts() {
 		Criteria criteria = session.getCurrentSession().createCriteria(ForumPost.class);
+		criteria.setFetchMode("author", FetchMode.JOIN);
+//		criteria.setFetchMode("role", FetchMode.EAGER);
+//		criteria.setFetchMode("complex", FetchMode.EAGER);
+		System.out.println("=============================here====================================");
+		List<ForumPost> posts = criteria.list();
+		System.out.println("length of posts list: " + posts.size() + "\tpostId1: " + posts.get(0).getId() + "\tpostId2: " + posts.get(1).getId());
 		return criteria.list();
 	}
 
 	@Override
 	public ForumPost getPostById(int id) {
 		ForumPost post = (ForumPost) session.getCurrentSession().get(ForumPost.class, id);
+		System.out.println(post.toString());
+		System.out.println("--------here---");
 		return post;
 	}
 
@@ -83,21 +92,33 @@ public class SimpleDaoImpl implements SimpleDao{
 		}
 	}
 	
+	@Override
+	public ForumCategory getForumCategoryById(int id) {
+		return (ForumCategory) session.getCurrentSession().get(ForumCategory.class, id);
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Role> getRoles() {
 		return (List<Role>) session.getCurrentSession().createCriteria(Role.class).list();
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ForumCategory> getForumCategory() {
+		return (List<ForumCategory>) session.getCurrentSession().createCriteria(ForumCategory.class).list();
+	}
 	
 	@Override
-	public void createUser(Person person) {
+	public Person createUser(Person person) {
 		session.getCurrentSession().save(person);
+		return (Person) session.getCurrentSession().merge(person);
 	}
 
 	//not using this method
 	@Override
 	public void createPerson(String first_name, String last_name, String username, String password, String email, Role role,
-			byte[] profilePic, Complex complex, String phoneNumber, String bio, String unviersity, boolean vaildated,
+			String profilePic, Complex complex, String phoneNumber, String bio, String unviersity, boolean vaildated,
 			String linkedin) {
 		Person newPerson = new Person(first_name, last_name, username, password, email, role, profilePic, 
 				complex, phoneNumber, bio, unviersity, vaildated, linkedin);
@@ -111,10 +132,10 @@ public class SimpleDaoImpl implements SimpleDao{
 	}
 
 	@Override
-	public void createPostReply(ForumPost post, int likes, int dislikes, boolean approval, 
+	public void createPostReply(ForumPost post, Person author, int likes, int dislikes, boolean approval, 
 			String content, Timestamp timestamp) {
-		PostReply newReply = new PostReply(post, likes, dislikes, approval, content, timestamp);
-		session.getCurrentSession().save(newReply);
+//		PostReply newReply = new PostReply(post, likes, dislikes, approval, content, timestamp);
+//		session.getCurrentSession().save(newReply);
 	}
 
 	@Override
@@ -150,28 +171,42 @@ public class SimpleDaoImpl implements SimpleDao{
 	}
 	
 	@Override
-    public void updateUserInfo(String currentUser, String newPassword, String username, String newEmail, 
-            String newPhone, String newUniversity, String newLinkedIn) {
-        // TODO Auto-generated method stub
-        Session currentSession = session.getCurrentSession();
-        Criteria criteria = currentSession.createCriteria(Person.class);
-        Person person = (Person) criteria.add(Restrictions.eq("username", currentUser)).list().get(0);
-        System.out.println("inside dao email: " + newEmail + "\tsize: " + newEmail.length());
-        person.setPassword(newPassword);
-        System.out.println("SHOULD NOT GET HERE");
-        person.setUsername(username);
-        person.setEmail(newEmail);
-        person.setPhoneNumber(newPhone);
-        person.setUnviersity(newUniversity);
-        person.setLinkedin(newLinkedIn);
-        person.setUsername(username);
-    }
-
-
-	@Override
-	public void createForumPost(ForumPost post) {
+	public void updateUserInfo(String currentUser, String newPassword, String username, String newEmail, 
+			String newPhone, String newUniversity, String newLinkedIn) {
 		// TODO Auto-generated method stub
-		session.getCurrentSession().save(post);
+		Session currentSession = session.getCurrentSession();
+		Criteria criteria = currentSession.createCriteria(Person.class);
+		Person person = (Person) criteria.add(Restrictions.eq("username", currentUser)).list().get(0);
+		System.out.println("inside dao email: " + newEmail + "\tsize: " + newEmail.length());
+		person.setPassword(newPassword);
+		System.out.println("SHOULD NOT GET HERE");
+		person.setUsername(username);
+		person.setEmail(newEmail);
+		person.setPhoneNumber(newPhone);
+		person.setUniversity(newUniversity);
+		person.setLinkedin(newLinkedIn);
+		person.setUsername(username);
 	}
 
+	@Override
+	public int createForumPost(ForumPost post) {
+		session.getCurrentSession().save(post);
+		ForumPost newForumPost = (ForumPost) session.getCurrentSession().merge(post);
+		System.out.println("id assigned to new post: " + newForumPost.getId());
+		return newForumPost.getId();
+	}
+
+	@Override
+	public AwsKey getAWSKey() {
+		return (AwsKey) session.getCurrentSession().get(AwsKey.class, 1);
+	}
+
+	@Override
+	public void updatePersonPic(Person person) {
+		Session currentSession = session.getCurrentSession();
+		Criteria criteria = currentSession.createCriteria(Person.class);
+		Person tempPerson = (Person) criteria.add(Restrictions.eq("username", person.getUsername())).list().get(0);
+		tempPerson.setProfilePic(person.getProfilePic());
+	}
+	
 }

@@ -1,6 +1,6 @@
 package project3.service;
 
-import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -18,6 +18,9 @@ import project3.util.GetTimestamp;
 public class BusinessLogicImpl implements BusinessLogic{
 	
 	@Autowired
+	Crypt crypt;
+	
+	@Autowired
 	SimpleDao dao;
 	
 	@Override
@@ -27,8 +30,22 @@ public class BusinessLogicImpl implements BusinessLogic{
 	
 	@Override
 	@Transactional
-	public void updateTempPerson(String username, String pass, String newUsername){
-		dao.updateTempPerson(username, pass, newUsername);
+	public String updateTempPerson(String username, String pass, String oldPass, String newUsername){
+		Person person = dao.getPersonByUsername(username);
+//		System.out.println("ere" + username);
+		Person checkUsername = dao.getPersonByUsername(newUsername);
+		if(checkUsername == null) {
+			if(crypt.validate(oldPass, person.getPassword())){
+				String encryptPass = crypt.encrypt(pass);
+				dao.updateTempPerson(username, encryptPass, newUsername);
+				return "[\"Updated\"]";
+			} else{
+				return "[\"Inputed Wrong Password\"]";
+			}
+		} else {
+			return "[\"Username Already Exist\"]";
+		}
+		
 	}
 	
 	@Override
@@ -39,10 +56,40 @@ public class BusinessLogicImpl implements BusinessLogic{
 	}
 
 	@Override
-	public void createForumPost(String content, String title, Person author, List<ForumCategory> categories) {
+	public int createForumPost(String content, String title, Person author, List<ForumCategory> categories) {
 		// TODO Auto-generated method stub
 		ForumPost post = new ForumPost(author, title, content, GetTimestamp.getCurrentTime(), false);
 //		post.setCategory(categories);
-		dao.createForumPost(post);
+		return dao.createForumPost(post);
 	}
+
+	@Override
+	public List<ForumPost> getAllPosts() {
+		
+		return getRidOfDupes(dao.getAllPosts());
+	}
+
+	@Override
+	public void createReply(String replyContent, int postId, String username) {
+		// TODO Auto-generated method stub
+		ForumPost post = dao.getPostById(postId);
+		Person author = dao.getPersonByUsername(username);
+		dao.createPostReply(post, author, 0, 0, false, replyContent, GetTimestamp.getCurrentTime());
+	}
+	
+	private List<ForumPost> getRidOfDupes(List<ForumPost> posts){
+		List<ForumPost> filteredList = new ArrayList<>();
+		for (ForumPost post: posts) {
+			if (!filteredList.contains(post))
+				filteredList.add(post);
+		}
+		return filteredList
+	}
+
+	@Override
+	public ForumPost getPostById(int id) {
+		return dao.getPostById(id);
+	}
+	
+	
 }
