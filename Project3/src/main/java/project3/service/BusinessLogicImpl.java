@@ -25,6 +25,10 @@ public class BusinessLogicImpl implements BusinessLogic{
 	@Autowired
 	SimpleDao dao;
 	
+	public boolean checkUserPassword(String username, String password, String curpassword) {
+		return crypt.validate(password, curpassword);
+	}
+	
 	@Override
 	public Person getPersonById(int id) {
 		return dao.getPersonById(id);
@@ -57,9 +61,45 @@ public class BusinessLogicImpl implements BusinessLogic{
 	
 	@Override
 	@Transactional
-	public void updateUserInfo(String currentUser, String newPassword, String username, String newEmail, 
+	public String updateUserInfo(Person person, String oldPassword, String newPassword, String username, String newEmail, 
 			String newPhone, String newUniversity, String newLinkedIn){
-		dao.updateUserInfo(currentUser, newPassword, username, newEmail, newPhone, newUniversity, newLinkedIn);
+		//password
+		if(oldPassword != null && newPassword != null && !("".equals(newPassword)
+				&& !("".equals(newPassword)))) {
+			if(checkUserPassword(
+					person.getUsername(), oldPassword, person.getPassword())) {
+				person.setPassword(crypt.encrypt(newPassword));
+			} else {
+				return "[\"Inputed Wrong Password\"]";
+			}
+		}
+		//username
+		if(username!=null && !("".equals(username))){
+			Person checkUsername = dao.getPersonByUsername(username);
+			if(checkUsername == null) {
+				person.setUsername(username);
+			} else {
+				return "[\"Username Already Exist\"]";
+			}
+		}
+		//email
+		if(newEmail!=null && !("".equals(newEmail))){
+			person.setEmail(newEmail);
+		}
+		//phone
+		if(newPhone==null ||!("".equals(newPhone))) {
+			person.setPhoneNumber(newPhone);
+		}
+		//university
+		if(newUniversity==null || !("".equals(newUniversity))){
+			person.setUniversity(newUniversity);
+		}
+		//Linkedin
+		if(newLinkedIn==null || !("".equals(newLinkedIn))){
+			person.setLinkedin(newLinkedIn);
+		}
+		dao.updateUserInfo(person);
+		return "[\"Updated\"]";
 	}
 
 	@Override
@@ -125,10 +165,14 @@ public class BusinessLogicImpl implements BusinessLogic{
 	@Transactional
 	public void addLike(ForumPost post, Person person) {
 		
-		LikeablePost like = new LikeablePost(person);
-		post.getLikes().add(like);
-		dao.addLike(post, like);
+		//LikeablePost like = new LikeablePost(person);
+	/*	post.getLikes().add(like);
+		dao.addLike(post, like);*/
 	}
 	
+	@Override
+	public Person updatePassword(Person person, String newpassword) {
+		return null;
+	}
 	
 }

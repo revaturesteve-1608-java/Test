@@ -48,9 +48,9 @@ public class SimpleDaoImpl implements SimpleDao{
 //		criteria.setFetchMode("role", FetchMode.EAGER);
 //		criteria.setFetchMode("complex", FetchMode.EAGER);
 		System.out.println("=============================here====================================");
-		List<ForumPost> posts = criteria.list();
-		System.out.println("length of posts list: " + posts.size() + "\tpostId1: " + posts.get(0).getId() + "\tpostId2: " + posts.get(1).getId());
-		return criteria.list();
+		List<ForumPost> posts = (List<ForumPost>) criteria.add(Restrictions.eq("title", "my")).list();
+//		System.out.println("length of posts list: " + posts.size() + "\tpostId1: " + posts.get(0).getId() + "\tpostId2: " + posts.get(1).getId());
+		return posts;
 	}
 
 	@Override
@@ -173,20 +173,17 @@ public class SimpleDaoImpl implements SimpleDao{
 	}
 	
 	@Override
-	public void updateUserInfo(String currentUser, String newPassword, String username, String newEmail, 
-			String newPhone, String newUniversity, String newLinkedIn) {
+	public void updateUserInfo(Person person) {
 		Session currentSession = session.getCurrentSession();
 		Criteria criteria = currentSession.createCriteria(Person.class);
-		Person person = (Person) criteria.add(Restrictions.eq("username", currentUser)).list().get(0);
-		System.out.println("inside dao email: " + newEmail + "\tsize: " + newEmail.length());
-		person.setPassword(newPassword);
-		System.out.println("SHOULD NOT GET HERE");
-		person.setUsername(username);
-		person.setEmail(newEmail);
-		person.setPhoneNumber(newPhone);
-		person.setUniversity(newUniversity);
-		person.setLinkedin(newLinkedIn);
-		person.setUsername(username);
+		Person tempPerson = (Person) criteria.add(Restrictions.eq("id", person.getId())).list().get(0);
+		tempPerson.setPassword(person.getPassword());
+		tempPerson.setUsername(person.getUsername());
+		tempPerson.setEmail(person.getEmail());
+		tempPerson.setPhoneNumber(person.getPhoneNumber());
+		tempPerson.setUniversity(person.getUniversity());
+		tempPerson.setLinkedin(person.getLinkedin());
+		tempPerson.setUsername(person.getUsername());
 	}
 
 	@Override

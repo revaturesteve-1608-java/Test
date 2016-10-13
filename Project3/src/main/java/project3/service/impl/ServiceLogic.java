@@ -90,18 +90,6 @@ public class ServiceLogic implements ServiceInterface{
 		return imageFile;
 	}
 	
-//	private byte[] extractBytes (String ImageName) throws IOException {
-//		// open image
-//		File imgPath = new File(ImageName);
-//		BufferedImage bufferedImage = ImageIO.read(imgPath);
-//		
-//		// get DataBufferBytes from Raster
-//		WritableRaster raster = bufferedImage.getRaster();
-//		DataBufferByte data   = (DataBufferByte) raster.getDataBuffer();
-//		
-//		return (data.getData());
-//	}
-	
 	/**
 	 * Encodes the byte array into base64 string
 	 *
@@ -261,7 +249,6 @@ public class ServiceLogic implements ServiceInterface{
 		}
 		return null;
 	}
-	
 	
 
 }

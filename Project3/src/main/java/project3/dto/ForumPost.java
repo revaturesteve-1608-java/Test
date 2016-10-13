@@ -41,20 +41,17 @@ public class ForumPost {
 	
 	@Column(name="fp_timestamp")
 	private Timestamp timestamp;
-	
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-	@JoinColumn(name="likepost_id")
+
+	@OneToMany(mappedBy="post", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	private List<LikeablePost> likes;
 
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-	@JoinColumn(name="dislikepost_id")
+	@OneToMany(mappedBy="post", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	private List<DisLikeablePost> dislikes;
 	
 	@Column(name="fp_resolved")
 	private boolean resolved;
 	
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	@JoinColumn(name="pr_id")
+	@OneToMany(mappedBy="post", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	private List<PostReply> replys;
 	
 	@ManyToMany

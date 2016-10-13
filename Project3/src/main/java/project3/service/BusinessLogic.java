@@ -9,13 +9,15 @@ import project3.dto.Person;
 
 public interface BusinessLogic {
 	
+	public boolean checkUserPassword(String username, String password, String curpassword);
+	
 	public Person getPersonById(int id);
 	
 	public Person getPersonByUsername(String username);
 	
 	public String updateTempPerson(String username, String pass, String oldPass, String newUsername);
 	
-	public void updateUserInfo(String currentUser, String newPassword, String username, String newEmail, 
+	public String updateUserInfo(Person person, String oldPassword, String newPassword, String username, String newEmail, 
 			String newPhone, String newUniversity, String newLinkedIn);
 	
 	public int createForumPost(String content, String title, Person author, List<ForumCategory> categories);
@@ -31,4 +33,7 @@ public interface BusinessLogic {
 	public List<DisLikeablePost> getAllDislikebyPost(ForumPost post);
 
 	public void addLike(ForumPost post, Person person);
+
+	public Person updatePassword(Person person, String newpassword);
+
 }
