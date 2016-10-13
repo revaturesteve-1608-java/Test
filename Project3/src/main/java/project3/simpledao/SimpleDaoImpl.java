@@ -148,6 +148,25 @@ public class SimpleDaoImpl implements SimpleDao{
 		person.setVaildated(true);
 		
 	}
+	
+	@Override
+    public void updateUserInfo(String currentUser, String newPassword, String username, String newEmail, 
+            String newPhone, String newUniversity, String newLinkedIn) {
+        // TODO Auto-generated method stub
+        Session currentSession = session.getCurrentSession();
+        Criteria criteria = currentSession.createCriteria(Person.class);
+        Person person = (Person) criteria.add(Restrictions.eq("username", currentUser)).list().get(0);
+        System.out.println("inside dao email: " + newEmail + "\tsize: " + newEmail.length());
+        person.setPassword(newPassword);
+        System.out.println("SHOULD NOT GET HERE");
+        person.setUsername(username);
+        person.setEmail(newEmail);
+        person.setPhoneNumber(newPhone);
+        person.setUnviersity(newUniversity);
+        person.setLinkedin(newLinkedIn);
+        person.setUsername(username);
+    }
+
 
 	@Override
 	public void createForumPost(ForumPost post) {

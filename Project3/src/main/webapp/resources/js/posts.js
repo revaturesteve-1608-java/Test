@@ -63,7 +63,7 @@ angular.module('posts', [])
 //		<div class="row"><div class="col-md-8"><p id="theUsername">Username</p></div><div class="col-md-4"><button type="button" class="btn btn-default" aria-label="Right Align"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button><button type="button" class="btn btn-default" aria-label="Right Align"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></div></div>
 		
 		var postInfo = []
-		
+		$scope.emptyhtml = '';
 		
 		var elem = angular.element('#newPost');
 		$scope.count = $scope.count+1;
@@ -80,6 +80,28 @@ angular.module('posts', [])
 		elem.after(addListener);
 		angular.element('#newPost #postContent').val("");
 	}
+	
+	angular.module("textAngularTest", [ 'textAngular' ]);
+	function wysiwygeditor($scope) {
+		$scope.orightml = '<p><i><b>What would you like to ask your colleagues?</b></i></p>';
+		$scope.htmlcontent = $scope.orightml;
+		$scope.emptyhtml = '';
+		$scope.disabled = false;
+		console.log($scope.htmlcontent);
+	};
+	
+	angular.module('fileUpload', ['$http', function ($http) {
+	    
+        $http.post("http://hilite.me/api", code, lexer, options, style, linenos, divstyles)
+        .success(function(){
+        })
+        .error(function(){
+        });
+    
+}
+])
+	
+	
 })
 
 .service('postsService', function($http){
@@ -90,3 +112,4 @@ angular.module('posts', [])
 	}
 	
 })
+
