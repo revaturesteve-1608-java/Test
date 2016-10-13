@@ -8,38 +8,32 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="DisLikeable")
-public class DisLikeable {
+@Table(name="DisLikeableReply")
+public class DisLikeableReply {
 
 	@Id
-	@Column(name="dislike_id")
-	@SequenceGenerator(name="dislikeableSeq", sequenceName="disLikeable_Seq", allocationSize=1)
-	@GeneratedValue(generator="dislikeableSeq", strategy=GenerationType.SEQUENCE)
+	@Column(name="dislikereply_id")
+	@SequenceGenerator(name="dislikeablereplySeq", sequenceName="disLikeablereply_Seq", allocationSize=1)
+	@GeneratedValue(generator="dislikeablereplySeq", strategy=GenerationType.SEQUENCE)
 	private int id;
 	
 	@OneToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)  
 	@JoinColumn(name="u_id")
 	private Person author;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="pr_id")
-	private PostReply dislike_reply;
-	
-	public DisLikeable() {
+	public DisLikeableReply() {
 		
 	}
 
-	public DisLikeable(int id, Person author, PostReply dislike_reply) {
+	public DisLikeableReply(int id, Person author) {
 		super();
 		this.id = id;
 		this.author = author;
-		this.dislike_reply = dislike_reply;
 	}
 
 	public int getId() {
@@ -58,16 +52,8 @@ public class DisLikeable {
 		this.author = author;
 	}
 
-	public PostReply getDislike_reply() {
-		return dislike_reply;
-	}
-
-	public void setDislike_reply(PostReply dislike_reply) {
-		this.dislike_reply = dislike_reply;
-	}
-
 	@Override
 	public String toString() {
-		return "DisLikeable [id=" + id + ", author=" + author + ", dislike_reply=" + dislike_reply + "]";
+		return "DisLikeable [id=" + id + ", author=" + author + "]";
 	}
 }
