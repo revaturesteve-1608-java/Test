@@ -12,7 +12,7 @@ public interface BusinessLogic {
 	
 	public Person getPersonByUsername(String username);
 	
-	public boolean updateTempPerson(String username, String pass, String oldPass, String newUsername);
+	public String updateTempPerson(String username, String pass, String oldPass, String newUsername);
 	
 	public void updateUserInfo(String currentUser, String newPassword, String username, String newEmail, 
 			String newPhone, String newUniversity, String newLinkedIn);

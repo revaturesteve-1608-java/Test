@@ -49,6 +49,8 @@ public interface Jets3 {
 	
 	public String uploadProfileItem(String folderPath, String fileName);
 	
+	public String uploadProfileItem(String loginName, String fileName, String publicKey, String privateKey);
+	
 	public String uploadProfileItem(String loginName, File file);
 	
 	/**

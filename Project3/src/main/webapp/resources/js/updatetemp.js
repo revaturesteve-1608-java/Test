@@ -34,19 +34,17 @@ angular.module('routingApp')
 	})
 })
 
-.service('updateTempDataService', function($http, $window){
+.service('updateTempDataService', function($http, $window, $q){
 	
 	this.update = function(usernamePass){
 		console.log('GOT INTO SERVICE')
 		$http.post("rest/updateTemp", usernamePass).then(function(response) {
+			console.log(' YAY!');
 			console.log(response + ' YAY!');
-//			$window.alert(response.data);
-			if(response.data == "true"){
-				$window.location.href = 'index.html';
-			} else{
-				$window.alert("Incorrect Temporary password was inputted. Please try again");
-			}
-			
+			$window.alert(response.data);
+			if(response.data == "Updated"){
+				$window.location.href = 'login.html';
+			} 
 			
 		}, function(error) {
 			console.log($q.reject(error));
