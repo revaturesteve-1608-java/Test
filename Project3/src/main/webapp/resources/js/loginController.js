@@ -31,10 +31,10 @@ angular.module('routingApp').controller('loginController', function($scope, $mdD
 						if(person.vaildated) {
 							
 						
-							if(person.role.roleName == "Moderate") {
+							if(person.role.roleName == "Moderator") {
 								$window.location.href = 'moderate-view.html';
 							} else {
-								$window.location.href = 'index.html';
+								$window.location.href = 'index.jsp';
 							}
 						} else {
 							$window.location.href = 'updateTempInfo.html';

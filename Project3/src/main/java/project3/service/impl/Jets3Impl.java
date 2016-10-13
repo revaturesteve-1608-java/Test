@@ -12,42 +12,49 @@ import org.jets3t.service.impl.rest.httpclient.RestS3Service;
 import org.jets3t.service.model.S3Bucket;
 import org.jets3t.service.model.S3Object;
 import org.jets3t.service.security.AWSCredentials;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import project3.service.Jets3;
 import project3.service.ServiceInterface;
+import project3.simpledao.SimpleDao;
 
-
+@Component
 public class Jets3Impl implements Jets3{
 
-	private AWSCredentials credentials;
-	private S3Service s3;
+//	private AWSCredentials credentials;
+	private S3Service S3; 
+//	= new RestS3Service(new AWSCredentials(
+//			dao.getAWSKey().getAccessKey(), 
+//			dao.getAWSKey().getSecretAccessKey()));
 	private static final String BUCKET = "revaturepage";
-	private ServiceInterface businessDelegate;
-	private static final String PROFILES = "content/profiles/";
+//	private ServiceInterface businessDelegate;
+	private static final String PROFILES = "profiles/";
 	private static final String HTTP = "http://";
 	private static final String ADDRESS = "s3-us-west-2.amazonaws.com/";
 
-	public void setBusinessDelegate(ServiceInterface businessDelegate) {
-		this.businessDelegate = businessDelegate;
-		syncBusinessDelegate(this.businessDelegate);
-	}
+//	public void setBusinessDelegate(ServiceInterface businessDelegate) {
+//		this.businessDelegate = businessDelegate;
+//		syncBusinessDelegate(this.businessDelegate);
+//	}
 
-	public synchronized void syncBusinessDelegate(ServiceInterface businessDelegate){
-		 
-	   	credentials = new AWSCredentials("AKIAJ" + "MZNDUN2" + "JNOIT5XQ","hqsTkXgW" + "7J1aQYdTY" + "bX87JyiSF7M4V7" + "HKaY8tCpF");
-	   	s3 = new RestS3Service(credentials);
-	}
+//	public synchronized void syncBusinessDelegate(ServiceInterface businessDelegate){
+//		 
+//	   	credentials = new AWSCredentials("AKIAJ" + "MZNDUN2" + "JNOIT5XQ","hqsTkXgW" + "7J1aQYdTY" + "bX87JyiSF7M4V7" + "HKaY8tCpF");
+//	   	s3 = new RestS3Service(credentials);
+//	}
 
 	public String[] list(){
 		try {
-			S3Object[] storage = s3.listObjects(BUCKET);
+			S3Object[] storage = S3.listObjects(BUCKET);
 			String[] str = new String[storage.length];
 			for(int i = 0;i<storage.length;i++){
 				str[i]=storage[i].getName();
 			}
 			return str;
 		} catch (Exception e) {
+			e.printStackTrace();
 //			Logging.error(e);
 			return new String[0];
 		}
@@ -97,12 +104,12 @@ public class Jets3Impl implements Jets3{
 		return uploadFile(PROFILES + loginName + "/", fileName, file);
 	}
 	
-//	public String uploadProfileItem(String loginName, String fileName, BufferedImage img){
-//		return uploadFile(PROFILES + loginName + "/", fileName, img);
-//	}
-	
 	public String uploadProfileItem(String loginName, String fileName){
 		return copyDefault(PROFILES + loginName + "/", fileName);
+	}
+	
+	public String uploadProfileItem(String loginName, String fileName, String publicKey, String privateKey){
+		return copyDefault(PROFILES + loginName + "/", fileName, publicKey, privateKey);
 	}
 	
 	public String uploadProfileItem(String loginName, File file){
@@ -111,7 +118,7 @@ public class Jets3Impl implements Jets3{
 	
 	public String uploadRemote(String folderPath, MultipartFile file){
 		try {
-			S3Bucket bucket = s3.getBucket(BUCKET);
+			S3Bucket bucket = S3.getBucket(BUCKET);
 			S3Object s3Obj = new S3Object(folderPath);
 			s3Obj.setContentType(file.getContentType());
 			AccessControlList acl = new AccessControlList();
@@ -120,9 +127,10 @@ public class Jets3Impl implements Jets3{
 			s3Obj.setDataInputStream(file.getInputStream());
 			s3Obj.setContentLength(file.getSize());
 			s3Obj.setAcl(acl);
-			s3.putObject(bucket, s3Obj);
+			S3.putObject(bucket, s3Obj);
 			return HTTP + ADDRESS + BUCKET+ "/" + folderPath;
 		} catch (Exception e) {
+			e.printStackTrace();
 //			Logging.error(e);
 		}
 		return null; // Resource could not be uploaded
@@ -136,7 +144,7 @@ public class Jets3Impl implements Jets3{
 	 */
 	protected String uploadFile(String folderPath, String fileName, MultipartFile file) {
 		try {
-			S3Bucket bucket = s3.getBucket(BUCKET);
+			S3Bucket bucket = S3.getBucket(BUCKET);
 			S3Object s3Obj = new S3Object(folderPath + fileName);
 			s3Obj.setContentType(file.getContentType());
 			AccessControlList acl = new AccessControlList();
@@ -145,50 +153,49 @@ public class Jets3Impl implements Jets3{
 			s3Obj.setDataInputStream(file.getInputStream());
 			s3Obj.setContentLength(file.getSize());
 			s3Obj.setAcl(acl);
-			s3.putObject(bucket, s3Obj);
+			S3.putObject(bucket, s3Obj);
 
 			return 
 				HTTP + ADDRESS +BUCKET+ "/" + folderPath + fileName;
 			
 		} catch (Exception e) {
-			
+			e.printStackTrace();
 //			Logging.error(e);
 		}
 		return null; // Resource could not be uploaded
 	}
 	
-//	protected String uploadFile(String folderPath, String fileName, BufferedImage file) {
-//		try {
-//			S3Bucket bucket = s3.getBucket(BUCKET);
-//			S3Object s3Obj = new S3Object(folderPath + fileName);
-//			s3Obj.setContentType(file.);
-//			AccessControlList acl = new AccessControlList();
-//			acl.setOwner(bucket.getOwner());
-//			acl.grantPermission(GroupGrantee.ALL_USERS, Permission.PERMISSION_READ);
-//			s3Obj.setDataInputStream(file.getInputStream());
-//			s3Obj.setContentLength(file.getSize());
-//			s3Obj.setAcl(acl);
-//			s3.putObject(bucket, s3Obj);
-//
-//			return 
-//				HTTP + ADDRESS +BUCKET+ "/" + folderPath + fileName;
-//			
-//		} catch (Exception e) {
-//			
-////			Logging.error(e);
-//		}
-//		return null; // Resource could not be uploaded
-//	}
-	
 	protected String copyDefault(String folderPath, String fileName) {
 		try {
-			S3Bucket bucket = s3.getBucket(BUCKET);
+			S3Bucket bucket = S3.getBucket(BUCKET);
+			System.out.println("bucket" + bucket);
 			String bucketName = bucket.getName();
 			S3Object s3Obj = new S3Object(folderPath + fileName);
-			s3.copyObject(bucketName, "content/resources/img/default.png", bucketName, s3Obj, false);
+			System.out.println("s3obj" + s3Obj);
+			S3.copyObject(bucketName, "resources/img/default.png", bucketName, s3Obj, false);
 			return 
 				HTTP + ADDRESS + BUCKET + "/" + folderPath + fileName;
 		} catch (Exception e) {
+			e.printStackTrace();
+//			Logging.error(e);
+		}
+		return null; // Resource could not be uploaded
+	}
+	
+	protected String copyDefault(String folderPath, String fileName, String publicKey, String privateKey) {
+		S3 = new RestS3Service(new AWSCredentials(
+				publicKey, privateKey));
+		try {
+			S3Bucket bucket = S3.getBucket(BUCKET);
+			System.out.println("bucket" + bucket);
+			String bucketName = bucket.getName();
+			S3Object s3Obj = new S3Object(folderPath + fileName);
+			System.out.println("s3obj" + s3Obj);
+			S3.copyObject(bucketName, "resources/img/default.png", bucketName, s3Obj, false);
+			return 
+				HTTP + ADDRESS + BUCKET + "/" + folderPath + fileName;
+		} catch (Exception e) {
+			e.printStackTrace();
 //			Logging.error(e);
 		}
 		return null; // Resource could not be uploaded
@@ -207,7 +214,7 @@ public class Jets3Impl implements Jets3{
 	
 	protected String uploadFile(String folderPath, String fileName, File file) {
 		try {
-			S3Bucket bucket = s3.getBucket(BUCKET);
+			S3Bucket bucket = S3.getBucket(BUCKET);
 			S3Object s3Obj = new S3Object(folderPath + fileName);
 			AccessControlList acl = new AccessControlList();
 			acl.setOwner(bucket.getOwner());
@@ -217,12 +224,13 @@ public class Jets3Impl implements Jets3{
 			s3Obj.setContentLength(file.length());
 			s3Obj.setAcl(acl);
 			s3Obj.setContentType("text/html");
-			s3.putObject(bucket, s3Obj);
+			S3.putObject(bucket, s3Obj);
 			
 			return 
 					HTTP + ADDRESS + BUCKET+ "/" + folderPath + fileName;
 			
 		} catch (Exception e) {
+			e.printStackTrace();
 //			Logging.error(e);
 		}
 		return null; // Resource could not be uploaded
@@ -238,7 +246,7 @@ public class Jets3Impl implements Jets3{
 	protected String uploadFile(String folderPath, File file) {
 		
 		try {
-			S3Bucket bucket = s3.getBucket(BUCKET);
+			S3Bucket bucket = S3.getBucket(BUCKET);
 			S3Object s3Obj = new S3Object(folderPath + file.getName());
 			AccessControlList acl = new AccessControlList();
 			acl.setOwner(bucket.getOwner());
@@ -248,12 +256,13 @@ public class Jets3Impl implements Jets3{
 			s3Obj.setContentLength(file.length());
 			s3Obj.setAcl(acl);
 			s3Obj.setContentType("text/html");
-			s3.putObject(bucket, s3Obj);
+			S3.putObject(bucket, s3Obj);
 			
 			return 
 					HTTP + ADDRESS + BUCKET+ "/" + folderPath + file.getName();
 			
 		} catch (Exception e) {
+			e.printStackTrace();
 //			Logging.error(e);
 		}
 		return null; // Resource could not be uploaded
@@ -262,7 +271,7 @@ public class Jets3Impl implements Jets3{
 	public boolean uploadFile(MultipartFile mFile)
 	{
 		try{
-			S3Bucket bucket = s3.getBucket(BUCKET);
+			S3Bucket bucket = S3.getBucket(BUCKET);
 			S3Object file = new S3Object("test/"+mFile.getOriginalFilename());
 			file.setContentType(mFile.getContentType());
 			AccessControlList acl = new AccessControlList();
@@ -271,9 +280,10 @@ public class Jets3Impl implements Jets3{
 			file.setDataInputStream(mFile.getInputStream());
 			file.setContentLength(mFile.getSize());
 			file.setAcl(acl);
-			s3.putObject(bucket, file);
+			S3.putObject(bucket, file);
 			}catch(Exception e)
 			{
+				e.printStackTrace();
 //				Logging.error(e);
 				return false;
 			}	
@@ -282,15 +292,16 @@ public class Jets3Impl implements Jets3{
 	public boolean uploadText(String filename,String filedata)
 	{
 		try{
-		S3Bucket bucket = s3.getBucket(BUCKET);
+		S3Bucket bucket = S3.getBucket(BUCKET);
 		S3Object file = new S3Object(filename, filedata);
 		AccessControlList acl = new AccessControlList();
 		acl.setOwner(bucket.getOwner());
 		acl.grantPermission(GroupGrantee.AUTHENTICATED_USERS, Permission.PERMISSION_READ);
 		file.setAcl(acl);
-		s3.putObject(bucket, file);
+		S3.putObject(bucket, file);
 		}catch(Exception e)
 		{
+			e.printStackTrace();
 //			Logging.error(e);
 			return false;
 		}	
@@ -299,10 +310,11 @@ public class Jets3Impl implements Jets3{
 	public boolean delete(String filename)
 	{
 		try{
-			S3Bucket bucket = s3.getBucket(BUCKET);
-			s3.deleteObject(bucket, filename);
+			S3Bucket bucket = S3.getBucket(BUCKET);
+			S3.deleteObject(bucket, filename);
 		}catch(Exception e)
 		{
+			e.printStackTrace();
 //			Logging.error(e);
 			return false;
 		}	
