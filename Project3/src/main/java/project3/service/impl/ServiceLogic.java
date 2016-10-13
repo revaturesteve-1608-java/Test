@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import project3.dto.AwsKey;
 import project3.dto.Person;
 import project3.dto.Role;
 import project3.service.Crypt;
@@ -143,8 +144,7 @@ public class ServiceLogic implements ServiceInterface{
 			System.out.println("password2: " + password);
 			person.setPassword(maskElement(password));
 			System.out.println("password3: " + person.getPassword());
-			// set a default profile picture
-			jetS3.uploadProfileItem(person.getEmail(), person.getEmail());
+			
 //			person.setProfilePic(ProfileImage.getGravatar80pxByte(person.getEmail()));
 //			System.out.println("profile pic: " + person.getProfilePic());
 //			if(person.getProfilePic() == null) {
@@ -187,7 +187,12 @@ public class ServiceLogic implements ServiceInterface{
 //						(person.getEmail()));
 //			}
 			// Save in Database
-			dao.createUser(person);
+			Person user = dao.createUser(person);
+			// set a default profile picture
+			AwsKey key = dao.getAWSKey();
+			person.setProfilePic(jetS3.uploadProfileItem(user.getId() + "", user.getId() + "", 
+					key.getAccessKey(), key.getSecretAccessKey()));
+			dao.updatePersonPic(person);
 			// Send Email to Account
 			String subject = "Welcome to Revatuer";
 			String message = 
@@ -216,9 +221,9 @@ public class ServiceLogic implements ServiceInterface{
             				+ "<h3 style=\"text-align:left;\">Hello " + person.getFirst_name() + " " + person.getLast_name() + "</h3>"
             				+ "<p style=\"text-align:left;\"> Your account had been approve<br><br>"
             				
-            				+ "Here is your logging information <br><br>" 
-        					+ "Username: " + person.getUsername() + "<br>" 
-        					+ "Password: " + password
+            				+ "Here is your login information <br><br>" 
+        					+ "Temporary Username: " + person.getUsername() + "<br>" 
+        					+ "Temporary Password: " + password
         					+ "<br>"
         					+ "<br>"
         					+ "Click the link below to login: "

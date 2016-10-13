@@ -1,6 +1,5 @@
 package project3.service;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -30,14 +29,20 @@ public class BusinessLogicImpl implements BusinessLogic{
 	
 	@Override
 	@Transactional
-	public boolean updateTempPerson(String username, String pass, String oldPass, String newUsername){
+	public String updateTempPerson(String username, String pass, String oldPass, String newUsername){
 		Person person = dao.getPersonByUsername(username);
-		if(crypt.validate(oldPass, person.getPassword())){
-			String encryptPass = crypt.encrypt(pass);
-			dao.updateTempPerson(username, encryptPass, newUsername);
-			return true;
-		} else{
-			return false;
+//		System.out.println("ere" + username);
+		Person checkUsername = dao.getPersonByUsername(newUsername);
+		if(checkUsername == null) {
+			if(crypt.validate(oldPass, person.getPassword())){
+				String encryptPass = crypt.encrypt(pass);
+				dao.updateTempPerson(username, encryptPass, newUsername);
+				return "[\"Updated\"]";
+			} else{
+				return "[\"Inputed Wrong Password\"]";
+			}
+		} else {
+			return "[\"Username Already Exist\"]";
 		}
 		
 	}
