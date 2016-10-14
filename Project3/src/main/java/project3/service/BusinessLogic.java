@@ -5,6 +5,7 @@ import java.util.List;
 import project3.dto.DisLikeablePost;
 import project3.dto.ForumCategory;
 import project3.dto.ForumPost;
+import project3.dto.LikeablePost;
 import project3.dto.Person;
 
 public interface BusinessLogic {
@@ -26,7 +27,7 @@ public interface BusinessLogic {
 	
 	public void createReply(String replyContent, int postId, String username);
 	
-	public ForumPost getPostById(int id);
+	public ForumPost getPostById(int id, boolean like, boolean dislike);
 	
 	public List<ForumPost> getMorePosts(int firstResult);
 	
@@ -35,4 +36,10 @@ public interface BusinessLogic {
 	public List<DisLikeablePost> getAllDislikebyPost(ForumPost post);
 
 	public void addLike(ForumPost post, Person person);
+
+	public ForumPost getPostForDislike(int id);
+
+	public ForumPost getPostForLike(int id);
+
+	public List<LikeablePost> getAllLikesbyPost(ForumPost post);
 }
