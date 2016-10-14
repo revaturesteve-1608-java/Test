@@ -2,7 +2,7 @@
 <span class="md-headline">Question: {{post.postTitle}}</span> <span
 	class="md-subhead post">Question by: {{post.authorName}}</span> </md-card-title-text> </md-card-title> <md-card-content>
 <h3>Question Content</h3>
-<h2>{{post.postContent}}</h2>
+<h2 ng-bind-html="post.postContent">{{post.postContent}}</h2>
 </md-card-content> 
 <md-card-actions layout="row" layout-align="end center">
 Likes: {{likesArray}} Dislikes: {{dislikesArray}}
