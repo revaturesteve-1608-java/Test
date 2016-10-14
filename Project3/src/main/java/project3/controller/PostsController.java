@@ -99,7 +99,7 @@ public class PostsController {
 		
 		System.out.println("id is  " + id);
 		
-		ForumPost post = service.getPostById(id);
+		ForumPost post = service.getPostById(id, false, false);
 		//System.out.println(forumPost.toString());
 		//System.out.println(post.toString());
 		List<String> content = new ArrayList<>();
@@ -116,7 +116,7 @@ public class PostsController {
 	public String dislikePost(@RequestParam("username") String username, @RequestParam("id") int id) {
 		
 		System.out.println(username + "    " + id);
-		ForumPost post = service.getPostById(id);
+		ForumPost post = service.getPostForDislike(id);
 		Person person = service.getPersonByUsername(username);
 		service.addDislike(post, person);
 		
@@ -130,22 +130,33 @@ public class PostsController {
 	public String likePost(@RequestParam("username") String username, @RequestParam("id") int id) {
 		
 		System.out.println(username + "    " + id);
-		ForumPost post = service.getPostById(id);
+		ForumPost post = service.getPostForLike(id);
 		Person person = service.getPersonByUsername(username);
 		service.addLike(post, person);
 		
 		
 		
-		return "yo";
+		return "ok";
 	}
 	
 	@RequestMapping(value="/getDislike", method=RequestMethod.POST)
 	@ResponseBody
 	public String getAllDislikes(@RequestParam("id") int id) {
 		
-		ForumPost post = service.getPostById(id);
+		ForumPost post = service.getPostForDislike(id);
 		List<DisLikeablePost> dislikes = service.getAllDislikebyPost(post);
 		System.out.println("-----------------------------------------------here");
 		return Integer.toString(dislikes.size());
+	}
+	
+	
+	@RequestMapping(value="/getLike", method=RequestMethod.POST)
+	@ResponseBody
+	public String getAllLikes(@RequestParam("id") int id) {
+		
+		ForumPost post = service.getPostForLike(id);
+		List<LikeablePost> likes = service.getAllLikesbyPost(post);
+		System.out.println("-----------------------------------------------here");
+		return Integer.toString(likes.size());
 	}
 }

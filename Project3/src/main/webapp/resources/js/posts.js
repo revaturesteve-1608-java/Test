@@ -2,7 +2,7 @@
  * 
  */
 
-angular.module('posts', ['textAngular', 'infinite-scroll'])
+angular.module('routingApp')
 
 .controller('postsCtrl', function($scope, postsService, $compile){
 	
@@ -103,6 +103,7 @@ angular.module('posts', ['textAngular', 'infinite-scroll'])
 	}
 	
 	this.createReply = function(replyInfo){
+		console.log("here i am");
 		$http.post("rest/createReply", replyInfo).then()
 	}
 })
