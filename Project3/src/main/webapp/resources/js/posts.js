@@ -2,7 +2,7 @@
  * 
  */
 
-angular.module('posts', ['textAngular', 'infinite-scroll'])
+angular.module('routingApp')
 
 .controller('postsCtrl', function($scope, postsService, $compile){
 	
@@ -20,9 +20,9 @@ angular.module('posts', ['textAngular', 'infinite-scroll'])
 		var replyInfo = [userReply, postId, $scope.user.username]
 		postsService.createReply(replyInfo)
 		
-		var newReply = '<div id="singleReply" class="row"> <div id="username">' + $scope.user.username + '</div> <div class="col-md-8">' + userReply + '</div><div class="col-md-4">'
-		+ '<button type="button" aria-label="Right Align"> <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span> '
-		+ '</button></div></div>'
+		var newReply = '<div id="singleReply" class="row"> <div id="username"></div> <div class="col-md-8">' + userReply + '</div><div class="col-md-4">'
+        + '<button type="button" class="btn btn-default" aria-label="Right Align"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>'
+        +'<button type="button" class="btn btn-default" aria-label="Right Align"><span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></button>'
 		var buttonListener = $compile(newReply)($scope);
 		elem.append(buttonListener);
 		angular.element('#theRepyTextBox #replyText').val("");
@@ -37,21 +37,13 @@ angular.module('posts', ['textAngular', 'infinite-scroll'])
 			console.log("postId in the controller: " + postId);
 			
 			var elem = angular.element('#newPost');
-			var append = '<div id="eachPost"><ul class="list-group"><li class="list-group-item"><div><p id="theUsername">'+ $scope.user.username +'</p>'
-				+'</div></li><li class="list-group-item"> <div id="postTitle">' + postTitle + '<div><p id="thePost">'+ postContent + '</p></div></li><li class="list-group-item">'
-				+'<div class="'+ postId + '"><div class="replies" class="row" ><div class="col-md-8">Morbi leo risus</div>'
-				+'<div class="col-md-4"><button type="button" class="btn btn-default" aria-label="Right Align">'
-				+'<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>'
-				+'</button><button type="button" class="btn btn-default" aria-label="Right Align">'
-				+'<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></button></div></div>'
-				+'<div id="singleReply" class="row"><div class="col-md-8">Porta ac consectetur ac</div><div class="col-md-4">'
-				+'<button type="button" class="btn btn-default" aria-label="Right Align"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true">'
-				+'</span></button><button type="button" class="btn btn-default" aria-label="Right Align">'
-				+'<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span></button></div></div></div></li>'
-				+'<li class="list-group-item" id="theRepyTextBox">'
-				+'<input id="post" name="post1" type="hidden" ng-init="postId='+ postId + '" ng-model="postId"/>'
-				+'<input class="form-group" id="replyText" type="text" placeholder="reply" ng-model="userReply'+ postId + '">'
-				+'<button id="reply" type="button" ng-click="addReply(userReply'+ postId + ', postId)"> reply</button></li></ul></div>'
+			var append = '<div id="eachPost"><ul class="list-group">'
+				                +'<li class="list-group-item"> <h2 id="postTitle">' + postTitle + '</h2></li><li class="list-group-item"><div><p id="thePost">'+ postContent + '</p></div></li><li class="list-group-item">'
+				                +'<div class="'+ postId + '"><div class="replies" class="row" ></div></div></li>'
+				                +'<li class="list-group-item" id="theRepyTextBox">'
+				                +'<input id="post" name="post1" type="hidden" ng-init="postId='+ postId + '" ng-model="postId"/>'
+				                +'<input class="form-group" id="replyText" type="text" placeholder="reply" ng-model="userReply'+ postId + '">   '
+				                +'<button id="reply" class="btn btn-primary" type="button" ng-click="addReply(userReply'+ postId + ', postId)"> reply</button></li></ul></div>'
 			var addListener = $compile(append)($scope);
 			elem.after(addListener);
 			angular.element('#newPost #postContent').val("");	
@@ -103,6 +95,7 @@ angular.module('posts', ['textAngular', 'infinite-scroll'])
 	}
 	
 	this.createReply = function(replyInfo){
+		console.log("here i am");
 		$http.post("rest/createReply", replyInfo).then()
 	}
 })

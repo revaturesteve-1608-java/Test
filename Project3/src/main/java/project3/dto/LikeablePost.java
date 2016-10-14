@@ -42,6 +42,11 @@ public class LikeablePost {
 		this.post = post;
 	}
 
+	public LikeablePost(Person person, ForumPost post) {
+		this.author = person;
+		this.post = post;
+	}
+
 	public int getId() {
 		return id;
 	}
