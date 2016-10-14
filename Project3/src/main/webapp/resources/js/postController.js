@@ -67,6 +67,7 @@ app.controller("postCtrl", function($scope, $location, $http) {
 		$http({method: 'POST', url: 'rest/dislike', data: $.param({username: user.username, id: postId.postId}), headers: {'Content-Type': 'application/x-www-form-urlencoded'} })
 		.success(function(data, status, headers, config) {
 			$scope.string = data;
+			$scope.dislikesArray = $scope.dislikesArray + 1;
 			console.log("-------------------------size---------------------------------------" + $scope.string)
 		})
 		.error(function(data, status, headers, config) {
@@ -78,10 +79,11 @@ app.controller("postCtrl", function($scope, $location, $http) {
 		$http({method: 'POST', url: 'rest/like', data: $.param({username:user.username, id: postId.postId}), headers: {'Content-Type': 'application/x-www-form-urlencoded'} })
 		.success(function(data, status, headers, config) {
 			$scope.string = data;
+			$scope.likesArray = $scope.likesArray + 1;
 			console.log($scope.string)
 		})
 		.error(function(data, status, headers, config) {
-		alert( "failure message: " + JSON.stringify({data: data}));
+		//alert( "failure message: " + JSON.stringify({data: data}));
 		});
 	}
 	
