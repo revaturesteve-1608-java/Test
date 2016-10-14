@@ -34,10 +34,10 @@ public class PostReply {
 	@JoinColumn(name="fp_id")
 	private ForumPost post;
 	
-	@OneToMany(mappedBy="reply", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="reply", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	private List<LikeableReply> likes;
 	
-	@OneToMany(mappedBy="reply", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="reply", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	private List<DisLikeableReply> dislikes;
 	
 	@Column(name="pr_approval")

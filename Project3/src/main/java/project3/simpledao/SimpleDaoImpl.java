@@ -223,6 +223,7 @@ public class SimpleDaoImpl implements SimpleDao{
 		Session currentSession = session.getCurrentSession();
 		Criteria criteria = currentSession.createCriteria(ForumPost.class);
 		criteria.setFetchMode("author", FetchMode.JOIN);
+		criteria.setFetchMode("replys", FetchMode.JOIN);
 //		criteria.setFirstResult(firstResult);
 //		criteria.setMaxResults(firstResult + 2);
 		List<ForumPost> posts = (List<ForumPost>) criteria.list();
