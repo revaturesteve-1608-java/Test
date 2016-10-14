@@ -328,7 +328,7 @@ textarea.ta-bind {
 								</a>
 							</h5>
 							<h5 class="buttons">
-								<a class="username" href="">School: {{user.unviersity}}</a>
+								<a class="username" href="">School: {{user.university}}</a>
 							</h5>
 							<h5 class="buttons">
 								<a class="username" href="">Complex:
@@ -462,7 +462,7 @@ textarea.ta-bind {
 	</div>
 
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel">
+		aria-labelledby="myModalLabel" ng-controller="updateUserCtrl">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -578,7 +578,7 @@ textarea.ta-bind {
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-secondary"
+					<button type="button" class="btn btn-primary"
 						ng-click="updateInformation(oldPassword, newPassword, username, newEmail, newPhone, newUniversity, newLinkedIn)">Save
 						Changes</button>
 				</div>
