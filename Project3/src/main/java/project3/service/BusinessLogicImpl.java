@@ -12,6 +12,10 @@ import project3.dto.DisLikeableReply;
 import project3.dto.ForumCategory;
 import project3.dto.ForumPost;
 import project3.dto.LikeableReply;
+import project3.dto.DisLikeablePost;
+import project3.dto.ForumCategory;
+import project3.dto.ForumPost;
+import project3.dto.LikeablePost;
 import project3.dto.Person;
 import project3.simpledao.SimpleDao;
 import project3.util.GetTimestamp;
@@ -135,6 +139,7 @@ public class BusinessLogicImpl implements BusinessLogic{
 	}
 
 	@Override
+	@Transactional
 	public ForumPost getPostById(int id) {
 		return dao.getPostById(id);
 	}
@@ -143,6 +148,35 @@ public class BusinessLogicImpl implements BusinessLogic{
 	public List<ForumPost> getMorePosts(int firstResult) {
 		// TODO Auto-generated method stub
 		return dao.getMorePosts(firstResult);
+		}
+	@Transactional
+	public void addDislike(ForumPost post, Person person) {
+		
+		System.out.println(post.getDislikes().size());
+		System.out.println(" old--------------------------- ");
+		DisLikeablePost dislike = new DisLikeablePost(person);
+		System.out.println(" new -----------------------------------  " + dislike.getId() );
+		post.getDislikes().add(dislike);
+		System.out.println(post.getDislikes().size());
+		
+		dao.addDislike(post, dislike);
+		
+	}
+
+	@Override
+	@Transactional
+	public List<DisLikeablePost> getAllDislikebyPost(ForumPost post) {
+		
+		return post.getDislikes();
+	}
+
+	@Override
+	@Transactional
+	public void addLike(ForumPost post, Person person) {
+		
+		//LikeablePost like = new LikeablePost(person);
+	/*	post.getLikes().add(like);
+		dao.addLike(post, like);*/
 	}
 	
 }

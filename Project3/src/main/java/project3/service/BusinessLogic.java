@@ -2,6 +2,7 @@ package project3.service;
 
 import java.util.List;
 
+import project3.dto.DisLikeablePost;
 import project3.dto.ForumCategory;
 import project3.dto.ForumPost;
 import project3.dto.Person;
@@ -28,4 +29,10 @@ public interface BusinessLogic {
 	public ForumPost getPostById(int id);
 	
 	public List<ForumPost> getMorePosts(int firstResult);
+	
+	public void addDislike(ForumPost post, Person person);
+	
+	public List<DisLikeablePost> getAllDislikebyPost(ForumPost post);
+
+	public void addLike(ForumPost post, Person person);
 }

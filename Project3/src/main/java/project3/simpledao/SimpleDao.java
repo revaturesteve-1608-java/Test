@@ -9,6 +9,10 @@ import project3.dto.DisLikeableReply;
 import project3.dto.ForumCategory;
 import project3.dto.ForumPost;
 import project3.dto.LikeableReply;
+import project3.dto.DisLikeablePost;
+import project3.dto.ForumCategory;
+import project3.dto.ForumPost;
+import project3.dto.LikeablePost;
 import project3.dto.Person;
 import project3.dto.Role;
 
@@ -58,4 +62,8 @@ public interface SimpleDao {
 	public void updatePersonPic(Person person);
 	
 	public List<ForumPost> getMorePosts(int firstResult);
+	
+	public void addDislike(ForumPost post, DisLikeablePost dislike);
+
+	public void addLike(ForumPost post, LikeablePost like);
 }

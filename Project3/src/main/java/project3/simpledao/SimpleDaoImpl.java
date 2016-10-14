@@ -19,6 +19,10 @@ import project3.dto.DisLikeableReply;
 import project3.dto.ForumCategory;
 import project3.dto.ForumPost;
 import project3.dto.LikeableReply;
+import project3.dto.DisLikeablePost;
+import project3.dto.ForumCategory;
+import project3.dto.ForumPost;
+import project3.dto.LikeablePost;
 import project3.dto.Person;
 import project3.dto.PostReply;
 import project3.dto.Role;
@@ -236,6 +240,19 @@ public class SimpleDaoImpl implements SimpleDao{
 //		criteria.setMaxResults(max);
 //		List<Client> clients = criteria.list();
 		return posts;
+		}
+		
+	@Override
+	public void addDislike(ForumPost post, DisLikeablePost dislike) {
+		//session.getCurrentSession().save(dislike);
+		session.getCurrentSession().update(post);
+		
+	}
+
+	@Override
+	public void addLike(ForumPost post, LikeablePost like) {
+		
+		session.getCurrentSession().update(post);
 	}
 	
 }
