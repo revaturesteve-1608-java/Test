@@ -41,6 +41,7 @@ public class ForumPost {
 	
 	@Column(name="fp_timestamp")
 	private Timestamp timestamp;
+	
 
 	@OneToMany(mappedBy="post", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	private List<LikeablePost> likes;

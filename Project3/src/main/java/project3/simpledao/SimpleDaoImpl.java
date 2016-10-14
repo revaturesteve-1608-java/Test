@@ -15,6 +15,10 @@ import org.springframework.stereotype.Repository;
 
 import project3.dto.AwsKey;
 import project3.dto.Complex;
+import project3.dto.DisLikeableReply;
+import project3.dto.ForumCategory;
+import project3.dto.ForumPost;
+import project3.dto.LikeableReply;
 import project3.dto.DisLikeablePost;
 import project3.dto.ForumCategory;
 import project3.dto.ForumPost;
@@ -51,7 +55,7 @@ public class SimpleDaoImpl implements SimpleDao{
 		System.out.println("=============================here====================================");
 		List<ForumPost> posts = (List<ForumPost>) criteria.list();
 //		System.out.println("length of posts list: " + posts.size() + "\tpostId1: " + posts.get(0).getId() + "\tpostId2: " + posts.get(1).getId());
-		return posts;
+		return criteria.list();
 	}
 
 	@Override
@@ -135,10 +139,19 @@ public class SimpleDaoImpl implements SimpleDao{
 	}
 
 	@Override
-	public void createPostReply(ForumPost post, Person author, int likes, int dislikes, boolean approval, 
+	public void createPostReply(int postId, Person author, List<LikeableReply> likes, List<DisLikeableReply> dislikes, boolean approval, 
 			String content, Timestamp timestamp) {
-//		PostReply newReply = new PostReply(post, likes, dislikes, approval, content, timestamp);
+		Session currentSession = session.getCurrentSession();
+		
+		ForumPost post = (ForumPost) currentSession.get(ForumPost.class, postId);
+		System.out.println("forum post id: " + post.getId());
+		System.out.println("forum author username: " + post.getAuthor().getId());
+		Person getAuthorAgain = (Person) currentSession.get(Person.class, author.getId());
+		PostReply newReply = new PostReply(post, getAuthorAgain, likes, dislikes, approval, content, timestamp);
+//		System.out.println("we");
 //		session.getCurrentSession().save(newReply);
+//		System.out.println("here");
+		post.getReplys().add(newReply);
 	}
 
 	@Override
@@ -208,6 +221,28 @@ public class SimpleDaoImpl implements SimpleDao{
 		tempPerson.setProfilePic(person.getProfilePic());
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ForumPost> getMorePosts(int firstResult) {
+		// TODO Auto-generated method stub
+		Session currentSession = session.getCurrentSession();
+		Criteria criteria = currentSession.createCriteria(ForumPost.class);
+		criteria.setFetchMode("author", FetchMode.JOIN);
+		criteria.setFetchMode("replys", FetchMode.JOIN);
+//		criteria.setFirstResult(firstResult);
+//		criteria.setMaxResults(firstResult + 2);
+		List<ForumPost> posts = (List<ForumPost>) criteria.list();
+		System.out.println("size of posts: " + posts.size());
+		
+//		Criteria criteria = session.createCriteria(Client.class);
+//		criteria.createAlias("address", "address");
+//		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+//		criteria.setFirstResult(init);
+//		criteria.setMaxResults(max);
+//		List<Client> clients = criteria.list();
+		return posts;
+		}
+		
 	@Override
 	public void addDislike(ForumPost post, DisLikeablePost dislike) {
 		//session.getCurrentSession().save(dislike);

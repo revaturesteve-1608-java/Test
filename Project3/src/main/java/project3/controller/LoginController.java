@@ -43,6 +43,7 @@ public class LoginController {
 			persons = new Person();
 		}
 		map.addAttribute("person", persons);
+//		System.out.println(persons.getUsername());
 		return persons;
 	}
 	

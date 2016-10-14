@@ -182,7 +182,7 @@ public class ServiceLogic implements ServiceInterface{
 					key.getAccessKey(), key.getSecretAccessKey()));
 			dao.updatePersonPic(person);
 			// Send Email to Account
-			String subject = "Welcome to Revatuer";
+			String subject = "Welcome to Revature";
 			String message = 
 			"<table style=\"min-width:100%;\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\">"
 			    + "<tbody>"

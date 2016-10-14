@@ -70,6 +70,7 @@ public class PostReply {
 			Timestamp timestamp) {
 		super();
 		this.author = author;
+		this.post = post;
 		this.likes = likes;
 		this.dislikes = dislikes;
 		this.approval = approval;

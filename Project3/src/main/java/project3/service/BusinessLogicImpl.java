@@ -8,6 +8,10 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import project3.dto.DisLikeableReply;
+import project3.dto.ForumCategory;
+import project3.dto.ForumPost;
+import project3.dto.LikeableReply;
 import project3.dto.DisLikeablePost;
 import project3.dto.ForumCategory;
 import project3.dto.ForumPost;
@@ -112,16 +116,16 @@ public class BusinessLogicImpl implements BusinessLogic{
 
 	@Override
 	public List<ForumPost> getAllPosts() {
-		
 		return getRidOfDupes(dao.getAllPosts());
 	}
 
 	@Override
 	public void createReply(String replyContent, int postId, String username) {
 		// TODO Auto-generated method stub
-		ForumPost post = dao.getPostById(postId);
+//		ForumPost post = dao.getPostById(postId);
+//		System.out.println("postId in the service method: " + post.getId());
 		Person author = dao.getPersonByUsername(username);
-		dao.createPostReply(post, author, 0, 0, false, replyContent, GetTimestamp.getCurrentTime());
+		dao.createPostReply(postId, author, new ArrayList<LikeableReply>(), new ArrayList<DisLikeableReply>(), false, replyContent, GetTimestamp.getCurrentTime());
 	}
 	
 	private List<ForumPost> getRidOfDupes(List<ForumPost> posts){
@@ -140,6 +144,10 @@ public class BusinessLogicImpl implements BusinessLogic{
 	}
 
 	@Override
+	public List<ForumPost> getMorePosts(int firstResult) {
+		// TODO Auto-generated method stub
+		return getRidOfDupes(dao.getMorePosts(firstResult));
+		}
 	@Transactional
 	public void addDislike(ForumPost post, Person person) {
 		
