@@ -15,7 +15,7 @@ app.controller("postCtrl", function($scope, $location, $http) {
 	
 	$scope.post;
 	
-	$scope.dislikesArray;
+//	$scope.dislikesArray;
 	
 	$scope.string;
 	
@@ -28,21 +28,21 @@ app.controller("postCtrl", function($scope, $location, $http) {
 	alert( "failure message: " + JSON.stringify({data: data}));
 	});
 	
-	$http({method: 'POST', url: 'rest/getDislike', data: $.param({id: info}), headers: {'Content-Type': 'application/x-www-form-urlencoded'} })
+	/*$http({method: 'POST', url: 'rest/getDislike', data: $.param({id: info}), headers: {'Content-Type': 'application/x-www-form-urlencoded'} })
 	.success(function(data, status, headers, config) {
 		$scope.dislikesArray = data;
-		console.log($scope.dislikesArray);
+		console.log("size-----------------------------------------" + $scope.dislikesArray);
 	})
 	.error(function(data, status, headers, config) {
 	alert( "failure message: " + JSON.stringify({data: data}));
-	});
+	});*/
 	
 	$scope.dislike = function(user, postId) {
 		console.log(user.username + "--------------------" + postId.postId);
 		$http({method: 'POST', url: 'rest/dislike', data: $.param({username: user.username, id: postId.postId}), headers: {'Content-Type': 'application/x-www-form-urlencoded'} })
 		.success(function(data, status, headers, config) {
 			$scope.string = data;
-			console.log($scope.string)
+			console.log("--------------------size---------------------------------------" + $scope.string)
 		})
 		.error(function(data, status, headers, config) {
 		alert( "failure message: " + JSON.stringify({data: data}));

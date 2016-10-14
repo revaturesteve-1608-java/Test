@@ -37,9 +37,10 @@ public class DisLikeablePost {
 	
 	
 
-	public DisLikeablePost(Person author) {
+	public DisLikeablePost(Person author, ForumPost post) {
 		super();
 		this.author = author;
+		this.post = post;
 	}
 
 
