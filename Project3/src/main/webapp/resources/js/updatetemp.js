@@ -2,7 +2,7 @@
  * 
  */
 
-angular.module('routingApp')
+angular.module('updateTemp', [])
 
 .controller('updateTempCtrl', function($scope, updateTempDataService, $window){
 	console.log('FIRST IN CONTROLLER')

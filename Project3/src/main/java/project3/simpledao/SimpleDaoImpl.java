@@ -49,6 +49,8 @@ public class SimpleDaoImpl implements SimpleDao{
 	public List<ForumPost> getAllPosts() {
 		Criteria criteria = session.getCurrentSession().createCriteria(ForumPost.class);
 		criteria.setFetchMode("author", FetchMode.JOIN);
+		criteria.setFetchMode("replys", FetchMode.JOIN);
+		
 //		criteria.setFetchMode("role", FetchMode.EAGER);
 //		criteria.setFetchMode("complex", FetchMode.EAGER);
 		System.out.println("=============================here====================================");
@@ -58,16 +60,37 @@ public class SimpleDaoImpl implements SimpleDao{
 	}
 
 	@Override
-	public ForumPost getPostById(int id) {
-//		ForumPost post = (ForumPost) session.getCurrentSession().get(ForumPost.class, id);
-//		System.out.println(post.toString());
+	public ForumPost getPostById(int id, boolean like, boolean dislike) {
+		
 		Criteria criteria = session.getCurrentSession().createCriteria(ForumPost.class);
-		criteria.setFetchMode("author", FetchMode.JOIN);
-		criteria.setFetchMode("replys", FetchMode.JOIN);
-		criteria.add(Restrictions.eq("id", id));
-		ForumPost post = (ForumPost) criteria.list().get(0);
-		System.out.println("--------here---");
-		return post;
+        criteria.setFetchMode("author", FetchMode.JOIN);
+        criteria.setFetchMode("replys", FetchMode.JOIN);
+        if(like){
+        criteria.setFetchMode("likes", FetchMode.JOIN);
+      //  criteria.setFetchMode("replys", FetchMode.LAZY);
+        }
+        if(dislike){
+		criteria.setFetchMode("dislikes", FetchMode.JOIN);
+        }
+        criteria.add(Restrictions.eq("id", id));
+        ForumPost post = (ForumPost) criteria.list().get(0);
+        System.out.println("--------here---");
+
+        return post;
+	}
+	
+	@Override
+	public ForumPost getPostForDislike(int id) {
+		
+		Criteria criteria = session.getCurrentSession().createCriteria(ForumPost.class);
+        criteria.setFetchMode("author", FetchMode.JOIN);
+     //   criteria.setFetchMode("replys", FetchMode.JOIN);
+        criteria.setFetchMode("dislikes", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("id", id));
+        ForumPost post = (ForumPost) criteria.list().get(0);
+        System.out.println("--------here---");
+
+        return post;
 	}
 
 	@Override
@@ -250,6 +273,7 @@ public class SimpleDaoImpl implements SimpleDao{
 	@Override
 	public void addDislike(ForumPost post, DisLikeablePost dislike) {
 		//session.getCurrentSession().save(dislike);
+		System.out.println("-------------------------------updating--------------------------");
 		session.getCurrentSession().update(post);
 		
 	}
@@ -268,6 +292,31 @@ public class SimpleDaoImpl implements SimpleDao{
 		criteria.setFetchMode("author", FetchMode.JOIN);
 		criteria.setFetchMode("replys", FetchMode.JOIN);
 		return null;
+	}
+		
+	public void saveDislike(DisLikeablePost dislike) {
+		System.out.println("-------------------------------saving----------------------------------");
+		session.getCurrentSession().save(dislike);
+		
+	}
+
+	@Override
+	public ForumPost getPostForLike(int id) {
+		
+		Criteria criteria = session.getCurrentSession().createCriteria(ForumPost.class);
+        criteria.setFetchMode("author", FetchMode.JOIN);
+     //   criteria.setFetchMode("replys", FetchMode.JOIN);
+        criteria.setFetchMode("likes", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("id", id));
+        ForumPost post = (ForumPost) criteria.list().get(0);
+        System.out.println("--------here---");
+		
+		return post;
+	}
+
+	@Override
+	public void saveLike(LikeablePost like) {
+		session.getCurrentSession().save(like);
 	}
 	
 }

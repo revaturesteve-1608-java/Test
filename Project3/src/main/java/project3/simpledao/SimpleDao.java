@@ -20,7 +20,7 @@ public interface SimpleDao {
 	
 	public List<ForumPost> getAllPosts();
 	
-	public ForumPost getPostById(int id);
+	public ForumPost getPostById(int id, boolean like, boolean dislike);
 	
 	public Person getPersonById(int id);
 	
@@ -68,4 +68,12 @@ public interface SimpleDao {
 	public void addLike(ForumPost post, LikeablePost like);
 	
 	public List<ForumPost> getPostsByCategory(ForumCategory cat);
+
+	public void saveDislike(DisLikeablePost dislike);
+
+	public ForumPost getPostForDislike(int id);
+
+	public ForumPost getPostForLike(int id);
+
+	public void saveLike(LikeablePost like);
 }
