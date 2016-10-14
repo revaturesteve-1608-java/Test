@@ -116,7 +116,6 @@ public class BusinessLogicImpl implements BusinessLogic{
 
 	@Override
 	public List<ForumPost> getAllPosts() {
-		
 		return getRidOfDupes(dao.getAllPosts());
 	}
 
@@ -147,7 +146,7 @@ public class BusinessLogicImpl implements BusinessLogic{
 	@Override
 	public List<ForumPost> getMorePosts(int firstResult) {
 		// TODO Auto-generated method stub
-		return dao.getMorePosts(firstResult);
+		return getRidOfDupes(dao.getMorePosts(firstResult));
 		}
 	@Transactional
 	public void addDislike(ForumPost post, Person person) {
