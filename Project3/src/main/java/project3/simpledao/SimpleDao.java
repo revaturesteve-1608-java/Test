@@ -66,4 +66,6 @@ public interface SimpleDao {
 	public void addDislike(ForumPost post, DisLikeablePost dislike);
 
 	public void addLike(ForumPost post, LikeablePost like);
+	
+	public List<ForumPost> getPostsByCategory(ForumCategory cat);
 }

@@ -62,8 +62,10 @@ public class PostsController {
 	
 	
 	@RequestMapping(value="/getMorePosts", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<PostContainer>> getMorePosts(@RequestBody String firstResult){
-		List<ForumPost> posts = service.getMorePosts(Integer.parseInt(firstResult));
+	public ResponseEntity<List<PostContainer>> getMorePosts(@RequestBody String[] getPostResult){
+		int firstResult = Integer.parseInt(getPostResult[0]);
+		String username = getPostResult[1];
+		List<ForumPost> posts = service.getMorePosts(firstResult);
 //		System.out.println("id: " + posts.get(0).getId() + "\ttitle: " + posts.get(0).getTitle() + "\tcontent: " + posts.get(0).getContent());
 //		System.out.println("author: " + posts.gset(0).getAuthor().getRole().getRoleName());
 		List<PostContainer> allPosts = new ArrayList<>();

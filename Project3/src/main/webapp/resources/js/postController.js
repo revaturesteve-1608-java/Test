@@ -22,11 +22,13 @@ app.controller("postCtrl", function($scope, $location, $http) {
 	$http({method: 'POST', url: 'rest/getPostById', data: $.param({id:info}), headers: {'Content-Type': 'application/x-www-form-urlencoded'} })
 	.success(function(data, status, headers, config) {
 		$scope.post = data;
-		console.log($scope.post)
+		console.log('the post id: ' + $scope.post.postContent)
 	})
 	.error(function(data, status, headers, config) {
 	alert( "failure message: " + JSON.stringify({data: data}));
 	});
+	
+//	$scope.getPostInfo = service.getPostInfo()
 	
 	$http({method: 'POST', url: 'rest/getDislike', data: $.param({id: info}), headers: {'Content-Type': 'application/x-www-form-urlencoded'} })
 	.success(function(data, status, headers, config) {
@@ -61,3 +63,9 @@ app.controller("postCtrl", function($scope, $location, $http) {
 	}
 	
 });
+
+//app.service('service', function($http){
+//	this.getPostInfo = function(postId, callback){
+//		$http.get('rest/getPostById', postId).then(callback)
+//	}
+//})

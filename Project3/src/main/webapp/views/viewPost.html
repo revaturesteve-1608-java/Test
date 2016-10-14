@@ -1,8 +1,9 @@
+<!-- 
 <md-card class="postCard" md-theme-watch=""> <md-card-title class="title"> <md-card-title-text>
 <span class="md-headline">Question: {{post.postTitle}}</span> <span
 	class="md-subhead post">Question by: {{post.authorName}}</span> </md-card-title-text> </md-card-title> <md-card-content>
 <h3>Question Content</h3>
-<h2>{{post.postContent}}</h2>
+<h2 ng-bind-html="post.postContent">{{post.postContent}}</h2>
 </md-card-content> 
 <md-card-actions layout="row" layout-align="end center">
 <md-button type="button" class="btn btn-default" aria-label="Right Align" ng-click="like(user, post)">
@@ -12,3 +13,46 @@
 	<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
 </md-button>
 <md-button>Reply</md-button> </md-card-actions> </md-card>
+ -->
+
+<div id="eachPost">
+	<ul class="list-group">
+		<li class="list-group-item">
+			<div>
+				<h2 id="thePost">{{post.postTitle}}</h2>
+			</div>
+		</li>
+		<li class="list-group-item">
+			<div ng-bind-html="post.postContent">
+				<p id="thePost">{{post.postContent}}</p>
+			</div>
+		</li>
+
+	<li class="list-group-item">
+			<div class="{{post.postId}}">
+				<div id="singleReply" class="row" ng-repeat="replies in post.replyContent">
+					<div class="col-md-8">{{replies}}</div>
+					<div class="col-md-4">
+						<button type="button" class="btn btn-default"
+							aria-label="Right Align">
+							<span class="glyphicon glyphicon-thumbs-up"
+								aria-hidden="true"></span>
+						</button>
+						<button type="button" class="btn btn-default"
+							aria-label="Right Align">
+							<span class="glyphicon glyphicon-thumbs-down"
+								aria-hidden="true"></span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</li>
+		<li class="list-group-item" id="theRepyTextBox"><input
+			id="post" name="post1" type="hidden"
+			ng-init="postId=post.postId;" ng-model="postId" /> <input
+			class="form-group" id="replyText" type="text"
+			placeholder="reply" ng-model="userReply1">
+			<button id="reply" type="button" class="btn btn-primary"
+				ng-click="addReply(userReply1, postId)">reply</button></li>
+	</ul>
+</div>
