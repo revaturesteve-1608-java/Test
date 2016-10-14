@@ -41,11 +41,11 @@ public class ForumPost {
 	
 	@Column(name="fp_timestamp")
 	private Timestamp timestamp;
-
-	@OneToMany(mappedBy="post", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	
+	@OneToMany(mappedBy="post", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	private List<LikeablePost> likes;
 
-	@OneToMany(mappedBy="post", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="post", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	private List<DisLikeablePost> dislikes;
 	
 	@Column(name="fp_resolved")

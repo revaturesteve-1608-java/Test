@@ -72,7 +72,7 @@ textarea.ta-bind {
 		<p>test left side</p>
 	</div>
 
-	<div class="container-fluid text-center">
+	<div class="container-fluid text-center" infinite-scroll="getMorePosts(firstResult)" infinite-scroll-distance='1'>
 
 		<div class="col-sm-8 text-left">
 			<div id="allPosts" data-ng-controller="postsCtrl">
@@ -118,7 +118,7 @@ textarea.ta-bind {
 						<ul class="list-group">
 							<li class="list-group-item">
 								<div>
-									<p id="theUsername">{{postContainer.authorName}}</p>
+									<h2 id="thePost">{{postContainer.postTitle}}</h2>
 								</div>
 							</li>
 							<li class="list-group-item">

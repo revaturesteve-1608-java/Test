@@ -38,7 +38,7 @@ angular.module('posts', ['textAngular', 'infinite-scroll'])
 			
 			var elem = angular.element('#newPost');
 			var append = '<div id="eachPost"><ul class="list-group"><li class="list-group-item"><div><p id="theUsername">'+ $scope.user.username +'</p>'
-				+'</div></li><li class="list-group-item"><div><p id="thePost">'+ postContent + '</p></div></li><li class="list-group-item">'
+				+'</div></li><li class="list-group-item"> <div id="postTitle">' + postTitle + '<div><p id="thePost">'+ postContent + '</p></div></li><li class="list-group-item">'
 				+'<div class="'+ postId + '"><div class="replies" class="row" ><div class="col-md-8">Morbi leo risus</div>'
 				+'<div class="col-md-4"><button type="button" class="btn btn-default" aria-label="Right Align">'
 				+'<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>'
@@ -65,9 +65,22 @@ angular.module('posts', ['textAngular', 'infinite-scroll'])
 		
 	})
 	
+	$scope.firstResult = 0;
+	
 	$scope.getPosts = postsService.getPosts(function(response){
 		$scope.allPosts = response.data;
+		$scope.length = $scope.allPosts.length;
+		$scope.firstResult = $scope.allPosts.length;
+		console.log("length: " + $scope.length)
 	})
+	
+	$scope.getMorePosts = function(firstResult){
+		console.log("event hit!!!!!!!!!!!!")
+		postsService.getMorePosts(firstResult, function(response){
+			$scope.allPosts = response.data;
+			$scope.firstResult = $scope.allPosts.length;
+		})
+	}
 })
 
 .service('postsService', function($http){
@@ -83,6 +96,10 @@ angular.module('posts', ['textAngular', 'infinite-scroll'])
 	
 	this.getPosts = function(callback){
 		$http.get("rest/getPosts").then(callback)
+	}
+	
+	this.getMorePosts = function(firstResult, callback){
+		$http.get("rest/getMorePosts", firstResult).then(callback)
 	}
 	
 	this.createReply = function(replyInfo){
