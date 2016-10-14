@@ -1,6 +1,9 @@
 package project3.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,40 +15,48 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import project3.dto.Person;
 import project3.service.BusinessLogic;
+import project3.service.ServiceInterface;
 
 @RestController
 @SessionAttributes("person")
 public class Controller1 {
 	
 	@Autowired
-	BusinessLogic service;
+	BusinessLogic logic;
 	
-	@RequestMapping(value="/updateTemp", method=RequestMethod.POST)
+	@RequestMapping(value="/updateTemp", method=RequestMethod.POST,
+			consumes=MediaType.APPLICATION_JSON_VALUE, 
+			produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public boolean updateTempUser(@RequestBody String[] usernamePass, ModelMap map){
+	public ResponseEntity<String> updateTempUser(@RequestBody String[] usernamePass, ModelMap map){
 //		System.out.println("HEY IT GOT INTO CONTROLLER");
 		String testUsername = usernamePass[3];
 		System.out.println("inside controller oldPass: " + usernamePass[0]);
 		System.out.println("inside controller newPass: " + usernamePass[1]);
+		System.out.println("inside controller oldPass: " + usernamePass[2]);
+		System.out.println("inside controller username: " + usernamePass[3]);
 //		System.out.println("inside controller firstname: " + person.getFirst_name());
 //		System.out.println("inside controller lastname: " + person.getLast_name());
 //		System.out.println("inside controller email: " + person.getEmail());
 		
-		boolean updated = service.updateTempPerson(testUsername, usernamePass[1], usernamePass[0], usernamePass[2]);
-		if(updated == true){
-			Person updatedPerson = service.getPersonByUsername(usernamePass[2]);
+		String updatedStatus = logic.updateTempPerson(testUsername, usernamePass[1], usernamePass[0], usernamePass[2]);
+		if(updatedStatus.equals("Updated")){
+			Person updatedPerson = logic.getPersonByUsername(usernamePass[2]);
 			map.addAttribute("person", updatedPerson);
-			return updated;
 		}
-		return updated;
+		System.out.println(updatedStatus);
+		return new ResponseEntity<String>(updatedStatus, HttpStatus.OK);
 		
 		
 //		Person person = service.getPersonByUsername(username);
 //		service.updateTempPerson(person);
 	}
 	
-	@RequestMapping(value="/updateInfo", method=RequestMethod.POST)
-	public void updateUserInfo(@RequestBody String[] information){
+	@RequestMapping(value="/updateInfo", method=RequestMethod.POST,
+			consumes=MediaType.APPLICATION_JSON_VALUE, 
+			produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<String> updateUserInfo(@RequestBody String[] information, @ModelAttribute("person") Person person, ModelMap map){
 //		System.out.println("HEY IT GOT INTO CONTROLLER");
 //		String testUsername = person.getUsername();
 		System.out.println("inside controller oldPass: " + information[0]);
@@ -56,7 +67,8 @@ public class Controller1 {
 		System.out.println("inside controller newPass: " + information[5]);
 		System.out.println("inside controller newPass: " + information[6]);
 		// information[7] is the current user
-		Person currentUser = service.getPersonByUsername("Joey");
+//		Person currentUser = service.getPersonByUsername("Joey");
+		String oldPassword = information[0];
 		String newPassword = information[1];
 		String newUsername = information[2];
 		String newEmail = information[3];
@@ -64,28 +76,16 @@ public class Controller1 {
 		String newUniversity = information[5];
 		String newLinkedIn = information[6];
 		
+		String updatedStatus = logic.updateUserInfo(person, oldPassword, newPassword, newUsername, newEmail, 
+				newPhone, newUniversity, newLinkedIn);
 		
-		if(information[1]==null || "".equals(information[1])) {
-			newPassword = currentUser.getPassword();
-		}
-		if(information[2]==null || "".equals(information[1])){
-			newUsername = currentUser.getUsername();
-		}
-		if(information[3]==null || "".equals(information[1])) {
-			newEmail = currentUser.getEmail();
-		}
-		if(information[4]==null || "".equals(information[1])){
-			newPhone = currentUser.getPhoneNumber();
-		}
-		if(information[5]==null || "".equals(information[1])){
-			newUniversity = currentUser.getUnviersity();
-		}
-		if(information[6]==null || "".equals(information[1])){
-			newLinkedIn = currentUser.getLinkedin();
+		if(updatedStatus.equals("Updated")){
+			Person updatedPerson = logic.getPersonById(person.getId());
+			map.addAttribute("person", updatedPerson);
 		}
 		
-		System.out.println("current user: " + currentUser);
-		System.out.println("email: " + newEmail + "\tsize: " + newEmail.length());
+//		System.out.println("current user: " + currentUser);
+//		System.out.println("email: " + newEmail + "\tsize: " + newEmail.length());
 		
 		if(information[0] == null)
 			System.out.println("CAN CHECK FOR NULLS");
@@ -96,7 +96,8 @@ public class Controller1 {
 //		service.updateTempPerson(testUsername, usernamePass[1], usernamePass[2]);
 		
 //		Person person = service.getPersonByUsername(username);
-		service.updateUserInfo(currentUser.getUsername(), newPassword, newUsername, newEmail, newPhone, newUniversity, newLinkedIn);
+		
 		System.out.println("REALLY SHOULD NOT GET HERE");
+		return new ResponseEntity<String>(updatedStatus, HttpStatus.OK);
 	}
 }

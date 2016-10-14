@@ -1,4 +1,4 @@
-var app = angular.module('routingApp', ['ngRoute','ngMaterial','ngMessages','material.svgAssetsCache', 'ngCookies']);
+var app = angular.module('routingApp', ['ngRoute','ngMaterial','ngMessages','material.svgAssetsCache', 'ngCookies', 'textAngular']);
 
 app.config(function($routeProvider) {
 	
@@ -23,6 +23,11 @@ app.config(function($routeProvider) {
     .when('/createNewUser', {
         templateUrl : 'views/createNewUser.html',
         controller : "newUserCtrl"
+    })
+    
+    .when('/post', {
+        templateUrl : 'views/viewPost.html',
+        controller : "postCtrl"
     })
     
     .otherwise({
@@ -113,4 +118,14 @@ app.service('createUserService', function($http, $q, $window) {
 			console.log($q.reject(error));
 		});
 	}
+	
+	this.getPosts = function(callback){
+		$http.get("rest/getPosts").then(callback)
+	}
+	
+	this.getForm = function(callback){
+		$http.get("rest/getForm").then(callback)
+	}
+	
+	
 })

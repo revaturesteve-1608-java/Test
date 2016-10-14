@@ -1,7 +1,7 @@
 /**
  * 
  */
-angular.module('routingApp').controller('loginController', function($scope, $mdDialog, $http, $window, $cookies) {
+angular.module('routingApp').controller('loginController', function($scope, $mdDialog, $http, $window, $cookies, createUserService) {
 
 //			$scope.loginUser = function(person) {
 //				console.log(person);
@@ -10,6 +10,10 @@ angular.module('routingApp').controller('loginController', function($scope, $mdD
 
 			$scope.status = '  ';
 			$scope.customFullscreen = false;
+			
+			$scope.toIndex = function() {
+				$window.location.href = 'index.jsp';
+			}
 			
 			$scope.signIn = function(person) {
 				console.log("here");
@@ -27,10 +31,10 @@ angular.module('routingApp').controller('loginController', function($scope, $mdD
 						if(person.vaildated) {
 							
 						
-							if(person.role.roleName == "Moderate") {
+							if(person.role.roleName == "Moderator") {
 								$window.location.href = 'moderate-view.html';
 							} else {
-								$window.location.href = 'index.html';
+								$window.location.href = 'associate-view.html';
 							}
 						} else {
 							$window.location.href = 'updateTempInfo.html';
@@ -45,6 +49,21 @@ angular.module('routingApp').controller('loginController', function($scope, $mdD
 			
 		}
 			
+			 function showAlert(ev) {
+			    // Appending dialog to document.body to cover sidenav in docs app
+			    // Modal dialogs should fully cover application
+			    // to prevent interaction outside of dialog
+			    $mdDialog.show(
+			      $mdDialog.alert()
+			        .parent(angular.element(document.querySelector('#popupContainer')))
+			        .clickOutsideToClose(true)
+			        .title('This is an alert title')
+			        .textContent('You can specify some description text in here.')
+			        .ariaLabel('Alert Dialog Demo')
+			        .ok('Got it!')
+			        .targetEvent(ev)
+			    );
+			  };
 			 
 			 
 			 

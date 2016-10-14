@@ -12,12 +12,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name="ForumPost")
@@ -34,10 +36,6 @@ public class ForumPost {
 	@JoinColumn(name="u_id")
 	private Person author;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="ps_id")
-	private PostStatus status;
-	
 	@Column(name="fp_title")
 	private String title;
 	
@@ -47,32 +45,27 @@ public class ForumPost {
 	@Column(name="fp_timestamp")
 	private Timestamp timestamp;
 	
+
+	@OneToMany(mappedBy="post", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@Fetch(value = FetchMode.SUBSELECT)
+	private List<LikeablePost> likes;
+
+	@OneToMany(mappedBy="post", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@Fetch(value = FetchMode.SUBSELECT)
+	private List<DisLikeablePost> dislikes;
+	
 	@Column(name="fp_resolved")
 	private boolean resolved;
 	
-	@OneToMany(mappedBy="post", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="post", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	private List<PostReply> replys;
 	
-	@ManyToMany(cascade=CascadeType.ALL)
-	@JoinTable(name="Post_Cat_JT", joinColumns=@JoinColumn(name="fp_id"),
-	inverseJoinColumns=@JoinColumn(name="fc_id"))
+	@ManyToMany
 	private List<ForumCategory> category;
 	
 	public ForumPost() {
 		replys = new ArrayList<>();
 		category = new ArrayList<>();
-	}
-
-	public ForumPost(int id, Person author, PostStatus status, String title, 
-			String content, Timestamp timestamp, boolean resolved) {
-		this();
-		this.id = id;
-		this.author = author;
-		this.status = status;
-		this.title = title;
-		this.content = content;
-		this.timestamp = timestamp;
-		this.resolved = resolved;
 	}
 	
 	public ForumPost(Person author, String title, String content, Timestamp timestamp, boolean resolved) {
@@ -82,6 +75,21 @@ public class ForumPost {
 		this.content = content;
 		this.timestamp = timestamp;
 		this.resolved = resolved;
+	}
+
+	public ForumPost(int id, Person author, String title, String content, Timestamp timestamp, List<LikeablePost> likes,
+			List<DisLikeablePost> dislikes, boolean resolved, List<PostReply> replys, List<ForumCategory> category) {
+		super();
+		this.id = id;
+		this.author = author;
+		this.title = title;
+		this.content = content;
+		this.timestamp = timestamp;
+		this.likes = likes;
+		this.dislikes = dislikes;
+		this.resolved = resolved;
+		this.replys = replys;
+		this.category = category;
 	}
 
 	public int getId() {
@@ -98,14 +106,6 @@ public class ForumPost {
 
 	public void setAuthor(Person author) {
 		this.author = author;
-	}
-
-	public PostStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(PostStatus status) {
-		this.status = status;
 	}
 
 	public String getTitle() {
@@ -156,13 +156,27 @@ public class ForumPost {
 		this.category = category;
 	}
 
+	public List<LikeablePost> getLikes() {
+		return likes;
+	}
+
+	public void setLikes(List<LikeablePost> likes) {
+		this.likes = likes;
+	}
+
+	public List<DisLikeablePost> getDislikes() {
+		return dislikes;
+	}
+
+	public void setDislikes(List<DisLikeablePost> dislikes) {
+		this.dislikes = dislikes;
+	}
+
 	@Override
 	public String toString() {
-		return "ForumPost [id=" + id + ", author=" + author + ", status=" + status 
-				+ ", title=" + title + ", content="
-				+ content + ", timestamp=" + timestamp + ", resolved=" + resolved 
-				+ ", replys=" + replys + ", category="
-				+ category + "]";
+		return "ForumPost [id=" + id + ", author=" + author + ", title=" + title + ", content=" + content
+				+ ", timestamp=" + timestamp + ", likes=" + likes + ", dislikes=" + dislikes + ", resolved=" + resolved
+				+ ", replys=" + replys + ", category=" + category + "]";
 	}
 
 	

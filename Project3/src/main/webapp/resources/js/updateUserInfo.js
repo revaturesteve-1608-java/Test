@@ -2,16 +2,17 @@
  * 
  */
 
-angular.module('updateUserInfo', [])
+angular.module('routingApp')
 
 .controller('updateUserCtrl', function($scope, updateUserData){
 	console.log('FIRST IN CONTROLLER')
-	$scope.updateInformation = function(oldPassword, newPassword, username, newEmail, newPhone, newUniversity, newLinkedIn){
+	$scope.updateInformation = function(oldPassword, newPassword, username, newEmail, newPhone, 
+			newUniversity, newLinkedIn){
 		console.log('EVENT LISTENER WORKED')
 		console.log("oldpass: " + oldPassword);
 		console.log("newpass: " + newPassword);
 					
-		var information = [oldPassword, newPassword, username, newEmail, newPhone, newUniversity, newLinkedIn/*, $scope.user.username*/]
+		var information = [oldPassword, newPassword, username, newEmail, newPhone, newUniversity, newLinkedIn]
 		console.log(information);
 		updateUserData.update(information);
 	}
@@ -25,10 +26,14 @@ angular.module('updateUserInfo', [])
 //	})
 })
 
-.service('updateUserData', function($http){
+.service('updateUserData', function($http, $window, $q){
 	this.update = function(information){
 		console.log('GOT INTO SERVICE')
-		$http.post("rest/updateInfo", information).then()
+		$http.post("rest/updateInfo", information).then(function(response) {
+			$window.alert(response.data);
+		}, function(error) {
+			console.log($q.reject(error));
+		});
 	}
 	
 //	this.getUser = function(callback){

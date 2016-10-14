@@ -2,7 +2,10 @@
  * 
  */
 var app = angular.module('routingApp');
-app.controller("indexCtrl", function($scope, $http, $window, $cookies, createUserService) {
+app.config(function($mdThemingProvider) {
+	  $mdThemingProvider.theme('custom').backgroundPalette('blue');
+	})
+app.controller("indexCtrl", function($scope, $http, $window, $cookies, createUserService, $mdDialog) {
 	
 	$scope.user;
 	
@@ -20,17 +23,53 @@ app.controller("indexCtrl", function($scope, $http, $window, $cookies, createUse
 	
 	$scope.getUser = createUserService.getUser(
 			function(response){
-				console.log(response);
-				console.log(response.data) 
-			//	console.log(typeof response.data[0].maker);
+				
+				
 				$scope.user = response.data; 	
 				
 				if($scope.user.id == 0){
+					
 					$window.location.href = 'login.html';
+					
+					
 				}
 				
 				console.log($scope.user);
 				
 			})
+	
+	
+	$scope.allPosts;
+			
+	$scope.getPost = createUserService.getPosts(function(response){
+		$scope.allPosts = response.data;
+		console.log($scope.allPosts);
+	})
+			
+			
+			function DialogController($scope, $mdDialog) {
+	    $scope.hide = function() {
+	      $mdDialog.hide();
+	    };
+
+	    $scope.cancel = function() {
+	      $mdDialog.cancel();
+	    };
+
+	    $scope.answer = function(answer) {
+	      $mdDialog.hide(answer);
+	    };
+	  }
+ 
+ function customAlert(ev) {
+	    $mdDialog.show({
+	      controller: DialogController,
+	      templateUrl: 'dialog1.tmpl.html',
+	      parent: angular.element(document.body),
+	      targetEvent: ev,
+	      clickOutsideToClose:true,
+	      fullscreen: $scope.customFullscreen
+	    });
+};
 
 })

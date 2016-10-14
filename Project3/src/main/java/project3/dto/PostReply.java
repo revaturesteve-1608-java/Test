@@ -1,7 +1,9 @@
 package project3.dto;
 
 import java.sql.Timestamp;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -24,14 +27,18 @@ public class PostReply {
 	private int id;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="u_id")
+	private Person author;
+
+	@ManyToOne
 	@JoinColumn(name="fp_id")
 	private ForumPost post;
 	
-	@Column(name="pr_likes")
-	private int likes;
+	@OneToMany(mappedBy="reply", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	private List<LikeableReply> likes;
 	
-	@Column(name="pr_dislikes")
-	private int dislikes;
+	@OneToMany(mappedBy="reply", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	private List<DisLikeableReply> dislikes;
 	
 	@Column(name="pr_approval")
 	private boolean approval;
@@ -46,10 +53,11 @@ public class PostReply {
 		
 	}
 
-	public PostReply(int id, ForumPost post, int likes, int dislikes, boolean approval, 
-			String content, Timestamp timestamp) {
+	public PostReply(int id, Person author, ForumPost post, List<LikeableReply> likes, List<DisLikeableReply> dislikes,
+			boolean approval, String content, Timestamp timestamp) {
 		super();
 		this.id = id;
+		this.author = author;
 		this.post = post;
 		this.likes = likes;
 		this.dislikes = dislikes;
@@ -58,8 +66,10 @@ public class PostReply {
 		this.timestamp = timestamp;
 	}
 
-	public PostReply(ForumPost post, int likes, int dislikes, boolean approval, String content, Timestamp timestamp) {
+	public PostReply(ForumPost post, Person author, List<LikeableReply> likes, List<DisLikeableReply> dislikes, boolean approval, String content,
+			Timestamp timestamp) {
 		super();
+		this.author = author;
 		this.post = post;
 		this.likes = likes;
 		this.dislikes = dislikes;
@@ -76,27 +86,19 @@ public class PostReply {
 		this.id = id;
 	}
 
-	public ForumPost getPost() {
-		return post;
-	}
-
-	public void setPost(ForumPost post) {
-		this.post = post;
-	}
-
-	public int getLikes() {
+	public List<LikeableReply> getLikes() {
 		return likes;
 	}
 
-	public void setLikes(int likes) {
-		this.likes = likes;
-	}
-
-	public int getDislikes() {
+	public List<DisLikeableReply> getDislikes() {
 		return dislikes;
 	}
 
-	public void setDislikes(int dislikes) {
+	public void setLikes(List<LikeableReply> likes) {
+		this.likes = likes;
+	}
+
+	public void setDislikes(List<DisLikeableReply> dislikes) {
 		this.dislikes = dislikes;
 	}
 
@@ -124,10 +126,25 @@ public class PostReply {
 		this.timestamp = timestamp;
 	}
 
+	public Person getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(Person author) {
+		this.author = author;
+	}
+
+	public ForumPost getPost() {
+		return post;
+	}
+
+	public void setPost(ForumPost post) {
+		this.post = post;
+	}
+
 	@Override
 	public String toString() {
-		return "PostReply [id=" + id + ", post=" + post + ", likes=" + likes 
-				+ ", dislikes=" + dislikes + ", approval="
-				+ approval + ", content=" + content + ", timestamp=" + timestamp + "]";
+		return "PostReply [id=" + id + ", author=" + author + ", post=" + post + ", likes=" + likes + ", dislikes="
+				+ dislikes + ", approval=" + approval + ", content=" + content + ", timestamp=" + timestamp + "]";
 	}
 }
