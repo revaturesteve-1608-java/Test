@@ -42,6 +42,7 @@ public class ForumPost {
 	@Column(name="fp_timestamp")
 	private Timestamp timestamp;
 	
+
 	@OneToMany(mappedBy="post", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	private List<LikeablePost> likes;
 
@@ -51,7 +52,7 @@ public class ForumPost {
 	@Column(name="fp_resolved")
 	private boolean resolved;
 	
-	@OneToMany(mappedBy="post", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="post", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	private List<PostReply> replys;
 	
 	@ManyToMany

@@ -49,6 +49,7 @@ public class SimpleDaoImpl implements SimpleDao{
 	public List<ForumPost> getAllPosts() {
 		Criteria criteria = session.getCurrentSession().createCriteria(ForumPost.class);
 		criteria.setFetchMode("author", FetchMode.JOIN);
+		criteria.setFetchMode("replys", FetchMode.JOIN);
 //		criteria.setFetchMode("role", FetchMode.EAGER);
 //		criteria.setFetchMode("complex", FetchMode.EAGER);
 		System.out.println("=============================here====================================");
@@ -253,6 +254,12 @@ public class SimpleDaoImpl implements SimpleDao{
 	public void addLike(ForumPost post, LikeablePost like) {
 		
 		session.getCurrentSession().update(post);
+	}
+
+	@Override
+	public void saveDislike(DisLikeablePost dislike) {
+		session.getCurrentSession().save(dislike);
+		
 	}
 	
 }

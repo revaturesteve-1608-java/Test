@@ -153,11 +153,11 @@ public class BusinessLogicImpl implements BusinessLogic{
 		
 		System.out.println(post.getDislikes().size());
 		System.out.println(" old--------------------------- ");
-		DisLikeablePost dislike = new DisLikeablePost(person);
+		DisLikeablePost dislike = new DisLikeablePost(person, post);
+		dao.saveDislike(dislike);
 		System.out.println(" new -----------------------------------  " + dislike.getId() );
 		post.getDislikes().add(dislike);
 		System.out.println(post.getDislikes().size());
-		
 		dao.addDislike(post, dislike);
 		
 	}
