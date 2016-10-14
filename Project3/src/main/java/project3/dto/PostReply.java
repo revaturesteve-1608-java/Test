@@ -29,7 +29,7 @@ public class PostReply {
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="u_id")
 	private Person author;
-	
+
 	@ManyToOne
 	@JoinColumn(name="fp_id")
 	private ForumPost post;
