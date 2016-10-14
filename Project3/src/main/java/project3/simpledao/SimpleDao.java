@@ -60,4 +60,6 @@ public interface SimpleDao {
 	public void addDislike(ForumPost post, DisLikeablePost dislike);
 
 	public void addLike(ForumPost post, LikeablePost like);
+
+	public void saveDislike(DisLikeablePost dislike);
 }

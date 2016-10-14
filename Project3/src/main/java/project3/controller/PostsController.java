@@ -45,6 +45,7 @@ public class PostsController {
 	@RequestMapping(value="/getPosts", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<PostContainer>> getPosts(){
 		List<ForumPost> posts = service.getAllPosts();
+		System.out.println(" size--------------------------------------------" +  posts.size());
 //		System.out.println("id: " + posts.get(0).getId() + "\ttitle: " + posts.get(0).getTitle() + "\tcontent: " + posts.get(0).getContent());
 //		System.out.println("author: " + posts.get(0).getAuthor().getRole().getRoleName());
 		List<PostContainer> allPosts = new ArrayList<>();
