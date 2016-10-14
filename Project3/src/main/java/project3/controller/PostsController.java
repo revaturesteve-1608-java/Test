@@ -44,7 +44,7 @@ public class PostsController {
 	
 	@RequestMapping(value="/getPosts", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<PostContainer>> getPosts(){
-		List<ForumPost> posts = service.getAllPosts();
+		List<ForumPost> posts = service.getMorePosts(0);
 //		System.out.println("id: " + posts.get(0).getId() + "\ttitle: " + posts.get(0).getTitle() + "\tcontent: " + posts.get(0).getContent());
 //		System.out.println("author: " + posts.get(0).getAuthor().getRole().getRoleName());
 		List<PostContainer> allPosts = new ArrayList<>();
@@ -52,12 +52,34 @@ public class PostsController {
 			List<String> postContent = new ArrayList<>();
 			for(PostReply reply: post.getReplys())
 				postContent.add(reply.getContent());
+			System.out.println("postId: " + post.getId() + "\tpostContent: " + postContent);
 			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), postContent);
 			allPosts.add(p);
 		//	System.out.println(p.getPostContent());
 		}
 		return new ResponseEntity<List<PostContainer>>(allPosts, HttpStatus.OK);
 	}
+	
+	
+	@RequestMapping(value="/getMorePosts", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<PostContainer>> getMorePosts(@RequestBody String firstResult){
+		List<ForumPost> posts = service.getMorePosts(Integer.parseInt(firstResult));
+//		System.out.println("id: " + posts.get(0).getId() + "\ttitle: " + posts.get(0).getTitle() + "\tcontent: " + posts.get(0).getContent());
+//		System.out.println("author: " + posts.gset(0).getAuthor().getRole().getRoleName());
+		List<PostContainer> allPosts = new ArrayList<>();
+		for(ForumPost post: posts){
+			List<String> postContent = new ArrayList<>();
+			for(PostReply reply: post.getReplys())
+				postContent.add(reply.getContent());
+			System.out.println("postId: " + post.getId() + "\tpostContent: " + postContent);
+			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), postContent);
+			allPosts.add(p);
+			System.out.println(p.getPostContent());
+		}
+		return new ResponseEntity<List<PostContainer>>(allPosts, HttpStatus.OK);
+	}
+	
+	
 	
 	@RequestMapping(value="/createReply", method=RequestMethod.POST)
 	public void createReply(@RequestBody String[] postInfo){
@@ -68,19 +90,9 @@ public class PostsController {
 		String username = postInfo[2];
 		System.out.println("third param: " + postInfo[2]);
 		int postId = Integer.parseInt(postInfo[1]);
+		System.out.println("post id in the controller: " + postId);
 		service.createReply(replyContent, postId, username);
 	}
-		
-//		List<ForumPost> posts = service.getAllPosts();
-//		System.out.println("id: " + posts.get(0).getId() + "\ttitle: " + posts.get(0).getTitle() + "\tcontent: " + posts.get(0).getContent());
-//		System.out.println("author: " + posts.get(0).getAuthor().getRole().getRoleName());
-//		List<PostContainer> allPosts = new ArrayList<>();
-//		for(ForumPost post: posts){
-//			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId());
-//			allPosts.add(p);
-//			System.out.println(p.getPostContent());
-//		new ResponseEntity<List<PostContainer>>(allPosts, HttpStatus.OK)
-//		}
 
 	@RequestMapping(value="/getPostById", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PostContainer> getPost(@RequestParam("id") int id){
@@ -90,13 +102,10 @@ public class PostsController {
 		ForumPost post = service.getPostById(id);
 		//System.out.println(forumPost.toString());
 		//System.out.println(post.toString());
-//		PostContainer pos = new PostContainer();
-		List<String> postContent = new ArrayList<>();
+		List<String> content = new ArrayList<>();
 		for(PostReply reply: post.getReplys())
-			postContent.add(reply.getContent());
-		
-		PostContainer pos = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), postContent);
-	//	public PostContainer(String authorName, String postTitle, String postContent, int postId, List<String> replyContent)
+			content.add(reply.getContent());
+		PostContainer pos = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), content);
 		//ForumPost forumPost = new ForumPost();
 		//PostContainer pos = new PostContainer();
 		return new ResponseEntity<PostContainer>(pos, HttpStatus.OK);

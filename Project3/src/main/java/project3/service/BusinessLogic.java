@@ -28,11 +28,11 @@ public interface BusinessLogic {
 	
 	public ForumPost getPostById(int id);
 	
+	public List<ForumPost> getMorePosts(int firstResult);
+	
 	public void addDislike(ForumPost post, Person person);
 	
 	public List<DisLikeablePost> getAllDislikebyPost(ForumPost post);
 
 	public void addLike(ForumPost post, Person person);
-
-	
 }

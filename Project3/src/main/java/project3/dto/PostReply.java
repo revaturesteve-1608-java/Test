@@ -34,10 +34,10 @@ public class PostReply {
 	@JoinColumn(name="fp_id")
 	private ForumPost post;
 	
-	@OneToMany(mappedBy="reply", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="reply", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	private List<LikeableReply> likes;
 	
-	@OneToMany(mappedBy="reply", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="reply", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	private List<DisLikeableReply> dislikes;
 	
 	@Column(name="pr_approval")
@@ -70,6 +70,7 @@ public class PostReply {
 			Timestamp timestamp) {
 		super();
 		this.author = author;
+		this.post = post;
 		this.likes = likes;
 		this.dislikes = dislikes;
 		this.approval = approval;
