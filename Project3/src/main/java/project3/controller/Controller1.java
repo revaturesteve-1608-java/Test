@@ -1,5 +1,7 @@
 package project3.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -9,9 +11,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import project3.dto.Person;
 import project3.service.BusinessLogic;
@@ -23,6 +28,9 @@ public class Controller1 {
 	
 	@Autowired
 	BusinessLogic logic;
+	
+	@Autowired
+	ServiceInterface service;
 	
 	@RequestMapping(value="/updateTemp", method=RequestMethod.POST,
 			consumes=MediaType.APPLICATION_JSON_VALUE, 
@@ -56,7 +64,8 @@ public class Controller1 {
 			consumes=MediaType.APPLICATION_JSON_VALUE, 
 			produces=MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<String> updateUserInfo(@RequestBody String[] information, @ModelAttribute("person") Person person, ModelMap map){
+	public ResponseEntity<String> updateUserInfo(@RequestBody String[] information, 
+			@ModelAttribute("person") Person person, ModelMap map){
 //		System.out.println("HEY IT GOT INTO CONTROLLER");
 //		String testUsername = person.getUsername();
 		System.out.println("inside controller oldPass: " + information[0]);
@@ -99,5 +108,16 @@ public class Controller1 {
 		
 		System.out.println("REALLY SHOULD NOT GET HERE");
 		return new ResponseEntity<String>(updatedStatus, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/fileupload", method=RequestMethod.POST,
+			consumes=MediaType.MULTIPART_FORM_DATA_VALUE)
+	@ResponseBody
+	public void updateProfilePic(@RequestParam(required = false, value = "file") MultipartFile picture,
+			@ModelAttribute("person") Person person, ModelMap map){
+		System.out.println("HEY IT GOT INTO CONTROLLER");
+		System.out.println(picture);
+//		map.addAttribute("person", service.updateProfilePic(person, picture));
+		System.out.println("HEY IT GOT INTO CONTROLLER");
 	}
 }

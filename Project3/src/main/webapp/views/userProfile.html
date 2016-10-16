@@ -308,7 +308,7 @@ textarea.ta-bind {
 				<div class="ACon">
 					<div class="Profile">
 						<div>
-							<img src="{{user.profilePic}}" class="Img">
+							<img id = "profilePic" src="{{user.profilePic}}" class="Img">
 							<div class="overlay">
 								<span><img /></span>
 							</div>
@@ -334,6 +334,12 @@ textarea.ta-bind {
 								<a class="username" href="">Complex:
 									{{user.complex.categoryName}}</a>
 							</h5>
+                            
+                            <div>
+                                    File to upload:<br/>
+                                    <input type="file" id ="fileChooser" name="file" /><br/>
+                                    <input type="submit" id="fileUploadButton" value="Upload" />
+                            </div>
 
 							<div>
 								<button type="button" class="btn btn-secondary"
@@ -564,7 +570,6 @@ textarea.ta-bind {
 										</div>
 									</div>
 
-
 								</div>
 							</div>
 						</fieldset>
@@ -585,7 +590,38 @@ textarea.ta-bind {
 			</div>
 		</div>
 	</div>
-	
+<script type="text/javascript">
+$(document).ready(function(){
+	var currentPicture = '{{user.profilePic}}';
+	$("#fileChooser").change(function(event){
+		console.log("here1")
+		newPicture = URL.createObjectURL(event.target.files[0]);
+		$("#profilePic").attr("src", newPicture);
+		
+		$("#fileUploadButton").click(function(e){
+			console.log("here2")
+			var data = new FormData();
+			
+			data.append("file",$("#fileChooser")[0].files[0]);
+			$.ajax({
+				url: "rest/upload-remote",
+				data: data,
+				contentType: false,
+				processData: false,
+				type: "POST",
+				cache: false,
+				success: function(response){
+					
+						location.reload();
+				}		
+			});
+			
+			e.preventDefault();
+		})
+	})
+			
+});
+</script>
 	
 </body>
 
