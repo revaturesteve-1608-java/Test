@@ -22,6 +22,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import project3.dto.AwsKey;
 import project3.dto.Person;
@@ -248,6 +249,15 @@ public class ServiceLogic implements ServiceInterface{
 			return person;
 		}
 		return null;
+	}
+
+	@Override
+	public Person updateProfilePic(Person person, MultipartFile picture) {
+		AwsKey key = dao.getAWSKey();
+		person.setProfilePic(jetS3.uploadProfileItem(person.getId() + "", person.getId() + "", picture,
+				key.getAccessKey(), key.getSecretAccessKey()));
+		dao.updatePersonPic(person);
+		return person;
 	}
 	
 
