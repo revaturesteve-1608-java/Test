@@ -99,7 +99,7 @@ angular.module('routingApp')
 .service('postsService', function($http){
 	
 	this.createPost = function(postInformation, callback){
-		console.log('GOT INTO SERVICE')
+		
 		$http.post("rest/createPost", postInformation).then(callback)
 	}
 	

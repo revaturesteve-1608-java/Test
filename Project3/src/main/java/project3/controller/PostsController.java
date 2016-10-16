@@ -1,5 +1,6 @@
 package project3.controller;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,13 +49,22 @@ public class PostsController {
 //		System.out.println("id: " + posts.get(0).getId() + "\ttitle: " + posts.get(0).getTitle() + "\tcontent: " + posts.get(0).getContent());
 //		System.out.println("author: " + posts.get(0).getAuthor().getRole().getRoleName());
 		List<PostContainer> allPosts = new ArrayList<>();
+		
 		for(ForumPost post: posts){
-			List<String> postContent = new ArrayList<>();
-			for(PostReply reply: post.getReplys())
-				postContent.add(reply.getContent());
+			List<List<String>> postContent = new ArrayList<>();
+			for(PostReply reply: post.getReplys()) {
+				List<String> replies = new ArrayList<>();
+				replies.add(reply.getContent());
+				replies.add(reply.getAuthor().getUsername());
+				replies.add(reply.getTimestamp().toString());
+				postContent.add(replies);
+			}
+			
+			
 			System.out.println("postId: " + post.getId() + "\tpostContent: " + postContent);
 			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), postContent);
 			allPosts.add(p);
+			
 		//	System.out.println(p.getPostContent());
 		}
 		return new ResponseEntity<List<PostContainer>>(allPosts, HttpStatus.OK);
@@ -87,10 +97,17 @@ public class PostsController {
 //		System.out.println("id: " + posts.get(0).getId() + "\ttitle: " + posts.get(0).getTitle() + "\tcontent: " + posts.get(0).getContent());
 //		System.out.println("author: " + posts.gset(0).getAuthor().getRole().getRoleName());
 		List<PostContainer> allPosts = new ArrayList<>();
+		
 		for(ForumPost post: posts){
-			List<String> postContent = new ArrayList<>();
-			for(PostReply reply: post.getReplys())
-				postContent.add(reply.getContent());
+			List<List<String>> postContent = new ArrayList<>();
+			for(PostReply reply: post.getReplys()) {
+				List<String> replies = new ArrayList<>();
+				replies.add(reply.getContent());
+				replies.add(reply.getAuthor().getUsername());
+				replies.add(reply.getTimestamp().toString());
+				postContent.add(replies);
+			}
+			
 			System.out.println("postId: " + post.getId() + "\tpostContent: " + postContent);
 			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), postContent);
 			allPosts.add(p);
@@ -122,12 +139,23 @@ public class PostsController {
 		ForumPost post = service.getPostById(id, false, false);
 		//System.out.println(forumPost.toString());
 		//System.out.println(post.toString());
-		List<String> content = new ArrayList<>();
-		for(PostReply reply: post.getReplys())
-			content.add(reply.getContent());
+		List<List<String>> content = new ArrayList<>();
+		
+		List<PostReply> replys = service.getRepliesByPost(post);
+		System.out.println("here 1st----------");
+		for(PostReply reply: replys) {
+			List<String> replies = new ArrayList<>();
+			replies.add(reply.getContent());
+			replies.add(reply.getAuthor().getUsername());
+			Date day = new Date(reply.getTimestamp().getTime());
+			replies.add(day.toString());
+			content.add(replies);
+		}
+		System.out.println("here end reply=================");
 		PostContainer pos = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), content);
 		//ForumPost forumPost = new ForumPost();
 		//PostContainer pos = new PostContainer();
+		System.out.println("here 1");
 		return new ResponseEntity<PostContainer>(pos, HttpStatus.OK);
 	}
 	
@@ -138,11 +166,12 @@ public class PostsController {
 		System.out.println(username + "    " + id);
 		ForumPost post = service.getPostForDislike(id);
 		Person person = service.getPersonByUsername(username);
+		ForumPost postLike = service.getPostForLike(id);
 		service.addDislike(post, person);
+		service.checkForLike(postLike, person);
+		List<DisLikeablePost> dislikes = service.getAllDislikebyPost(post);
 		
-		
-		
-		return "yo";
+		return Integer.toString(dislikes.size());
 	}
 	
 	@RequestMapping(value="/like", method=RequestMethod.POST)
@@ -153,10 +182,11 @@ public class PostsController {
 		ForumPost post = service.getPostForLike(id);
 		Person person = service.getPersonByUsername(username);
 		service.addLike(post, person);
+		ForumPost postDislikes = service.getPostForDislike(id);
+		service.checkForDislike(postDislikes, person);
+		List<LikeablePost> likes = service.getAllLikesbyPost(post);
 		
-		
-		
-		return "ok";
+		return Integer.toString(likes.size());
 	}
 	
 	@RequestMapping(value="/getDislike", method=RequestMethod.POST)

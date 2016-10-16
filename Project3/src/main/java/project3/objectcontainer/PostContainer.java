@@ -10,12 +10,12 @@ public class PostContainer {
 	private String postTitle;
 	private String postContent;
 	private int postId;
-	private List<String> replyContent;
+	private List<List<String>> replyContent;
 	//	private List<PostReply> replies;
 
 	public PostContainer(){}
 
-	public PostContainer(String authorName, String postTitle, String postContent, int postId, List<String> replyContent) {
+	public PostContainer(String authorName, String postTitle, String postContent, int postId, List<List<String>> replyContent) {
 		super();
 		this.authorName = authorName;
 		this.postTitle = postTitle;
@@ -52,12 +52,12 @@ public class PostContainer {
 
 
 
-	public List<String> getReplyContent() {
+	public List<List<String>> getReplyContent() {
 		return replyContent;
 	}
 
-	public void setReplyContent(List<String> replyContent) {
-		this.replyContent = replyContent;
+	public void setReplyContent(List<List<String>> replyContent2) {
+		this.replyContent = replyContent2;
 	}
 
 	public int getPostId() {
@@ -73,4 +73,6 @@ public class PostContainer {
 		return "PostContainer [authorName=" + authorName + ", postTitle=" + postTitle + ", postContent=" + postContent
 				+ ", postId=" + postId + ", replyContent=" + replyContent + "]";
 	}
+
+	
 }

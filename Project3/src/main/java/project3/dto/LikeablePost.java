@@ -26,7 +26,7 @@ public class LikeablePost {
 	@JoinColumn(name="u_id")
 	private Person author;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="fp_id")
 	private ForumPost post;
 	
