@@ -1,6 +1,28 @@
 <div class="jumbotron">
 	<h3>My Profile</h3><br>
 	<img id="profilePic" src="{{user.profilePic}}" width="128px" height=auto/>
+	<div class="component" ng-controller="fupController">
+		<div class="form-group">
+			<label class="col-md-4 control-label" for="searchinput">
+				Upload Profile Picture</label>
+			<div class="col-md-8">
+		        <input type="file" id="file1" name="file" enctype="multipart/form-data"
+		            ng-files="getTheFiles($files)" />
+		        <input type="submit" ng-click="uploadFiles()" value="Upload" />
+			</div>
+		</div>
+	</div>
+	
+	<div>
+		
+			Relative Path:<br/>
+			<input type="text" name="path" id="path"/><br/>
+			File to upload:<br/>
+			<input type="file" id ="fileChooser" name="file" /><br/>
+			<input type="submit" id="fileUploadButton" value="Upload" />
+
+	</div>
+
 	<div data-ng-controller="profileCtrl">
 		<button type="button" class="btn btn-primary btn-lg"
 					data-toggle="modal" data-target="#myModal">Edit Profile Information</button>
@@ -121,15 +143,6 @@
 										</div>
 									</div>
 									
-									<div class="component">
-										<div class="form-group">
-											<label class="col-md-4 control-label" for="searchinput">
-												Upload Profile Picture</label>
-											<div class="col-md-8">
-												<input type="file" name="profilePicture" id="fileChooser"  ng-model="newProfilePic" /><br />
-											</div>
-										</div>
-									</div>
 									
 
 								</div>
@@ -149,4 +162,33 @@
 	</div>
 </div>
 
-
+<script type="text/javascript">
+$(document).ready(function(){
+	var currentPicture = '{{user.profilePic}}';
+	$("#fileChooser").change(function(event){
+		console.log("here1")
+		newPicture = URL.createObjectURL(event.target.files[0]);
+		$("#profilePic").attr("src", newPicture);
+		
+		$("#fileUploadButton").click(function(e){
+			console.log("here2")
+			var data = new FormData();
+			
+			data.append("file",$("#fileChooser")[0].files[0]);
+			$.ajax({
+				url: "rest/upload-remote",
+				data: data,
+				contentType: false,
+				processData: false,
+				type: "POST",
+				cache: false,
+				success: function(response){
+					
+						location.reload();
+				}		
+			});
+			
+			e.preventDefault();
+			
+		});
+</script>
