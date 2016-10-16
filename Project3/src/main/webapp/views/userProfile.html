@@ -308,7 +308,7 @@ textarea.ta-bind {
 				<div class="ACon">
 					<div class="Profile">
 						<div>
-							<img src="{{user.profilePic}}" class="Img">
+							<img id = "profilePic" src="{{user.profilePic}}" class="Img">
 							<div class="overlay">
 								<span><img /></span>
 							</div>
@@ -336,8 +336,6 @@ textarea.ta-bind {
 							</h5>
                             
                             <div>
-                                    Relative Path:<br/>
-                                    <input type="text" name="path" id="path"/><br/>
                                     File to upload:<br/>
                                     <input type="file" id ="fileChooser" name="file" /><br/>
                                     <input type="submit" id="fileUploadButton" value="Upload" />
@@ -470,7 +468,6 @@ textarea.ta-bind {
 	</div>
 
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
->>>>>>> refs/remotes/origin/Develop
 		aria-labelledby="myModalLabel" ng-controller="updateUserCtrl">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
@@ -620,8 +617,10 @@ $(document).ready(function(){
 			});
 			
 			e.preventDefault();
+		})
+	})
 			
-		});
+});
 </script>
 	
 </body>
