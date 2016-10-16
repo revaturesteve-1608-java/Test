@@ -77,9 +77,16 @@ public class PostsController {
 		List<ForumPost> posts = service.getPostsByUsername(0, username);
 		List<PostContainer> allPosts = new ArrayList<>();
 		for(ForumPost post: posts){
-			List<String> postContent = new ArrayList<>();
-			for(PostReply reply: post.getReplys())
-				postContent.add(reply.getContent());
+			List<PostReply> replys = service.getRepliesByPost(post);
+			List<List<String>> postContent = new ArrayList<>();
+			for(PostReply reply: replys){
+				List<String> replies = new ArrayList<>();
+				replies.add(reply.getContent());
+				replies.add(reply.getAuthor().getUsername());
+				Date day = new Date(reply.getTimestamp().getTime());
+				replies.add(day.toString());
+				postContent.add(replies);
+			}
 			System.out.println("postId: " + post.getId() + "\tpostContent: " + postContent);
 			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), postContent);
 			allPosts.add(p);
