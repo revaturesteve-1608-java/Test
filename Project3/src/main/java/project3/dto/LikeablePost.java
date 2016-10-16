@@ -23,11 +23,11 @@ public class LikeablePost {
 	@GeneratedValue(generator="likeablepostSeq", strategy=GenerationType.SEQUENCE)
 	private int id;
 	
-	@OneToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)  
+	@OneToOne(fetch=FetchType.EAGER)  
 	@JoinColumn(name="u_id")
 	private Person author;
 	
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="fp_id")
 	private ForumPost post;
 	
