@@ -76,4 +76,6 @@ public interface SimpleDao {
 	public ForumPost getPostForLike(int id);
 
 	public void saveLike(LikeablePost like);
+	
+	public List<ForumPost> getMorePostsByUsername(int firstResult, Person author);
 }

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import project3.dto.Person;
 import project3.service.BusinessLogic;
-import project3.service.ServiceInterface;
 
 @RestController
 @SessionAttributes("person")

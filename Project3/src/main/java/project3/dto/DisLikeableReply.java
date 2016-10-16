@@ -23,7 +23,7 @@ public class DisLikeableReply {
 	@GeneratedValue(generator="dislikeablereplySeq", strategy=GenerationType.SEQUENCE)
 	private int id;
 	
-	@OneToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)  
+	@OneToOne(fetch=FetchType.EAGER)  
 	@JoinColumn(name="u_id")
 	private Person author;
 	

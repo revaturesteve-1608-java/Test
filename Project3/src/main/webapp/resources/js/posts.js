@@ -37,9 +37,14 @@ angular.module('routingApp')
 			var postId = response.data;
 			console.log("postId in the controller: " + postId);
 			
+			
+//			<div id="titleDiv"><div class="col-md-8"><h4><b>{{postContainer.postTitle}}</b></h4></div><div class="col-md-4"><button id="deleteBtn" type="button" class="btn btn-default" aria-label="Right Align" ng-click="deletePost(postId)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></div></div>
+		
+			
+			
 			var elem = angular.element('#newPost');
 			var append = '<div id="eachPost"><ul class="list-group">'
-				                +'<li class="list-group-item"> <h2 id="postTitle">' + postTitle + '</h2></li><li class="list-group-item"><div><p id="thePost">'+ postContent + '</p></div></li><li class="list-group-item">'
+				                +'<li class="list-group-item"> <div id="titleDiv"><div class="col-md-8"><h4><b>' + postTitle + '</b></h4></div><div class="col-md-4"><button id="deleteBtn" type="button" class="btn btn-default" aria-label="Right Align" ng-click="deletePost(postId)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></div> </li><li class="list-group-item"><div><p id="thePost">'+ postContent + '</p></div></li><li class="list-group-item">'
 				                +'<div class="'+ postId + '"><div class="replies" class="row" ></div></div></li>'
 				                +'<li class="list-group-item" id="theRepyTextBox">'
 				                +'<input id="post" name="post1" type="hidden" ng-init="postId='+ postId + '" ng-model="postId"/>'
@@ -54,18 +59,27 @@ angular.module('routingApp')
 	$scope.user;
 	$scope.getUser = postsService.getUser(function(response){
 		$scope.user = response.data;
-		console.log($scope.user);
+		console.log($scope.user.username);
+		console.log("got back from getting a user!!!!!!!!!!!!!!!!!!!!!!!!!1")
+		postsService.getPostsByUsername($scope.user.username, function(response){
+			console.log("username in the beginning: " + $scope.user.username)
+			$scope.allPosts = response.data;
+			$scope.length = $scope.allPosts.length;
+			$scope.firstResult = $scope.allPosts.length;
+			console.log("length: " + $scope.length)
+		})
+		
 		
 	})
 	
 	$scope.firstResult = 0;
 	
-	$scope.getPosts = postsService.getPosts(function(response){
-		$scope.allPosts = response.data;
-		$scope.length = $scope.allPosts.length;
-		$scope.firstResult = $scope.allPosts.length;
-		console.log("length: " + $scope.length)
-	})
+//	$scope.getPosts = postsService.getPosts(function(response){
+//		$scope.allPosts = response.data;
+//		$scope.length = $scope.allPosts.length;
+//		$scope.firstResult = $scope.allPosts.length;
+//		console.log("length: " + $scope.length)
+//	})
 	
 	$scope.getMorePosts = function(firstResult){
 		console.log("event hit!!!!!!!!!!!!")
@@ -73,6 +87,12 @@ angular.module('routingApp')
 			$scope.allPosts = response.data;
 			$scope.firstResult = $scope.allPosts.length;
 		})
+	}
+	
+	$scope.deletePost = function(postId){
+//		console.log("GETTING IN HERERERERERE: " + authorName)
+		console.log("post id in the delete: " + postId)
+		postsService.deletePost(postId);
 	}
 })
 
@@ -87,8 +107,12 @@ angular.module('routingApp')
 		$http.get('rest/user').then(callback)
 	}
 	
-	this.getPosts = function(callback){
-		$http.get("rest/getPosts").then(callback)
+//	this.getPosts = function(callback){
+//		$http.get("rest/getPosts").then(callback)
+//	}
+	
+	this.getPostsByUsername = function(username, callback){
+		$http.post("rest/getPostsByUsername", username).then(callback)
 	}
 	
 	this.getMorePosts = function(firstResult, callback){
@@ -97,6 +121,10 @@ angular.module('routingApp')
 	
 	this.createReply = function(replyInfo){
 		console.log("here i am");
-		$http.post("rest/createReply", replyInfo).then()
+		$http.post("rest/createReply", replyInfo).then();
+	}
+	
+	this.deletePost = function(postId){
+		$http.post("rest/deletePost", postId).then();
 	}
 })

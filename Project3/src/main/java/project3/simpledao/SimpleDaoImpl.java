@@ -191,6 +191,8 @@ public class SimpleDaoImpl implements SimpleDao{
 	public void deleteForumPost(int id) {
 		Session currentSession = session.getCurrentSession();
 		ForumPost post = (ForumPost) currentSession.get(ForumPost.class, id);
+//		for(PostReply reply: post.getReplys())
+//			currentSession.delete(reply);
 		currentSession.delete(post);
 	}
 
@@ -317,6 +319,25 @@ public class SimpleDaoImpl implements SimpleDao{
 	@Override
 	public void saveLike(LikeablePost like) {
 		session.getCurrentSession().save(like);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ForumPost> getMorePostsByUsername(int firstResult, Person author) {
+		// TODO Auto-generated method stub
+		
+		Session currentSession = session.getCurrentSession();
+		Criteria criteria = currentSession.createCriteria(ForumPost.class);
+		criteria.setFetchMode("author", FetchMode.JOIN);
+		criteria.setFetchMode("replys", FetchMode.JOIN);
+		System.out.println("username inside of the dao: " + author.getUsername());
+		criteria.add(Restrictions.eq("author", author));
+//		criteria.setFirstResult(firstResult);
+//		criteria.setMaxResults(firstResult + 2);
+		List<ForumPost> posts = (List<ForumPost>) criteria.list();
+		System.out.println("size of posts: " + posts.size());
+		
+		return posts;
 	}
 	
 }
