@@ -14,6 +14,7 @@ import project3.dto.ForumCategory;
 import project3.dto.ForumPost;
 import project3.dto.LikeablePost;
 import project3.dto.Person;
+import project3.dto.PostReply;
 import project3.dto.Role;
 
 public interface SimpleDao {
@@ -63,9 +64,9 @@ public interface SimpleDao {
 	
 	public List<ForumPost> getMorePosts(int firstResult);
 	
-	public void addDislike(ForumPost post, DisLikeablePost dislike);
+	public List<ForumPost> getPostsByCategory(ForumCategory cat);
 
-	public void addLike(ForumPost post, LikeablePost like);
+	public void updatePost(ForumPost post);
 
 	public void saveDislike(DisLikeablePost dislike);
 
@@ -74,4 +75,18 @@ public interface SimpleDao {
 	public ForumPost getPostForLike(int id);
 
 	public void saveLike(LikeablePost like);
+	
+	public List<ForumPost> getMorePostsByUsername(int firstResult, Person author);
+
+	public void removeLike(ForumPost post, LikeablePost like);
+	
+	public LikeablePost getLikesByPerson(Person person, int i);
+
+	public LikeablePost getLikeById(int id);
+
+	public DisLikeablePost getDislikesById(int id);
+
+	public void removeDislike(DisLikeablePost dislike);
+	
+	public List<PostReply> getRepliesByPost(ForumPost post);
 }

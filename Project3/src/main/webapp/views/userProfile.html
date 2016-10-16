@@ -263,6 +263,9 @@ textarea.ta-bind {
 #thumbsUp {
 	margin-left: 10%;
 }
+#titleDiv{
+	padding-bottom: 4%;
+}
 </style>
  
 <script>
@@ -396,13 +399,21 @@ textarea.ta-bind {
 						</li>
 					</ul>
 				</div>
-
-				<div id="posts" ng-repeat="postContainer in allPosts">
+				
+				<input type="text" ng-model="searchBox"/>
+				<div id="posts" ng-repeat="postContainer in allPosts | filter:searchBox">
 					<div id="eachPost">
 						<ul class="list-group">
-							<li class="list-group-item">
-								<div>
-									<h2 id="thePost">{{postContainer.postTitle}}</h2>
+							<li class="list-group-item" >
+								<div id="titleDiv">
+								<div class="col-md-8"><h4><b>{{postContainer.postTitle}}</b></h4></div>
+								<div class="col-md-4">
+									<button id="deleteBtn" type="button" class="btn btn-default"
+										aria-label="Right Align" ng-click="deletePost(postId)">
+										<span class="glyphicon glyphicon-remove"
+											aria-hidden="true"></span>
+									</button>
+								</div>
 								</div>
 							</li>
 							<li class="list-group-item">
