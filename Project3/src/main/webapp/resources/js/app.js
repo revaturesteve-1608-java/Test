@@ -127,5 +127,14 @@ app.service('createUserService', function($http, $q, $window) {
 		$http.get("rest/getForm").then(callback)
 	}
 	
+	this.getDislike = function(info, callback) {
+	
+	$http({method: 'POST', url: 'rest/getDislike', data: $.param({id: info}), headers: {'Content-Type': 'application/x-www-form-urlencoded'} }).then(callback);
+	}
+	
+	this.getLike = function(info, callback) {
+		
+		$http({method: 'POST', url: 'rest/getLike', data: $.param({id: info}), headers: {'Content-Type': 'application/x-www-form-urlencoded'} }).then(callback);
+	}
 	
 })

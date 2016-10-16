@@ -7,6 +7,7 @@ import project3.dto.ForumCategory;
 import project3.dto.ForumPost;
 import project3.dto.LikeablePost;
 import project3.dto.Person;
+import project3.dto.PostReply;
 
 public interface BusinessLogic {
 	
@@ -36,10 +37,20 @@ public interface BusinessLogic {
 	public List<DisLikeablePost> getAllDislikebyPost(ForumPost post);
 
 	public void addLike(ForumPost post, Person person);
+	
+	public void checkForLike(ForumPost post, Person person);
 
 	public ForumPost getPostForDislike(int id);
 
 	public ForumPost getPostForLike(int id);
 
 	public List<LikeablePost> getAllLikesbyPost(ForumPost post);
+	
+	public List<ForumPost> getPostsByUsername(int firstResult, String username);
+	
+	public void deletePost(int postId);
+
+	void checkForDislike(ForumPost post, Person person);
+	
+	public List<PostReply> getRepliesByPost(ForumPost post);
 }

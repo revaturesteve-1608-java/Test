@@ -100,6 +100,11 @@ public class Jets3Impl implements Jets3{
 		return uploadFile(PROFILES + loginName + "/", fileName, file);
 	}
 	
+	public String uploadProfileItem(String loginName, String fileName, MultipartFile file, 
+			String publicKey, String privateKey) {
+		return uploadFile(PROFILES + loginName + "/", fileName, file, publicKey, privateKey);
+	}
+	
 	public String uploadProfileItem(String loginName, String fileName, File file){
 		return uploadFile(PROFILES + loginName + "/", fileName, file);
 	}
@@ -143,6 +148,32 @@ public class Jets3Impl implements Jets3{
 	 * @return the URL where the file was uploaded if successful, null otherwise
 	 */
 	protected String uploadFile(String folderPath, String fileName, MultipartFile file) {
+		try {
+			S3Bucket bucket = S3.getBucket(BUCKET);
+			S3Object s3Obj = new S3Object(folderPath + fileName);
+			s3Obj.setContentType(file.getContentType());
+			AccessControlList acl = new AccessControlList();
+			acl.setOwner(bucket.getOwner());
+			acl.grantPermission(GroupGrantee.ALL_USERS, Permission.PERMISSION_READ);
+			s3Obj.setDataInputStream(file.getInputStream());
+			s3Obj.setContentLength(file.getSize());
+			s3Obj.setAcl(acl);
+			S3.putObject(bucket, s3Obj);
+
+			return 
+				HTTP + ADDRESS +BUCKET+ "/" + folderPath + fileName;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+//			Logging.error(e);
+		}
+		return null; // Resource could not be uploaded
+	}
+	
+	protected String uploadFile(String folderPath, String fileName, MultipartFile file,
+			String publicKey, String privateKey) {
+		S3 = new RestS3Service(new AWSCredentials(
+				publicKey, privateKey));
 		try {
 			S3Bucket bucket = S3.getBucket(BUCKET);
 			S3Object s3Obj = new S3Object(folderPath + fileName);
