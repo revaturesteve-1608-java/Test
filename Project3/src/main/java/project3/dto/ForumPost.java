@@ -18,6 +18,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 @Entity
 @Table(name="ForumPost")
 public class ForumPost {
@@ -44,9 +47,11 @@ public class ForumPost {
 	
 
 	@OneToMany(mappedBy="post", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<LikeablePost> likes;
 
 	@OneToMany(mappedBy="post", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<DisLikeablePost> dislikes;
 	
 	@Column(name="fp_resolved")

@@ -2,9 +2,10 @@
 <span class="md-headline">Question: {{post.postTitle}}</span> <span
 	class="md-subhead post">Question by: {{post.authorName}}</span> </md-card-title-text> </md-card-title> <md-card-content>
 <h3>Question Content</h3>
-<h2>{{post.postContent}}</h2>
+<h2 ng-bind-html="post.postContent">{{post.postContent}}</h2>
 </md-card-content> 
 <md-card-actions layout="row" layout-align="end center">
+Likes: {{likesArray}} Dislikes: {{dislikesArray}}
 <md-button type="button" class="btn btn-default" aria-label="Right Align" ng-click="like(user, post)">
 	<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
 </md-button>
@@ -12,3 +13,12 @@
 	<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
 </md-button>
 <md-button>Reply</md-button> </md-card-actions> </md-card>
+<md-card ng-repeat="reply in replys">
+	 <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">{{reply}}</span>
+           </md-card-title-text>
+     </md-card-title>
+</md-card>
+<input type="text" placeholder="reply" ng-model="replyContext" />
+<button type="button" ng-click="replyToPost(replyContext, user)">reply</button>

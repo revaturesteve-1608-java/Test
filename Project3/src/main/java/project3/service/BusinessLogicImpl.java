@@ -139,8 +139,8 @@ public class BusinessLogicImpl implements BusinessLogic{
 
 	@Override
 	@Transactional
-	public ForumPost getPostById(int id) {
-		return dao.getPostById(id);
+	public ForumPost getPostById(int id, boolean like, boolean dislike) {
+		return dao.getPostById(id, like, dislike);
 	}
 
 	@Override
@@ -148,7 +148,9 @@ public class BusinessLogicImpl implements BusinessLogic{
 		// TODO Auto-generated method stub
 		return getRidOfDupes(dao.getMorePosts(firstResult));
 		}
+	
 	@Transactional
+	@Override
 	public void addDislike(ForumPost post, Person person) {
 		
 		System.out.println(post.getDislikes().size());
@@ -173,9 +175,27 @@ public class BusinessLogicImpl implements BusinessLogic{
 	@Transactional
 	public void addLike(ForumPost post, Person person) {
 		
-		//LikeablePost like = new LikeablePost(person);
-	/*	post.getLikes().add(like);
-		dao.addLike(post, like);*/
+		
+		LikeablePost like = new LikeablePost(person, post);
+		dao.saveLike(like);
+		post.getLikes().add(like);
+		dao.addLike(post, like);
 	}
+
+	@Override
+	public ForumPost getPostForDislike(int id) {
+		return dao.getPostForDislike(id);
+	}
+
+	@Override
+	public ForumPost getPostForLike(int id) {
+		return dao.getPostForLike(id);
+	}
+
+	@Override
+	public List<LikeablePost> getAllLikesbyPost(ForumPost post) {
+		return post.getLikes();
+	}
+	
 	
 }

@@ -1,60 +1,476 @@
-<div class="jumbotron">
-	<h3>My Profile</h3><br>
-	<img id="profilePic" src="{{user.profilePic}}" width="128px" height=auto/>
-	<div class="component" ng-controller="fupController">
-		<div class="form-group">
-			<label class="col-md-4 control-label" for="searchinput">
-				Upload Profile Picture</label>
+<html>
+<head>
+<title>User Profile</title>
+
+<style>
+body {
+	margin: 0 0 0 0;
+	background-size: cover;
+}
+
+.click {
+	background:
+		url('http://cdn2.digitalartsonline.co.uk/cmsdata/slideshow/3513552/polybreno_1500.jpg');
+	background-size: contain;
+	position: relative;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border-radius: 50%;
+	-webkit-transition: cubic-bezier(.34, .43, 0, 1.02) 0.5s;
+	-moz-transition: cubic-bezier(.34, .43, 0, 1.02) 0.5s;
+	transition: cubic-bezier(.34, .43, 0, 1.02) 0.5s;
+	box-shadow: 0px 0px 0px 2pt transparent;
+	border: 0px solid #FFF;
+	margin: auto;
+	cursor: pointer;
+	width: 120px;
+	height: 120px;
+}
+
+.Profile {
+	margin-left: auto;
+	z-index: 9999;
+	margin-right: auto;
+	text-align: center;
+	-webkit-transition: cubic-bezier(.34, .43, 0, 1.02) 0.5s;
+	-moz-transition: cubic-bezier(.34, .43, 0, 1.02) 0.5s;
+	transition: cubic-bezier(.34, .43, 0, 1.02) 0.5s;
+	width: 300px;
+	height: 200px;
+	border-radius: 50%;
+	margin-top: 34vh;
+}
+
+.clickProfile {
+	margin-left: auto;
+	border-top-left-radius: 20px;
+	border-top-right-radius: 20px;
+	margin-right: auto;
+	background: #191919;
+	text-align: center;
+	padding: 20px 0px 20px 0px;
+	-webkit-transition: cubic-bezier(.34, .43, 0, 1.02) 0.5s;
+	-moz-transition: cubic-bezier(.34, .43, 0, 1.02) 0.5s;
+	transition: cubic-bezier(.34, .43, 0, 1.02) 0.5s;
+	width: 300px;
+	height: 120px;
+	margin-top: 24vh;
+}
+
+.Img {
+	background-size: contain;
+	z-index: 9999;
+	position: relative;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border-radius: 50%;
+	-webkit-transition: cubic-bezier(.34, .43, 0, 1.02) 0.2s;
+	-moz-transition: cubic-bezier(.34, .43, 0, 1.02) 0.2s;
+	transition: cubic-bezier(.34, .43, 0, 1.02) 0.2s;
+	box-shadow: 0px 0px 0px 2pt transparent;
+	border: 0px solid #FFF;
+	margin: auto;
+	cursor: pointer;
+	width: 200px;
+	height: 200px;
+}
+
+.clickPopUp {
+	position: relative;
+	background: #FF4500;
+	display: none;
+	opacity: 1;
+	width: 300px;
+	-webkit-transition: cubic-bezier(.34, .43, 0, 1.02) 0.4s;
+	-moz-transition: cubic-bezier(.34, .43, 0, 1.02) 0.4s;
+	transition: cubic-bezier(.34, .43, 0, 1.02) 0.4s;
+	margin-top: 20px;
+	border-bottom-left-radius: 20px;
+	border-bottom-right-radius: 20px;
+	padding: 13px 0px 10px 0px;
+	font-size: 18px;
+}
+
+.PopUp {
+	position: relative;
+	background: #FF4500;
+	width: 300px;
+	opacity: 0;
+	font-family: 'Helvetica Neue', Arial, Helvetica, 'Nimbus Sans L',
+		sans-serif;
+	font-weight: 700;
+	text-decoration: none;
+	text-transform: uppercase;
+	color: #FFF;
+	-webkit-transition: cubic-bezier(.34, .43, 0, 1.02) 0.4s;
+	-moz-transition: cubic-bezier(.34, .43, 0, 1.02) 0.4s;
+	transition: cubic-bezier(.34, .43, 0, 1.02) 0.4s;
+	margin-top: 20px;
+	border-radius: 20px;
+	padding: 13px 0px 10px 0px;
+	font-size: 18px;
+}
+
+.PopUp:after, .clickPopUp:after {
+	bottom: 100%;
+	left: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+	border-color: rgba(231, 76, 60, 0);
+	border-bottom-color: #e74c3c;
+	border-width: 10px;
+	margin-left: -10px;
+}
+
+.PopUp a, .clickPopUp a {
+	font-family: 'Helvetica Neue', Arial, Helvetica, 'Nimbus Sans L',
+		sans-serif;
+	font-weight: 700;
+	text-decoration: none;
+	text-transform: uppercase;
+	color: #FFF;
+}
+
+.overlay {
+	background: rgba(0, 0, 0, .5);
+	position: absolute;
+	margin: auto;
+	width: 0px;
+	height: 0px;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	border-radius: 50%;
+	opacity: 0;
+	-webkit-transition: .3s ease;
+	transition: .3s ease;
+}
+
+.Img:hover .overlay, .click:hover .overlay {
+	opacity: 1;
+	width: 100%;
+	height: 100%;
+}
+
+.overlay span {
+	color: #fff;
+	font-family: 'Open Sans', sans-serif;
+	text-align: center;
+	position: absolute;
+	margin: auto;
+	width: 160px;
+	height: 30px;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	opacity: 0;
+}
+
+.Img:hover .overlay span {
+	opacity: 1;
+	-webkit-transition: 1.3s ease;
+	transition: 1.3s ease;
+}
+
+.content {
+	padding-left: 15px;
+	padding-right: 15px;
+	color: #FFF;
+	font-family: 'Open Sans', sans-serif;
+}
+
+#logo {
+	width: 40px; /* required to center */
+	height: 40px;
+	border-radius: 50%;
+	margin-top: 15px;
+	margin-left: 20px;
+	margin-right: 20px;
+	-webkit-transition: cubic-bezier(.34, .43, 0, 1.02) 0.4s;
+	-moz-transition: cubic-bezier(.34, .43, 0, 1.02) 0.4s;
+	transition: cubic-bezier(.34, .43, 0, 1.02) 0.4s;
+	fill: white;
+}
+
+#logo:hover {
+	background: #191919;
+	border-radius: 50%;
+	fill: #e74c3c;;
+}
+
+.clickPopUp h4 {
+	margin-top: 10px;
+}
+
+.buttons {
+	background: transprent;
+	padding: 20px;
+	margin: 0;
+	-webkit-transition: cubic-bezier(.34, .43, 0, 1.02) 0.4s;
+	-moz-transition: cubic-bezier(.34, .43, 0, 1.02) 0.4s;
+	transition: cubic-bezier(.34, .43, 0, 1.02) 0.4s;
+	border-top: 1px solid #FFFFFF;
+	border-left: 0px solid #FFFFFF;
+}
+
+.b {
+	border-bottom: 1px solid #FF4500;
+}
+
+.buttons:hover {
+	background: #FF4500;
+	border-left: 3px solid #FF4511;
+	box-shadow: inset 0px 0px 8px rgba(0, 0, 0, 0.2);
+}
+.ta-toolbar {
+	background-color: #F0F0F0;
+	padding: 10px 10px 5px;
+	margin-left: 0px; /* Override bootstrap */
+	border: 1px solid #EEE;
+}
+
+.ta-toolbar .btn-group {
+	margin-bottom: 5px;
+}
+
+textarea.ta-bind {
+	width: 100%;
+}
+
+.ta-editor {
+	padding: 10px;
+	background-color: #FFF;
+	border: 1px solid #EEE;
+	min-height: 300px;
+	height: auto;
+	overflow: auto;
+	font-family: inherit;
+	font-size: 100%;
+}
+
+#singleReply {
+	margin-top: 2%;
+}
+
+#thumbsUp {
+	margin-left: 10%;
+}
+</style>
+ 
+<script>
+	$(document).ready(function() {
+		var $Menu = $('.Img');
+		$('.Img').mouseenter(function() {
+			$('.PopUp').css('opacity', '1');
+			$('.PopUp').css('margin-top', '20px');
+		});
+		$('.Img').mouseleave(function() {
+			$('.PopUp').css('margin-top', '0px');
+		});
+		$('.Img').on('click', function() {
+			if ($Menu.hasClass('Img')) {
+				$('.Img').addClass('click');
+				$('.Img').removeClass('Img');
+				$('.Profile').addClass('clickProfile');
+				$('.Profile').removeClass('Profile');
+				$('.clickPopUp').css('display', 'block');
+				$('.PopUp').css('display', 'none');
+			} else {
+				$('.click').addClass('Img');
+				$('.click').removeClass('click');
+				$('.clickProfile').addClass('Profile');
+				$('.clickProfile').removeClass('clickProfile');
+				$('.clickPopUp').css('display', 'none');
+				$('.PopUp').css('display', 'block');
+			}
+		});
+	});
+</script>
+
+</head>
+
+
+<body>
+
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-4">
+
+				<div class="ACon">
+					<div class="Profile">
+						<div>
+							<img src="{{user.profilePic}}" class="Img">
+							<div class="overlay">
+								<span><img /></span>
+							</div>
+						</div>
+						<div class="PopUp">Open Profile</div>
+						<div class="clickPopUp">
+							<h4>
+								<a class="username" href="">{{user.first_name}}
+									{{user.last_name}}, {{user.role.roleName}}</a>
+							</h4>
+							<h5 class="buttons">
+								<a class="username" href="">{{user.bio}}</a>
+							</h5>
+							<h5 class="buttons">
+								<a class="username" href="">Email: {{user.email}}<br>
+									PhoneNumber: {{user.phoneNumber}}
+								</a>
+							</h5>
+							<h5 class="buttons">
+								<a class="username" href="">School: {{user.university}}</a>
+							</h5>
+							<h5 class="buttons">
+								<a class="username" href="">Complex:
+									{{user.complex.categoryName}}</a>
+							</h5>
+                            
+                            <div>
+                                    Relative Path:<br/>
+                                    <input type="text" name="path" id="path"/><br/>
+                                    File to upload:<br/>
+                                    <input type="file" id ="fileChooser" name="file" /><br/>
+                                    <input type="submit" id="fileUploadButton" value="Upload" />
+                            </div>
+
+							<div>
+								<button type="button" class="btn btn-secondary"
+									data-toggle="modal" data-target="#myModal">Edit
+									Profile Information</button>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+			</div>
 			<div class="col-md-8">
-		        <input type="file" id="file1" name="file" enctype="multipart/form-data"
-		            ng-files="getTheFiles($files)" />
-		        <input type="submit" ng-click="uploadFiles()" value="Upload" />
+				
+	</div>
+
+	<div  infinite-scroll="getMorePosts(firstResult)" infinite-scroll-distance='1'>
+
+		<div class="col-sm-8 text-left">
+			<div id="allPosts" data-ng-controller="postsCtrl">
+				<div id="newPost">
+					<ul class="list-group">
+						<li class="list-group-item">
+							<div class="row">
+								<div>
+									<p id="theUsername">{{user.username}}</p>
+								</div>
+							</div>
+						</li>
+						<li class="list-group-item">
+							<div id=title>
+								<input class="form-group" id="postContent" type="text"
+									placeholder="Title" ng-model="postTitle">
+							</div>
+							<div>
+								<div>
+									<h3>Create Post</h3>
+
+									<div text-angular="text-angular" name="htmlcontent"
+										ng-model="htmlcontent" ta-disabled='disabled'
+										ta-text-editor-class="clearfix border-around"
+										ta-html-editor-class="border-around"></div>
+									<hr>
+
+									<button id="submit" type="button" class="btn btn-primary"
+										ng-click="addPost(postTitle, htmlcontent)">Submit</button>
+									<button type="button" class="btn btn-primary"
+										ng-click="htmlcontent = emptyhtml">Reset</button>
+									<button type="button" class="btn btn-primary"
+										data-toggle="modal" data-target=".bs-example-modal-lg">Get
+										Code Block HTML</button>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+
+				<div id="posts" ng-repeat="postContainer in allPosts">
+					<div id="eachPost">
+						<ul class="list-group">
+							<li class="list-group-item">
+								<div>
+									<h2 id="thePost">{{postContainer.postTitle}}</h2>
+								</div>
+							</li>
+							<li class="list-group-item">
+								<div ng-bind-html="postContainer.postContent">
+									<p id="thePost">{{postContainer.postContent}}</p>
+								</div>
+							</li>
+
+							<li class="list-group-item">
+								<div class="{{postContainer.postId}}">
+									<div id="singleReply" class="row" ng-repeat="replies in postContainer.replyContent">
+										<div class="col-md-8">{{replies}}</div>
+										<div class="col-md-4">
+											<button type="button" class="btn btn-default"
+												aria-label="Right Align">
+												<span class="glyphicon glyphicon-thumbs-up"
+													aria-hidden="true"></span>
+											</button>
+											<button type="button" class="btn btn-default"
+												aria-label="Right Align">
+												<span class="glyphicon glyphicon-thumbs-down"
+													aria-hidden="true"></span>
+											</button>
+										</div>
+									</div>
+								</div>
+							</li>
+							<li class="list-group-item" id="theRepyTextBox"><input
+								id="post" name="post1" type="hidden"
+								ng-init="postId=postContainer.postId;" ng-model="postId" /> <input
+								class="form-group" id="replyText" type="text"
+								placeholder="reply" ng-model="userReply1">
+								<button id="reply" type="button" class="btn btn-primary"
+									ng-click="addReply(userReply1, postId)">reply</button></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		
+	
+	</div>
+	<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+		aria-labelledby="myLargeModalLabel">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="form-group">
+					<label for="sel1">What language would you like to snip code
+						in:</label> <select class="form-control" id="sel1">
+						<option>Java</option>
+						<option>JS</option>
+						<option>HTML</option>
+						<option>C</option>
+					</select>
+				</div>
 			</div>
 		</div>
 	</div>
-	
-	<div>
-		
-			Relative Path:<br/>
-			<input type="text" name="path" id="path"/><br/>
-			File to upload:<br/>
-			<input type="file" id ="fileChooser" name="file" /><br/>
-			<input type="submit" id="fileUploadButton" value="Upload" />
 
+			</div>
+		</div>
 	</div>
 
-	<div data-ng-controller="profileCtrl">
-		<button type="button" class="btn btn-primary btn-lg"
-					data-toggle="modal" data-target="#myModal">Edit Profile Information</button>
-					<br><br>
-		 <md-card md-theme="{{'custom'}}" md-theme-watch="">
-        <md-card-title>
-         
-          <md-card-title-text>
-            <span class="md-headline">{{user.first_name}}   {{user.last_name}}</span>
-            <span class="md-subhead">{{user.username}}</span>
-            <span class="md-subhead">{{user.role.roleName}}</span>
-          </md-card-title-text>
-          <md-card-title-media>
-            <div class="md-media-lg card-media"></div>
-          </md-card-title-media>
-        </md-card-title>
-        <md-card-content>
-        	<p>{{user.bio}}</p>
-        	<h4>Personal Info</h4>
-        	<ul>
-        	<li>Email: {{user.email}}</li>
-        	<li>PhoneNumber: {{user.phoneNumber}}</li>
-        	<li>School: {{user.university}}</li>
-        	<li>Complex: {{user.complex.categoryName}}</li>
-        	</ul>
-        </md-card-content>
-        <md-card-actions layout="row" layout-align="end center">
-          <md-button>Go to posts</md-button>
-        </md-card-actions>
-      </md-card>
-      
-      <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+>>>>>>> refs/remotes/origin/Develop
 		aria-labelledby="myModalLabel" ng-controller="updateUserCtrl">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
@@ -63,7 +479,8 @@
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
-					<h4 class="modal-title" id="myModalLabel">Edit Profile Information</h4>
+					<h4 class="modal-title" id="myModalLabel">Edit Profile
+						Information</h4>
 				</div>
 				<div class="modal-body">
 					<form class="form-horizontal" id="components" role="form">
@@ -77,7 +494,9 @@
 											<label class="col-md-4 control-label" for="textinput">
 												Username</label>
 											<div class="col-md-8">
-												<input class="form-control input-md" id="username" type="username" maxlength="40" placeholder="Username" ng-model="username">
+												<input class="form-control input-md" id="username"
+													type="username" maxlength="40" placeholder="Username"
+													ng-model="username">
 											</div>
 										</div>
 									</div>
@@ -87,7 +506,9 @@
 											<label class="col-md-4 control-label" for="textinput">
 												Current Password</label>
 											<div class="col-md-8">
-											<input class="form-control input-md" id="password" type="password" maxlength="40" placeholder="Password" ng-model="oldPassword">
+												<input class="form-control input-md" id="password"
+													type="password" maxlength="40" placeholder="Password"
+													ng-model="oldPassword">
 											</div>
 										</div>
 									</div>
@@ -98,17 +519,21 @@
 											<label class="col-md-4 control-label" for="textinput">
 												New Password</label>
 											<div class="col-md-8">
-											<input class="form-control input-md" id="password" type="password" maxlength="40" placeholder="New Password" ng-model="newPassword">
+												<input class="form-control input-md" id="password"
+													type="password" maxlength="40" placeholder="New Password"
+													ng-model="newPassword">
 											</div>
 										</div>
 									</div>
 									<div class="component">
 										<!-- Password input-->
 										<div class="form-group">
-											<label class="col-md-4 control-label" for="passwordinput">New Email Address
-											</label>
+											<label class="col-md-4 control-label" for="passwordinput">New
+												Email Address </label>
 											<div class="col-md-8">
-											<input class="form-control input-md" id="email" type="text" maxlength="150" placeholder="Email Address" ng-model="newEmail">
+												<input class="form-control input-md" id="email" type="text"
+													maxlength="150" placeholder="Email Address"
+													ng-model="newEmail">
 											</div>
 										</div>
 									</div>
@@ -118,7 +543,8 @@
 											<label class="col-md-4 control-label" for="searchinput">
 												Phone Number</label>
 											<div class="col-md-8">
-											<input class="form-control input-md" id="phone" type="text" maxlength="11" placeholder="Phone" ng-model="newPhone">
+												<input class="form-control input-md" id="phone" type="text"
+													maxlength="11" placeholder="Phone" ng-model="newPhone">
 											</div>
 										</div>
 									</div>
@@ -128,7 +554,9 @@
 											<label class="col-md-4 control-label" for="searchinput">
 												University</label>
 											<div class="col-md-8">
-											<input class="form-control input-md" id="university" type="text" maxlength="150" placeholder="University" ng-model="newUniversity">
+												<input class="form-control input-md" id="university"
+													type="text" maxlength="150" placeholder="University"
+													ng-model="newUniversity">
 											</div>
 										</div>
 									</div>
@@ -138,12 +566,12 @@
 											<label class="col-md-4 control-label" for="searchinput">
 												LinkedIn Link</label>
 											<div class="col-md-8">
-											<input class="form-control input-md" id="linkedIn" type="text" maxlength="200" placeholder="LinkedIn link" ng-model="newLinkedIn">
+												<input class="form-control input-md" id="linkedIn"
+													type="text" maxlength="200" placeholder="LinkedIn link"
+													ng-model="newLinkedIn">
 											</div>
 										</div>
 									</div>
-									
-									
 
 								</div>
 							</div>
@@ -151,17 +579,20 @@
 					</form>
 
 
+
+
+
+
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" ng-click="updateInformation(oldPassword, newPassword, username, newEmail, newPhone, newUniversity, newLinkedIn)">Save Changes</button>
+					<button type="button" class="btn btn-primary"
+						ng-click="updateInformation(oldPassword, newPassword, username, newEmail, newPhone, newUniversity, newLinkedIn)">Save
+						Changes</button>
 				</div>
 			</div>
 		</div>
 	</div>
-	</div>
-</div>
-
 <script type="text/javascript">
 $(document).ready(function(){
 	var currentPicture = '{{user.profilePic}}';
@@ -192,3 +623,10 @@ $(document).ready(function(){
 			
 		});
 </script>
+	
+</body>
+
+</html>
+
+
+
