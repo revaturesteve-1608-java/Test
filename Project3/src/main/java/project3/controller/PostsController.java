@@ -71,9 +71,36 @@ public class PostsController {
 	}
 	
 	
+	@RequestMapping(value="/getPostsByUsername", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<PostContainer>> getPostsByUsername(@RequestBody String username){
+		System.out.println("username in the controller: " + username);
+		List<ForumPost> posts = service.getPostsByUsername(0, username);
+		List<PostContainer> allPosts = new ArrayList<>();
+		for(ForumPost post: posts){
+			List<PostReply> replys = service.getRepliesByPost(post);
+			List<List<String>> postContent = new ArrayList<>();
+			for(PostReply reply: replys){
+				List<String> replies = new ArrayList<>();
+				replies.add(reply.getContent());
+				replies.add(reply.getAuthor().getUsername());
+				Date day = new Date(reply.getTimestamp().getTime());
+				replies.add(day.toString());
+				postContent.add(replies);
+			}
+			System.out.println("postId: " + post.getId() + "\tpostContent: " + postContent);
+			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), postContent);
+			allPosts.add(p);
+		//	System.out.println(p.getPostContent());
+		}
+		return new ResponseEntity<List<PostContainer>>(allPosts, HttpStatus.OK);
+	}
+	
+	
 	@RequestMapping(value="/getMorePosts", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<PostContainer>> getMorePosts(@RequestBody String firstResult){
-		List<ForumPost> posts = service.getMorePosts(Integer.parseInt(firstResult));
+	public ResponseEntity<List<PostContainer>> getMorePosts(@RequestBody String[] getPostResult){
+		int firstResult = Integer.parseInt(getPostResult[0]);
+		String username = getPostResult[1];
+		List<ForumPost> posts = service.getMorePosts(firstResult);
 //		System.out.println("id: " + posts.get(0).getId() + "\ttitle: " + posts.get(0).getTitle() + "\tcontent: " + posts.get(0).getContent());
 //		System.out.println("author: " + posts.gset(0).getAuthor().getRole().getRoleName());
 		List<PostContainer> allPosts = new ArrayList<>();
@@ -188,5 +215,11 @@ public class PostsController {
 		List<LikeablePost> likes = service.getAllLikesbyPost(post);
 		System.out.println("-----------------------------------------------here");
 		return Integer.toString(likes.size());
+	}
+	
+	@RequestMapping(value="/deletePost")
+	public void deletePost(@RequestBody String postIdStr){
+		int postId = Integer.parseInt(postIdStr);
+		service.deletePost(postId);
 	}
 }

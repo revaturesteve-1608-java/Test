@@ -8,19 +8,18 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import project3.dto.DisLikeablePost;
 import project3.dto.DisLikeableReply;
 import project3.dto.ForumCategory;
 import project3.dto.ForumPost;
-import project3.dto.LikeableReply;
-import project3.dto.DisLikeablePost;
-import project3.dto.ForumCategory;
-import project3.dto.ForumPost;
 import project3.dto.LikeablePost;
+import project3.dto.LikeableReply;
 import project3.dto.Person;
 import project3.dto.PostReply;
 import project3.simpledao.SimpleDao;
 import project3.util.GetTimestamp;
 
+@SuppressWarnings("unused")
 @Service
 public class BusinessLogicImpl implements BusinessLogic {
 
@@ -265,8 +264,18 @@ public class BusinessLogicImpl implements BusinessLogic {
 	}
 
 	@Override
+	public List<ForumPost> getPostsByUsername(int firstResult, String username) {
+		// TODO Auto-generated method stub
+		Person author = dao.getPersonByUsername(username);
+		return getRidOfDupes(dao.getMorePostsByUsername(firstResult, author));
+	}
+
+	@Override
+	public void deletePost(int postId) {
+		// TODO Auto-generated method stub
+		dao.deleteForumPost(postId);
+	}
 	public List<PostReply> getRepliesByPost(ForumPost post) {
 		return dao.getRepliesByPost(post);
 	}
-
 }

@@ -64,6 +64,7 @@ app.controller("postCtrl", function($scope, $location, $http, createUserService,
 	$http({method: 'POST', url: 'rest/getPostById', data: $.param({id:info}), headers: {'Content-Type': 'application/x-www-form-urlencoded'} })
 	.success(function(data, status, headers, config) {
 		$scope.post = data;
+		console.log('the post id: ' + $scope.post.postContent)
 		$scope.replys = $scope.post.replyContent;
 		console.log($scope.post)
 	})
@@ -112,5 +113,4 @@ app.controller("postCtrl", function($scope, $location, $http, createUserService,
 		//alert( "failure message: " + JSON.stringify({data: data}));
 		});
 	}
-	
 });

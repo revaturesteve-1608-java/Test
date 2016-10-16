@@ -64,6 +64,8 @@ public interface SimpleDao {
 	
 	public List<ForumPost> getMorePosts(int firstResult);
 	
+	public List<ForumPost> getPostsByCategory(ForumCategory cat);
+
 	public void updatePost(ForumPost post);
 
 	public void saveDislike(DisLikeablePost dislike);
@@ -73,6 +75,8 @@ public interface SimpleDao {
 	public ForumPost getPostForLike(int id);
 
 	public void saveLike(LikeablePost like);
+	
+	public List<ForumPost> getMorePostsByUsername(int firstResult, Person author);
 
 	public void removeLike(ForumPost post, LikeablePost like);
 	

@@ -45,6 +45,10 @@ public interface BusinessLogic {
 	public ForumPost getPostForLike(int id);
 
 	public List<LikeablePost> getAllLikesbyPost(ForumPost post);
+	
+	public List<ForumPost> getPostsByUsername(int firstResult, String username);
+	
+	public void deletePost(int postId);
 
 	void checkForDislike(ForumPost post, Person person);
 	
