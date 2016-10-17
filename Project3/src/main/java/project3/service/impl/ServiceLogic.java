@@ -216,13 +216,13 @@ public class ServiceLogic implements ServiceInterface{
         					+ "<br>"
         					+ "<br>"
         					+ "Click the link below to login: "
-        					+ "<a rel=\"nofollow\" target=\"_blank\" href=\"http://ec2-54-152-99-76.compute-1.amazonaws.com:8080/Project3/login.html\">Login</a></p>"
+        					+ "<a rel=\"nofollow\" target=\"_blank\" href=\"http://ec2-54-152-99-76.compute-1.amazonaws.com:8080/Project3/\">Login</a></p>"
 
             				+ "<br>"
             				+ "<br>"
             				+ "<br>Regards<br>"
             				+ "<strong>RevPages</strong><br>"
-            				+ "<a rel=\"nofollow\" target=\"_blank\" href=\"http://ec2-54-152-99-76.compute-1.amazonaws.com:8080/Project3\">https://www.revpages.com</a></p>"
+            				+ "<a rel=\"nofollow\" target=\"_blank\" href=\"https://revature.com/\">https://www.revature.com</a></p>"
 
             			+ "</td>"
             		+ "</tr>"

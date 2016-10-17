@@ -58,23 +58,25 @@ app.controller("frontCtrl", function($scope, $http, $window, $cookies, createUse
 //		console.log($cookies.user)
 		
 		if($scope.user.id == 0){
-			$window.location.href = 'login.html';
+//			$window.location.href = 'login.html';
+			$("#myModal").modal() 
 		} else {
-			$window.location.href = 'moderate-view.html';
+			if($scope.user.role.roleName === "Moderator") {
+				$window.location.href = 'moderate-view.html';
+			} else {
+				$window.location.href = 'associate-view.html';
+			}
+			
 		}
 	}
 	
 	$scope.getUser = createUserService.getUser(
 			function(response){
-				console.log(response);
-				console.log(response.data) 
+//				console.log(response);
+//				console.log(response.data) 
 			//	console.log(typeof response.data[0].maker);
 				$scope.user = response.data; 	
-				
-				
-				
-				console.log($scope.user);
-				
+//				console.log($scope.user);
 			})
 
 })
