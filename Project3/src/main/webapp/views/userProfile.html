@@ -1,8 +1,13 @@
+<<<<<<< HEAD
 
 <!DOCTYPE html>
 <html>
 <head>
 
+=======
+<html>
+<head>
+>>>>>>> refs/remotes/origin/Develop
 <title>User Profile</title>
 
 <style>
@@ -233,6 +238,44 @@ body {
 	border-left: 3px solid #FF4511;
 	box-shadow: inset 0px 0px 8px rgba(0, 0, 0, 0.2);
 }
+
+.ta-toolbar {
+	background-color: #F0F0F0;
+	padding: 10px 10px 5px;
+	margin-left: 0px; /* Override bootstrap */
+	border: 1px solid #EEE;
+}
+
+.ta-toolbar .btn-group {
+	margin-bottom: 5px;
+}
+
+textarea.ta-bind {
+	width: 100%;
+}
+
+.ta-editor {
+	padding: 10px;
+	background-color: #FFF;
+	border: 1px solid #EEE;
+	min-height: 300px;
+	height: auto;
+	overflow: auto;
+	font-family: inherit;
+	font-size: 100%;
+}
+
+#singleReply {
+	margin-top: 2%;
+}
+
+#thumbsUp {
+	margin-left: 10%;
+}
+#titleDiv{
+	padding-bottom: 4%;
+}
+
 </style>
  
 <script>
@@ -278,7 +321,9 @@ body {
 				<div class="ACon">
 					<div class="Profile">
 						<div>
-							<img src="{{user.profilePic}}" class="Img">
+
+							<img id = "profilePic" src="{{user.profilePic}}" class="Img">
+
 							<div class="overlay">
 								<span><img /></span>
 							</div>
@@ -298,17 +343,22 @@ body {
 								</a>
 							</h5>
 							<h5 class="buttons">
-								<a class="username" href="">School: {{user.unviersity}}</a>
+
+
+								<a class="username" href="">School: {{user.university}}</a>
+
 							</h5>
 							<h5 class="buttons">
 								<a class="username" href="">Complex:
 									{{user.complex.categoryName}}</a>
 							</h5>
 
+
 							<div>
 								<button type="button" class="btn btn-secondary"
 									data-toggle="modal" data-target="#myModal">Edit
 									Profile Information</button>
+
 							</div>
 
 						</div>
@@ -317,14 +367,136 @@ body {
 
 			</div>
 			<div class="col-md-8">
+
 				<h3>My Dashboard</h3>
-<!--  HERE HERE HERE HERE  -->
+
+				
+	</div>
+
+	<div  infinite-scroll="getMorePosts(firstResult)" infinite-scroll-distance='1'>
+
+		<div class="col-sm-8 text-left">
+			<div id="allPosts" data-ng-controller="postsCtrl">
+				<div id="newPost">
+					<ul class="list-group">
+						<li class="list-group-item">
+							<div class="row">
+								<div>
+									<p id="theUsername">{{user.username}}</p>
+								</div>
+							</div>
+						</li>
+						<li class="list-group-item">
+							<div id=title>
+								<input class="form-group" id="postContent" type="text"
+									placeholder="Title" ng-model="postTitle">
+							</div>
+							<div>
+								<div>
+									<h3>Create Post</h3>
+
+									<div text-angular="text-angular" name="htmlcontent"
+										ng-model="htmlcontent" ta-disabled='disabled'
+										ta-text-editor-class="clearfix border-around"
+										ta-html-editor-class="border-around"></div>
+									<hr>
+
+									<button id="submit" type="button" class="btn btn-primary"
+										ng-click="addPost(postTitle, htmlcontent)">Submit</button>
+									<button type="button" class="btn btn-primary"
+										ng-click="htmlcontent = emptyhtml">Reset</button>
+									<button type="button" class="btn btn-primary"
+										data-toggle="modal" data-target=".bs-example-modal-lg">Get
+										Code Block HTML</button>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				
+				<input type="text" ng-model="searchBox"/>
+				<div id="posts" ng-repeat="postContainer in allPosts | filter:searchBox">
+					<div id="eachPost">
+						<ul class="list-group">
+							<li class="list-group-item" >
+								<div id="titleDiv">
+								<div class="col-md-8"><h4><b>{{postContainer.postTitle}}</b></h4></div>
+								<div class="col-md-4">
+									<button id="deleteBtn" type="button" class="btn btn-default"
+										aria-label="Right Align" ng-click="deletePost(postId)">
+										<span class="glyphicon glyphicon-remove"
+											aria-hidden="true"></span>
+									</button>
+								</div>
+								</div>
+							</li>
+							<li class="list-group-item">
+								<div ng-bind-html="postContainer.postContent">
+									<p id="thePost">{{postContainer.postContent}}</p>
+								</div>
+							</li>
+
+							<li class="list-group-item">
+								<div class="{{postContainer.postId}}">
+									<div id="singleReply" class="row" ng-repeat="replies in postContainer.replyContent">
+										<div class="col-md-8">{{replies}}</div>
+										<div class="col-md-4">
+											<button type="button" class="btn btn-default"
+												aria-label="Right Align">
+												<span class="glyphicon glyphicon-thumbs-up"
+													aria-hidden="true"></span>
+											</button>
+											<button type="button" class="btn btn-default"
+												aria-label="Right Align">
+												<span class="glyphicon glyphicon-thumbs-down"
+													aria-hidden="true"></span>
+											</button>
+										</div>
+									</div>
+								</div>
+							</li>
+							<li class="list-group-item" id="theRepyTextBox"><input
+								id="post" name="post1" type="hidden"
+								ng-init="postId=postContainer.postId;" ng-model="postId" /> <input
+								class="form-group" id="replyText" type="text"
+								placeholder="reply" ng-model="userReply1">
+								<button id="reply" type="button" class="btn btn-primary"
+									ng-click="addReply(userReply1, postId)">reply</button></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		
+	
+	</div>
+	<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+		aria-labelledby="myLargeModalLabel">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="form-group">
+					<label for="sel1">What language would you like to snip code
+						in:</label> <select class="form-control" id="sel1">
+						<option>Java</option>
+						<option>JS</option>
+						<option>HTML</option>
+						<option>C</option>
+					</select>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
 			</div>
 		</div>
 	</div>
 
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-		aria-labelledby="myModalLabel">
+
+		aria-labelledby="myModalLabel" ng-controller="updateUserCtrl">
+
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -422,6 +594,20 @@ body {
 												<input class="form-control input-md" id="linkedIn"
 													type="text" maxlength="200" placeholder="LinkedIn link"
 													ng-model="newLinkedIn">
+
+											</div>
+										</div>
+									</div>
+									
+									<div class="component">
+										<!-- Search input-->
+										<div class="form-group">
+											<label class="col-md-4 control-label" for="searchinput">
+												File to upload</label>
+											<div class="col-md-8">
+												<input type="file" id ="fileChooser" name="file" /><br/>
+                                    			<input type="submit" id="fileUploadButton" value="Upload" />
+
 											</div>
 										</div>
 									</div>
@@ -440,14 +626,62 @@ body {
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
 					<button type="button" class="btn btn-secondary"
+
 						ng-click="updateInformation(oldPassword, newPassword, username, newEmail, newPhone, newUniversity, newLinkedIn)">Save
 						Changes</button>
 				</div>
 			</div>
 		</div>
 	</div>
+
 </body>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	var currentPicture = '{{user.profilePic}}';
+	$("#fileChooser").change(function(event){
+		if(event.target.files[0].type.includes("image")) {
+			console.log("here1")
+			newPicture = URL.createObjectURL(event.target.files[0]);
+			$("#profilePic").attr("src", newPicture);
+			
+			$("#fileUploadButton").click(function(e){
+				console.log("here2")
+				if(event.target.files[0].type.includes("image")) {
+					console.log("here3")
+					var data = new FormData();
+					
+					data.append("file",$("#fileChooser")[0].files[0]);
+					$.ajax({
+						url: "rest/upload-remote",
+						data: data,
+						contentType: false,
+						processData: false,
+						type: "POST",
+						cache: false,
+						success: function(response){
+							
+								alert("Profile Picture Updated");
+						}		
+					});
+					
+					e.preventDefault();
+				}
+			})
+		} else {
+    		alert("Only image");
+    	}
+	})
+			
+});
+</script>
+	
+</body>
+
+</html>
+
 
 
 </html>

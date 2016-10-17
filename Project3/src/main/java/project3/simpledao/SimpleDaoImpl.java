@@ -15,8 +15,14 @@ import org.springframework.stereotype.Repository;
 
 import project3.dto.AwsKey;
 import project3.dto.Complex;
+import project3.dto.DisLikeableReply;
 import project3.dto.ForumCategory;
 import project3.dto.ForumPost;
+import project3.dto.LikeableReply;
+import project3.dto.DisLikeablePost;
+import project3.dto.ForumCategory;
+import project3.dto.ForumPost;
+import project3.dto.LikeablePost;
 import project3.dto.Person;
 import project3.dto.PostReply;
 import project3.dto.Role;
@@ -43,20 +49,43 @@ public class SimpleDaoImpl implements SimpleDao{
 	public List<ForumPost> getAllPosts() {
 		Criteria criteria = session.getCurrentSession().createCriteria(ForumPost.class);
 		criteria.setFetchMode("author", FetchMode.JOIN);
+		criteria.setFetchMode("replys", FetchMode.JOIN);
+		
 //		criteria.setFetchMode("role", FetchMode.EAGER);
 //		criteria.setFetchMode("complex", FetchMode.EAGER);
 		System.out.println("=============================here====================================");
-		List<ForumPost> posts = criteria.list();
-		System.out.println("length of posts list: " + posts.size() + "\tpostId1: " + posts.get(0).getId() + "\tpostId2: " + posts.get(1).getId());
+		List<ForumPost> posts = (List<ForumPost>) criteria.list();
+//		System.out.println("length of posts list: " + posts.size() + "\tpostId1: " + posts.get(0).getId() + "\tpostId2: " + posts.get(1).getId());
 		return criteria.list();
 	}
 
 	@Override
-	public ForumPost getPostById(int id) {
-		ForumPost post = (ForumPost) session.getCurrentSession().get(ForumPost.class, id);
-		System.out.println(post.toString());
-		System.out.println("--------here---");
-		return post;
+	public ForumPost getPostById(int id, boolean like, boolean dislike) {
+		
+		Criteria criteria = session.getCurrentSession().createCriteria(ForumPost.class);
+        criteria.setFetchMode("author", FetchMode.JOIN);
+        criteria.setFetchMode("replys", FetchMode.JOIN);
+        
+        criteria.add(Restrictions.eq("id", id));
+        ForumPost post = (ForumPost) criteria.list().get(0);
+        
+        System.out.println("end----------------------------");
+        
+        return post;
+	}
+	
+	@Override
+	public ForumPost getPostForDislike(int id) {
+		
+		Criteria criteria = session.getCurrentSession().createCriteria(ForumPost.class);
+        criteria.setFetchMode("author", FetchMode.JOIN);
+     //   criteria.setFetchMode("replys", FetchMode.JOIN);
+        criteria.setFetchMode("dislikes", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("id", id));
+        ForumPost post = (ForumPost) criteria.list().get(0);
+        System.out.println("--------here---");
+
+        return post;
 	}
 
 	@Override
@@ -132,10 +161,19 @@ public class SimpleDaoImpl implements SimpleDao{
 	}
 
 	@Override
-	public void createPostReply(ForumPost post, Person author, int likes, int dislikes, boolean approval, 
+	public void createPostReply(int postId, Person author, List<LikeableReply> likes, List<DisLikeableReply> dislikes, boolean approval, 
 			String content, Timestamp timestamp) {
-//		PostReply newReply = new PostReply(post, likes, dislikes, approval, content, timestamp);
+		Session currentSession = session.getCurrentSession();
+		
+		ForumPost post = (ForumPost) currentSession.get(ForumPost.class, postId);
+		System.out.println("forum post id: " + post.getId());
+		System.out.println("forum author username: " + post.getAuthor().getId());
+		Person getAuthorAgain = (Person) currentSession.get(Person.class, author.getId());
+		PostReply newReply = new PostReply(post, getAuthorAgain, likes, dislikes, approval, content, timestamp);
+//		System.out.println("we");
 //		session.getCurrentSession().save(newReply);
+//		System.out.println("here");
+		post.getReplys().add(newReply);
 	}
 
 	@Override
@@ -148,6 +186,8 @@ public class SimpleDaoImpl implements SimpleDao{
 	public void deleteForumPost(int id) {
 		Session currentSession = session.getCurrentSession();
 		ForumPost post = (ForumPost) currentSession.get(ForumPost.class, id);
+//		for(PostReply reply: post.getReplys())
+//			currentSession.delete(reply);
 		currentSession.delete(post);
 	}
 
@@ -171,20 +211,17 @@ public class SimpleDaoImpl implements SimpleDao{
 	}
 	
 	@Override
-	public void updateUserInfo(String currentUser, String newPassword, String username, String newEmail, 
-			String newPhone, String newUniversity, String newLinkedIn) {
+	public void updateUserInfo(Person person) {
 		Session currentSession = session.getCurrentSession();
 		Criteria criteria = currentSession.createCriteria(Person.class);
-		Person person = (Person) criteria.add(Restrictions.eq("username", currentUser)).list().get(0);
-		System.out.println("inside dao email: " + newEmail + "\tsize: " + newEmail.length());
-		person.setPassword(newPassword);
-		System.out.println("SHOULD NOT GET HERE");
-		person.setUsername(username);
-		person.setEmail(newEmail);
-		person.setPhoneNumber(newPhone);
-		person.setUniversity(newUniversity);
-		person.setLinkedin(newLinkedIn);
-		person.setUsername(username);
+		Person tempPerson = (Person) criteria.add(Restrictions.eq("id", person.getId())).list().get(0);
+		tempPerson.setPassword(person.getPassword());
+		tempPerson.setUsername(person.getUsername());
+		tempPerson.setEmail(person.getEmail());
+		tempPerson.setPhoneNumber(person.getPhoneNumber());
+		tempPerson.setUniversity(person.getUniversity());
+		tempPerson.setLinkedin(person.getLinkedin());
+		tempPerson.setUsername(person.getUsername());
 	}
 
 	@Override
@@ -206,6 +243,147 @@ public class SimpleDaoImpl implements SimpleDao{
 		Criteria criteria = currentSession.createCriteria(Person.class);
 		Person tempPerson = (Person) criteria.add(Restrictions.eq("username", person.getUsername())).list().get(0);
 		tempPerson.setProfilePic(person.getProfilePic());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ForumPost> getMorePosts(int firstResult) {
+		// TODO Auto-generated method stub
+		Session currentSession = session.getCurrentSession();
+		Criteria criteria = currentSession.createCriteria(ForumPost.class);
+		criteria.setFetchMode("author", FetchMode.JOIN);
+		criteria.setFetchMode("replys", FetchMode.JOIN);
+//		criteria.setFirstResult(firstResult);
+//		criteria.setMaxResults(firstResult + 2);
+		List<ForumPost> posts = (List<ForumPost>) criteria.list();
+		System.out.println("size of posts: " + posts.size());
+		
+//		Criteria criteria = session.createCriteria(Client.class);
+//		criteria.createAlias("address", "address");
+//		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+//		criteria.setFirstResult(init);
+//		criteria.setMaxResults(max);
+//		List<Client> clients = criteria.list();
+		return posts;
+		}
+		
+	
+
+	@Override
+	public void updatePost(ForumPost post) {
+		session.getCurrentSession().update(post);
+		
+	}
+
+	@Override
+	public List<ForumPost> getPostsByCategory(ForumCategory cat) {
+		// TODO Auto-generated method stub
+		Session currentSession = session.getCurrentSession();
+		Criteria criteria = currentSession.createCriteria(ForumPost.class);
+		criteria.setFetchMode("author", FetchMode.JOIN);
+		criteria.setFetchMode("replys", FetchMode.JOIN);
+		return null;
+	}
+		
+	public void saveDislike(DisLikeablePost dislike) {
+		System.out.println("-------------------------------saving----------------------------------");
+		session.getCurrentSession().save(dislike);
+		
+	}
+
+	@Override
+	public ForumPost getPostForLike(int id) {
+		
+		Criteria criteria = session.getCurrentSession().createCriteria(ForumPost.class);
+        criteria.setFetchMode("author", FetchMode.JOIN);
+     //   criteria.setFetchMode("replys", FetchMode.JOIN);
+        criteria.setFetchMode("likes", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("id", id));
+        ForumPost post = (ForumPost) criteria.list().get(0);
+        System.out.println("--------here---");
+		
+		return post;
+	}
+
+	@Override
+	public void saveLike(LikeablePost like) {
+		session.getCurrentSession().save(like);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ForumPost> getMorePostsByUsername(int firstResult, Person author) {
+		// TODO Auto-generated method stub
+		
+		Session currentSession = session.getCurrentSession();
+		Criteria criteria = currentSession.createCriteria(ForumPost.class);
+		criteria.setFetchMode("author", FetchMode.JOIN);
+		criteria.setFetchMode("replys", FetchMode.JOIN);
+		System.out.println("username inside of the dao: " + author.getUsername());
+		criteria.add(Restrictions.eq("author", author));
+//		criteria.setFirstResult(firstResult);
+//		criteria.setMaxResults(firstResult + 2);
+		List<ForumPost> posts = (List<ForumPost>) criteria.list();
+		System.out.println("size of posts: " + posts.size());
+		
+		return posts;
+	}
+
+	@Override
+	public void removeLike(ForumPost post, LikeablePost like) {
+		session.getCurrentSession().delete(like);
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public LikeablePost getLikesByPerson(Person person, int id) {
+		
+		Criteria criteria = session.getCurrentSession().createCriteria(LikeablePost.class);
+		criteria.setFetchMode("post", FetchMode.JOIN);
+		criteria.setFetchMode("author", FetchMode.JOIN);
+		criteria.add(Restrictions.eq("id", id));
+		List<LikeablePost> likes = (List<LikeablePost>) criteria.list();
+		
+		return likes.get(0);
+	}
+
+	@Override
+	public LikeablePost getLikeById(int id) {
+		
+		LikeablePost like = (LikeablePost) session.getCurrentSession().get(LikeablePost.class, id);
+		
+		return like;
+	}
+
+	@Override
+	public DisLikeablePost getDislikesById(int id) {
+		
+		Criteria criteria = session.getCurrentSession().createCriteria(DisLikeablePost.class);
+		criteria.setFetchMode("post", FetchMode.JOIN);
+		criteria.setFetchMode("author", FetchMode.JOIN);
+		criteria.add(Restrictions.eq("id", id));
+		List<DisLikeablePost> likes = (List<DisLikeablePost>) criteria.list();
+		return likes.get(0);
+	}
+
+	@Override
+	public void removeDislike(DisLikeablePost dislike) {
+		session.getCurrentSession().delete(dislike);
+		
+	}
+
+	@Override
+	public List<PostReply> getRepliesByPost(ForumPost post) {
+		
+		Criteria criteria = session.getCurrentSession().createCriteria(PostReply.class);
+		criteria.setFetchMode("author", FetchMode.JOIN);
+		criteria.setFetchMode("post", FetchMode.JOIN);
+		criteria.add(Restrictions.eq("post", post));
+		
+		List<PostReply> replies = (List<PostReply>) criteria.list();
+		
+		return replies;
 	}
 	
 }

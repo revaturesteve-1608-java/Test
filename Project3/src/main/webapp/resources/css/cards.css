@@ -1,6 +1,6 @@
 @CHARSET "ISO-8859-1";
 
-md-card {
+md-card  {
 	width: 85%;
 	margin: 5px auto;
 	border-radius: 20px;
@@ -15,12 +15,13 @@ md-card {
 	
 }
 
+
 md-card md-card-title {
 	border: 6px solid #FF4500;
 	padding: 4px;	
 }
 
-.md-subhead {
+.md-subhead .post {
 	padding: 10px 4px;
 	border-top: 2px solid #FF4500;
 	
@@ -30,6 +31,11 @@ md-card md-card-title md-card-title-text .md-subhead {
 	font-size: 16px;
 }
 
+md-card-content ul li {
+	font-size: 15px;
+}
+
 .md-headline {
 	padding: 10px 4px;
 }
+

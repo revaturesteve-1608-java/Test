@@ -1,6 +1,5 @@
 package project3.dto;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -22,18 +22,23 @@ public class LikeableReply {
 	@GeneratedValue(generator="likeablereplySeq", strategy=GenerationType.SEQUENCE)
 	private int id;
 	
-	@OneToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)  
+	@OneToOne(fetch=FetchType.EAGER)  
 	@JoinColumn(name="u_id")
 	private Person author;
+	
+	@ManyToOne
+	@JoinColumn(name="pr_id")
+	private PostReply reply;
 	
 	public LikeableReply() {
 		
 	}
 
-	public LikeableReply(int id, Person author) {
+	public LikeableReply(int id, Person author, PostReply reply) {
 		super();
 		this.id = id;
 		this.author = author;
+		this.reply = reply;
 	}
 
 	public int getId() {
@@ -52,8 +57,16 @@ public class LikeableReply {
 		this.author = author;
 	}
 
+	public PostReply getReply() {
+		return reply;
+	}
+
+	public void setReply(PostReply reply) {
+		this.reply = reply;
+	}
+
 	@Override
 	public String toString() {
-		return "Likeable [id=" + id + ", author=" + author + "]";
+		return "LikeableReply [id=" + id + ", author=" + author + ", reply=" + reply + "]";
 	}
 }

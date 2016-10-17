@@ -5,16 +5,23 @@ import java.util.List;
 
 import project3.dto.AwsKey;
 import project3.dto.Complex;
+import project3.dto.DisLikeableReply;
 import project3.dto.ForumCategory;
 import project3.dto.ForumPost;
+import project3.dto.LikeableReply;
+import project3.dto.DisLikeablePost;
+import project3.dto.ForumCategory;
+import project3.dto.ForumPost;
+import project3.dto.LikeablePost;
 import project3.dto.Person;
+import project3.dto.PostReply;
 import project3.dto.Role;
 
 public interface SimpleDao {
 	
 	public List<ForumPost> getAllPosts();
 	
-	public ForumPost getPostById(int id);
+	public ForumPost getPostById(int id, boolean like, boolean dislike);
 	
 	public Person getPersonById(int id);
 	
@@ -30,8 +37,7 @@ public interface SimpleDao {
 	
 	public void updateTempPerson(String username, String pass, String newUsername);
 	
-	public void updateUserInfo(String currentUser, String newPassword, String username, String newEmail, 
-			String newPhone, String newUniversity, String newLinkedIn);
+	public void updateUserInfo(Person person);
 	
 	public void createPerson(String first_name, String last_name, String username, String password, String email, Role role,
 			String profilePic, Complex complex, String phoneNumber, String bio, String unviersity, boolean vaildated,
@@ -41,7 +47,7 @@ public interface SimpleDao {
 	
 	public Person createUser(Person person);
 	
-	public void createPostReply(ForumPost post, Person author, int likes, int dislikes, boolean approval, 
+	public void createPostReply(int post, Person author, List<LikeableReply> likes, List<DisLikeableReply> dislikes, boolean approval, 
 			String content, Timestamp timestamp);
 	
 	public void createComplex(String complexName);
@@ -55,4 +61,32 @@ public interface SimpleDao {
 	public AwsKey getAWSKey();
 	
 	public void updatePersonPic(Person person);
+	
+	public List<ForumPost> getMorePosts(int firstResult);
+	
+	public List<ForumPost> getPostsByCategory(ForumCategory cat);
+
+	public void updatePost(ForumPost post);
+
+	public void saveDislike(DisLikeablePost dislike);
+
+	public ForumPost getPostForDislike(int id);
+
+	public ForumPost getPostForLike(int id);
+
+	public void saveLike(LikeablePost like);
+	
+	public List<ForumPost> getMorePostsByUsername(int firstResult, Person author);
+
+	public void removeLike(ForumPost post, LikeablePost like);
+	
+	public LikeablePost getLikesByPerson(Person person, int i);
+
+	public LikeablePost getLikeById(int id);
+
+	public DisLikeablePost getDislikesById(int id);
+
+	public void removeDislike(DisLikeablePost dislike);
+	
+	public List<PostReply> getRepliesByPost(ForumPost post);
 }

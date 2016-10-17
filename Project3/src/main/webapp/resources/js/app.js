@@ -1,4 +1,4 @@
-var app = angular.module('routingApp', ['ngRoute','ngMaterial','ngMessages','material.svgAssetsCache', 'ngCookies']);
+var app = angular.module('routingApp', ['ngRoute','ngMaterial','ngMessages','material.svgAssetsCache', 'ngCookies', 'textAngular']);
 
 app.config(function($routeProvider) {
 	
@@ -56,25 +56,32 @@ app.controller("frontCtrl", function($scope, $http, $window, $cookies, createUse
 	
 	$scope.homePage = function() {
 //		console.log($cookies.user)
-		
+		console.log($scope.user.vaildated === false);
 		if($scope.user.id == 0){
-			$window.location.href = 'login.html';
+//			$window.location.href = 'login.html';
+			$("#myModal").modal() 
 		} else {
-			$window.location.href = 'moderate-view.html';
+			console.log($scope.user.vaildated);
+			if($scope.user.vaildated !== false) {
+				if($scope.user.role.roleName === "Moderator") {
+					$window.location.href = 'moderate-view.html';
+				} else {
+					$window.location.href = 'associate-view.html';
+				}
+			} else {
+				$window.location.href = 'updateTempInfo.html';
+			}
+			
 		}
 	}
 	
 	$scope.getUser = createUserService.getUser(
 			function(response){
-				console.log(response);
-				console.log(response.data) 
+//				console.log(response);
+//				console.log(response.data) 
 			//	console.log(typeof response.data[0].maker);
 				$scope.user = response.data; 	
-				
-				
-				
-				console.log($scope.user);
-				
+//				console.log($scope.user);
 			})
 
 })
@@ -127,5 +134,14 @@ app.service('createUserService', function($http, $q, $window) {
 		$http.get("rest/getForm").then(callback)
 	}
 	
+	this.getDislike = function(info, callback) {
+	
+	$http({method: 'POST', url: 'rest/getDislike', data: $.param({id: info}), headers: {'Content-Type': 'application/x-www-form-urlencoded'} }).then(callback);
+	}
+	
+	this.getLike = function(info, callback) {
+		
+		$http({method: 'POST', url: 'rest/getLike', data: $.param({id: info}), headers: {'Content-Type': 'application/x-www-form-urlencoded'} }).then(callback);
+	}
 	
 })

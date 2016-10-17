@@ -67,12 +67,12 @@ textarea.ta-bind {
 </style>
 
 </head>
-<body data-ng-app="posts" when-scroll-ends="">
+<body data-ng-app="routingApp" when-scroll-ends="">
 	<div class="col-sm-2 sidenav">
 		<p>test left side</p>
 	</div>
 
-	<div class="container-fluid text-center">
+	<div class="container-fluid text-center" infinite-scroll="getMorePosts(firstResult)" infinite-scroll-distance='1'>
 
 		<div class="col-sm-8 text-left">
 			<div id="allPosts" data-ng-controller="postsCtrl">
@@ -117,8 +117,13 @@ textarea.ta-bind {
 					<div id="eachPost">
 						<ul class="list-group">
 							<li class="list-group-item">
-								<div>
-									<p id="theUsername">{{postContainer.authorName}}</p>
+								<div class="col-md-8">
+									<h2 id="thePost">{{postContainer.postTitle}}</h2>
+								</div>
+								<div class="col-md-4">
+									<button type="button" class="btn btn-default" aria-label="Right Align">
+										<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+									</button>
 								</div>
 							</li>
 							<li class="list-group-item">
@@ -185,12 +190,12 @@ textarea.ta-bind {
 			</div>
 		</div>
 	</div>
+	
 	<!-- Scripts for AngularJS -->
 	<script type="text/javascript"
 		src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.js"></script>
 	<script type="text/javascript"
 		src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.js"></script>
-	<script type="text/javascript" src="resources/js/posts.js"></script>
 
 	<script
 		src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.min.js'></script>

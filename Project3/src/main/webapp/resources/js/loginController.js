@@ -34,14 +34,15 @@ angular.module('routingApp').controller('loginController', function($scope, $mdD
 							if(person.role.roleName == "Moderator") {
 								$window.location.href = 'moderate-view.html';
 							} else {
-								$window.location.href = 'index.jsp';
+								$window.location.href = 'associate-view.html';
 							}
 						} else {
 							$window.location.href = 'updateTempInfo.html';
 						}
 					} else {
 						console.log("where2");
-						customAlert();
+						alert("Wrong Username/Password");
+//						customAlert();
 					}
 				}, function(error) {
 					customAlert();

@@ -2,7 +2,7 @@
  * 
  */
 
-angular.module('routingApp')
+angular.module('updateTemp', [])
 
 .controller('updateTempCtrl', function($scope, updateTempDataService, $window){
 	console.log('FIRST IN CONTROLLER')
@@ -43,7 +43,7 @@ angular.module('routingApp')
 			console.log(response + ' YAY!');
 			$window.alert(response.data);
 			if(response.data == "Updated"){
-				$window.location.href = 'login.html';
+				$window.location.href = 'index.jsp';
 			} 
 			
 		}, function(error) {

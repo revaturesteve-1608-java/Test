@@ -22,6 +22,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import project3.dto.AwsKey;
 import project3.dto.Person;
@@ -89,18 +90,6 @@ public class ServiceLogic implements ServiceInterface{
         System.out.println(imageFile.getPath());
 		return imageFile;
 	}
-	
-//	private byte[] extractBytes (String ImageName) throws IOException {
-//		// open image
-//		File imgPath = new File(ImageName);
-//		BufferedImage bufferedImage = ImageIO.read(imgPath);
-//		
-//		// get DataBufferBytes from Raster
-//		WritableRaster raster = bufferedImage.getRaster();
-//		DataBufferByte data   = (DataBufferByte) raster.getDataBuffer();
-//		
-//		return (data.getData());
-//	}
 	
 	/**
 	 * Encodes the byte array into base64 string
@@ -194,7 +183,7 @@ public class ServiceLogic implements ServiceInterface{
 					key.getAccessKey(), key.getSecretAccessKey()));
 			dao.updatePersonPic(person);
 			// Send Email to Account
-			String subject = "Welcome to Revatuer";
+			String subject = "Welcome to Revature";
 			String message = 
 			"<table style=\"min-width:100%;\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\">"
 			    + "<tbody>"
@@ -227,13 +216,13 @@ public class ServiceLogic implements ServiceInterface{
         					+ "<br>"
         					+ "<br>"
         					+ "Click the link below to login: "
-        					+ "<a rel=\"nofollow\" target=\"_blank\" href=\"http://ec2-54-152-99-76.compute-1.amazonaws.com:8080/Project3/login.html\">Login</a></p>"
+        					+ "<a rel=\"nofollow\" target=\"_blank\" href=\"http://ec2-54-152-99-76.compute-1.amazonaws.com:8080/Project3/\">Login</a></p>"
 
             				+ "<br>"
             				+ "<br>"
             				+ "<br>Regards<br>"
             				+ "<strong>RevPages</strong><br>"
-            				+ "<a rel=\"nofollow\" target=\"_blank\" href=\"http://ec2-54-152-99-76.compute-1.amazonaws.com:8080/Project3\">https://www.revpages.com</a></p>"
+            				+ "<a rel=\"nofollow\" target=\"_blank\" href=\"https://revature.com/\">https://www.revature.com</a></p>"
 
             			+ "</td>"
             		+ "</tr>"
@@ -261,7 +250,15 @@ public class ServiceLogic implements ServiceInterface{
 		}
 		return null;
 	}
-	
+
+	@Override
+	public Person updateProfilePic(Person person, MultipartFile picture) {
+		AwsKey key = dao.getAWSKey();
+		person.setProfilePic(jetS3.uploadProfileItem(person.getId() + "", person.getId() + "", picture,
+				key.getAccessKey(), key.getSecretAccessKey()));
+		dao.updatePersonPic(person);
+		return person;
+	}
 	
 
 }

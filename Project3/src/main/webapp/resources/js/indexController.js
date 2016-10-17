@@ -29,7 +29,7 @@ app.controller("indexCtrl", function($scope, $http, $window, $cookies, createUse
 				
 				if($scope.user.id == 0){
 					
-					$window.location.href = 'login.html';
+					$window.location.href = 'index.jsp';
 					
 					
 				}
