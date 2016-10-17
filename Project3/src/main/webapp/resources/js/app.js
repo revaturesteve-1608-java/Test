@@ -56,15 +56,20 @@ app.controller("frontCtrl", function($scope, $http, $window, $cookies, createUse
 	
 	$scope.homePage = function() {
 //		console.log($cookies.user)
-		
+		console.log($scope.user.vaildated === false);
 		if($scope.user.id == 0){
 //			$window.location.href = 'login.html';
 			$("#myModal").modal() 
 		} else {
-			if($scope.user.role.roleName === "Moderator") {
-				$window.location.href = 'moderate-view.html';
+			console.log($scope.user.vaildated);
+			if($scope.user.vaildated !== false) {
+				if($scope.user.role.roleName === "Moderator") {
+					$window.location.href = 'moderate-view.html';
+				} else {
+					$window.location.href = 'associate-view.html';
+				}
 			} else {
-				$window.location.href = 'associate-view.html';
+				$window.location.href = 'updateTempInfo.html';
 			}
 			
 		}
