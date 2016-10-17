@@ -13,7 +13,7 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="index.jsp">Reavature</a>
+			<a class="navbar-brand" href="index.jsp">Revature</a>
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
@@ -21,7 +21,7 @@
 			data-ng-controller="frontCtrl">
 			<ul class="nav navbar-nav navbar-right">
 				<li>
-				<button type="submit" class="btn btn-info"
+				<button type="submit" class="btn btn-danger"
 					data-ng-click="homePage()">Login</button>
 				</li>
 			</ul>

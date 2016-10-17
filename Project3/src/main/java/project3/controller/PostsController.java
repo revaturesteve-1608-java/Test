@@ -77,7 +77,7 @@ public class PostsController {
 //			allPosts.add(p);
 //			System.out.println(p.getPostContent());
 //		new ResponseEntity<List<PostContainer>>(allPosts, HttpStatus.OK)
-		}
+		
 
 	@RequestMapping(value="/getPostById", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PostContainer> getPost(@RequestParam("id") int id){
