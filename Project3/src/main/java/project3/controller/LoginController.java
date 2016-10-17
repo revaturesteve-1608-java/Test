@@ -23,13 +23,11 @@ import org.springframework.web.context.request.WebRequest;
 import project3.dto.Person;
 import project3.service.ServiceInterface;
 import project3.simpledao.LoginDao;
+import project3.simpledao.SimpleDaoImpl;
 
 @RestController
 @SessionAttributes("person")
 public class LoginController {
-    
-    @Autowired
-    LoginDao dao;
 	
 	@Autowired 	
 	ServiceInterface service; 
@@ -49,12 +47,22 @@ public class LoginController {
 	
 	
 	@RequestMapping(value = "/user",  produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Person> getUser(@ModelAttribute("person") Person person){
+	public ResponseEntity<Person> getUser(@ModelAttribute("person") Person person, ModelMap map){
 		
 		System.out.println("------------------Here-----------------------------------");
 		
 		if(person == null) {
 			person = new Person();
+		} else {
+			person = service.getPersonByUsername(person.getUsername());
+			if(person != null) {
+				map.addAttribute("person", person);
+			} else {
+				person = new Person();
+			}
+//			System.out.println(person.getUsername());
+//			System.out.println(person.isVaildated());
+//			map.addAttribute("person", person);
 		}
 		
 		return new ResponseEntity<Person>(person, HttpStatus.OK);
@@ -62,12 +70,15 @@ public class LoginController {
 	
 	@RequestMapping(value="/logout")
 	@ResponseBody
-	public Person logout(WebRequest request, HttpSession session, SessionStatus status){
+	public Person logout(WebRequest request, HttpSession session, SessionStatus status, ModelMap map){
 		
 		System.out.println("in logout!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		status.setComplete();
-        session.removeAttribute("user");
 		Person person = new Person();
+		map.addAttribute("user", person);
+        session.removeAttribute("user");
+
+		map.addAttribute("person", person);
 		return person;
 	}
 	

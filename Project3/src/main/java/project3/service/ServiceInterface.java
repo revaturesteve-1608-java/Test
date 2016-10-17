@@ -16,5 +16,7 @@ public interface ServiceInterface {
 	public List<Role> getRoles();
 	
 	public Person updateProfilePic(Person person, MultipartFile picture);
+	
+	public Person getPersonByUsername(String username);
 
 }
