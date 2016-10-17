@@ -259,6 +259,11 @@ public class ServiceLogic implements ServiceInterface{
 		dao.updatePersonPic(person);
 		return person;
 	}
+
+	@Override
+	public Person getPersonByUsername(String username) {
+		return dao.getPersonByUsername(username);
+	}
 	
 
 }

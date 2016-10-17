@@ -57,6 +57,7 @@ app.controller("frontCtrl", function($scope, $http, $window, $cookies, createUse
 	$scope.homePage = function() {
 //		console.log($cookies.user)
 		console.log($scope.user.vaildated === false);
+		console.log($scope.user.id);
 		if($scope.user.id == 0){
 //			$window.location.href = 'login.html';
 			$("#myModal").modal() 
@@ -118,7 +119,7 @@ app.service('createUserService', function($http, $q, $window) {
 		$http.post('rest/logout').then(function(response) {
 			
 			console.log("here");
-			$window.location.href = 'login.html';
+			$window.location.href = 'index.jsp';
 			
 			//$window.alert(response.data);
 		}, function(error) {

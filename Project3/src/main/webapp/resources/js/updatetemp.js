@@ -44,6 +44,7 @@ angular.module('updateTemp', [])
 			$window.alert(response.data);
 			if(response.data == "Updated"){
 				$window.location.href = 'index.jsp';
+				
 			} 
 			
 		}, function(error) {
