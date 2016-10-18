@@ -33,6 +33,14 @@ public class LikeableReply {
 	public LikeableReply() {
 		
 	}
+	
+	public LikeableReply(Person author, PostReply reply) {
+		super();
+		this.author = author;
+		this.reply = reply;
+	}
+
+
 
 	public LikeableReply(int id, Person author, PostReply reply) {
 		super();

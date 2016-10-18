@@ -87,6 +87,28 @@ public interface SimpleDao {
 	public void removeDislike(DisLikeablePost dislike);
 	
 	public List<PostReply> getRepliesByPost(ForumPost post);
+
+	PostReply getReplyForDislike(int id);
+
+	public void saveDislikeReply(DisLikeableReply dislike);
+
+	public void updateReply(PostReply reply);
+
+	public PostReply getReplyForLike(int id);
+
+	public DisLikeableReply getDislikesReplyById(int id);
+
+	public void removeDislikeReply(DisLikeableReply dislikeable);
+
+	public LikeableReply getLikesReplyById(int id);
+
+	public void removeLikeReply(LikeableReply likeable);
+
+	public void saveLikeReply(LikeableReply like);
+
+	public LikeableReply getLikesReplyByPerson(Person person);
+
+	public DisLikeableReply getDislikesByPerson(Person person);
 	
 	public Complex getComplexByName(String name);
 	
