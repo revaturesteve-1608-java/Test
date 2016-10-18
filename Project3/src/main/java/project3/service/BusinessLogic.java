@@ -20,7 +20,7 @@ public interface BusinessLogic {
 	public String updateTempPerson(String username, String pass, String oldPass, String newUsername);
 	
 	public String updateUserInfo(Person person, String oldPassword, String newPassword, String username, String newEmail, 
-			String newPhone, String newUniversity, String newLinkedIn);
+			String newPhone, String complex, String newUniversity, String newLinkedIn);
 	
 	public int createForumPost(String content, String title, Person author, List<ForumCategory> categories);
 	

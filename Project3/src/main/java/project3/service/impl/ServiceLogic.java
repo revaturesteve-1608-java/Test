@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import project3.dto.AwsKey;
+import project3.dto.Complex;
 import project3.dto.Person;
 import project3.dto.Role;
 import project3.service.Crypt;
@@ -263,6 +264,11 @@ public class ServiceLogic implements ServiceInterface{
 	@Override
 	public Person getPersonByUsername(String username) {
 		return dao.getPersonByUsername(username);
+	}
+
+	@Override
+	public List<Complex> getComplex() {
+		return dao.getComplex();
 	}
 	
 

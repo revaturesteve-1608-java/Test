@@ -5,14 +5,12 @@ import java.util.List;
 
 import project3.dto.AwsKey;
 import project3.dto.Complex;
+import project3.dto.DisLikeablePost;
 import project3.dto.DisLikeableReply;
 import project3.dto.ForumCategory;
 import project3.dto.ForumPost;
-import project3.dto.LikeableReply;
-import project3.dto.DisLikeablePost;
-import project3.dto.ForumCategory;
-import project3.dto.ForumPost;
 import project3.dto.LikeablePost;
+import project3.dto.LikeableReply;
 import project3.dto.Person;
 import project3.dto.PostReply;
 import project3.dto.Role;
@@ -89,4 +87,8 @@ public interface SimpleDao {
 	public void removeDislike(DisLikeablePost dislike);
 	
 	public List<PostReply> getRepliesByPost(ForumPost post);
+	
+	public Complex getComplexByName(String name);
+	
+	public List<Complex> getComplex();
 }

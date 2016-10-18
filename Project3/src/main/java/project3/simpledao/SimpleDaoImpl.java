@@ -222,6 +222,7 @@ public class SimpleDaoImpl implements SimpleDao{
 		tempPerson.setUniversity(person.getUniversity());
 		tempPerson.setLinkedin(person.getLinkedin());
 		tempPerson.setUsername(person.getUsername());
+		tempPerson.setComplex(person.getComplex());
 	}
 
 	@Override
@@ -373,6 +374,7 @@ public class SimpleDaoImpl implements SimpleDao{
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<PostReply> getRepliesByPost(ForumPost post) {
 		
@@ -385,5 +387,19 @@ public class SimpleDaoImpl implements SimpleDao{
 		
 		return replies;
 	}
+	
+	@Override
+	public Complex getComplexByName(String name) {
+		Criteria criteria = session.getCurrentSession().createCriteria(Complex.class);
+		return (Complex) criteria.add(Restrictions.eq("complexName", name)).list().get(0);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Complex> getComplex() {
+		return session.getCurrentSession().createCriteria(Complex.class).list();
+	}
+
+	
 	
 }
