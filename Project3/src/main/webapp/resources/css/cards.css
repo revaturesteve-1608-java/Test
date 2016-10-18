@@ -5,24 +5,25 @@ md-card  {
 	margin: 5px auto;
 	border-radius: 20px;
 	color: black;
-	border: 5px solid #ff4511;
+	border: 5px solid #FF4500;
 }
 
 .md-button.md-ink-ripple {
 	
-	border: 2px solid #ff4511;
+	border: 2px solid #FF4500;
 	border-radius: 25px;
 	
 }
 
-md-card md-card-title .title {
-	border: 6px solid #ff4511;
+
+md-card md-card-title {
+	border: 6px solid #FF4500;
 	padding: 4px;	
 }
 
 .md-subhead .post {
 	padding: 10px 4px;
-	border-top: 2px solid #ff4511;
+	border-top: 2px solid #FF4500;
 	
 }
 

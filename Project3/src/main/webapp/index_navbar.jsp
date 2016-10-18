@@ -23,8 +23,12 @@
 			data-ng-controller="frontCtrl">
 			<ul class="nav navbar-nav navbar-right">
 				<li>
-				<button type="button" class="btn btn-info"
+
+				<button type="button" class="btn btn-danger"
+
+				
 					data-target="#myModal" 
+
 					data-ng-click="homePage()">Login</button>
 				</li>
 			</ul>
