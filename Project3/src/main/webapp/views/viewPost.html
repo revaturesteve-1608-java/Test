@@ -51,7 +51,7 @@
 
 
 				<div id="replyContainer" ng-show="myReply">
-					<div align="center">
+					<div >
 
 						<div text-angular="text-angular" name="htmlcontent"
 							ta-disabled='disabled'
@@ -60,7 +60,7 @@
 						<hr>
 
 
-						<button type="button" ng-click="replyToPost(replyContext, user)">Submit</button>
+						<button type="button" class="btn btn-primary" ng-click="replyToPost(replyContext, user)">Submit</button>
 					</div>
 				</div>
 
@@ -76,7 +76,7 @@
 
 
 				<div ng-repeat="reply in replys">
-
+					<div id="theReplies">
 					<div class="media-body" align="right">
 						<a href="#"> <img class="w3-circle" src="{{post.profPicURL}}"
 							alt="" style="width: 65px; height: 65px;">
@@ -95,6 +95,7 @@
 	<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
 </md-button>
 						<br>
+				</div>
 					</div>
 					<br>
 				</div>
