@@ -27,6 +27,7 @@ app.controller("postCtrl", function($scope, $location, $http, createUserService,
 	
 	$scope.likesReplysContainer;
 	
+	//$scope.userRole = true;
 	//console.log(user);
 	
 	
@@ -116,7 +117,8 @@ app.controller("postCtrl", function($scope, $location, $http, createUserService,
 		console.log('the post id: ' + $scope.post.postContent)
 		$scope.replys = $scope.post.replyContent;
 		console.log($scope.post)
-		if($scope.user.username === $scope.post.authorName) {
+		console.log($scope.user.role.id)
+		if(($scope.user.username === $scope.post.authorName) || $scope.user.role.id == 1) {
 			$scope.userRole = !$scope.userRole;
 		}
 	})

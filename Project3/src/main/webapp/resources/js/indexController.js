@@ -58,6 +58,29 @@ app.controller("indexCtrl", function($scope, $http, $window, $location, $cookies
 		$scope.allPosts = response.data;
 		console.log($scope.allPosts);
 	})
+	
+	createUserService.getAllCategories(function(response){
+			$scope.allCategories = response.data;
+			var newArray = $scope.allCategories.slice(0); //clone the array, or you'll end up with a new "None" option added to your "values" array on every digest cycle.
+	        newArray.unshift("None");
+	        $scope.allCategories = newArray
+		})
+	
+	$scope.getPostsByCategory = function(catName){
+		console.log("GOT INTO HERERERER")
+		if(catName === "None"){
+			createUserService.getPosts(function(response){
+				console.log("GOT BACKKKKK")
+				$scope.allPosts = response.data;
+				$scope.$apply()
+			})
+		} else{
+			createUserService.getPostsByCategory(catName, function(response){
+				$scope.allPosts = response.data;
+				$scope.$apply()
+			})
+		}
+	}
 			
 			
 			function DialogController($scope, $mdDialog) {

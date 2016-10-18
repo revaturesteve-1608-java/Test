@@ -60,13 +60,16 @@
 				<h1>My Dashboard</h1>
 <br> <hr>
 			
-			<div ng-repeat="post in allPosts">
+			<div ng-repeat="post in allPosts | filter:search">
 				 <span class="md-headline"><a
 					href='#post?id={{post.postId}}'>{{post.postTitle}}</a></span> <span
 					class="md-subhead"><i> by {{post.authorName}}</i></span> 
 <hr>
 			</div>
 		</div>
+
+
+
 
 		<!-- Blog Sidebar Widgets Column -->
 		<div class="col-md-4">
@@ -75,7 +78,7 @@
 			<div class="well">
 				<h4>Search Posts</h4>
 				<div class="input-group">
-					<input type="text" class="form-control"> <span
+					<input type="text" class="form-control" ng-model="search" placeholder="search..."> <span
 						class="input-group-btn">
 						<button class="btn btn-default" type="button">
 							<span class="glyphicon glyphicon-search"></span>
@@ -85,22 +88,7 @@
 			<hr>
 				<h4>View Posts by Category</h4>
 				<div class="row">
-					<div class="col-lg-6">
-						<ul class="list-unstyled">
-							<li><a href="#">Category Name</a></li>
-							<li><a href="#">Category Name</a></li>
-							<li><a href="#">Category Name</a></li>
-							<li><a href="#">Category Name</a></li>
-						</ul>
-					</div>
-					<div class="col-lg-6">
-						<ul class="list-unstyled">
-							<li><a href="#">Category Name</a></li>
-							<li><a href="#">Category Name</a></li>
-							<li><a href="#">Category Name</a></li>
-							<li><a href="#">Category Name</a></li>
-						</ul>
-					</div>
+					<select class="form-control" id="sel1" ng-options="categories for categories in allCategories" ng-model="selectCategories" ng-change="getPostsByCategory(selectCategories)"></select>
 				</div>
 				<!-- /.row -->
 			</div>

@@ -157,6 +157,24 @@ app.service('createUserService', function($http, $q, $window) {
 	
 	this.deletePost = function(postId){
 		$http.post("rest/deletePost", postId).then();
+		if($window.location.href.includes("associate-view")) {
+			$window.location.href = 'associate-view.html';
+		} else {
+			$window.location.href = 'moderate-view.html';
+		}
+		
+	}
+	
+	this.getPostsByCategory = function(categoryName, callback){
+		$http.post("rest/getPostsCat", categoryName).then(callback);
+	}
+	
+	this.getAllCategories = function(callback){
+		$http.post("rest/getAllCat").then(callback);
+	}
+	
+	this.getPostsByUsername = function(username, callback){
+		$http.post("rest/getPostsByUsername", username).then(callback)
 	}
 	
 })
