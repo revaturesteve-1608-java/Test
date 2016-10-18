@@ -34,6 +34,16 @@ public class DisLikeableReply {
 	public DisLikeableReply() {
 		
 	}
+	
+	
+
+	public DisLikeableReply(Person author, PostReply reply) {
+		super();
+		this.author = author;
+		this.reply = reply;
+	}
+
+
 
 	public DisLikeableReply(int id, Person author, PostReply reply) {
 		super();

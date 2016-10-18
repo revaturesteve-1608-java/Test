@@ -3,9 +3,11 @@ package project3.service;
 import java.util.List;
 
 import project3.dto.DisLikeablePost;
+import project3.dto.DisLikeableReply;
 import project3.dto.ForumCategory;
 import project3.dto.ForumPost;
 import project3.dto.LikeablePost;
+import project3.dto.LikeableReply;
 import project3.dto.Person;
 import project3.dto.PostReply;
 
@@ -53,4 +55,22 @@ public interface BusinessLogic {
 	void checkForDislike(ForumPost post, Person person);
 	
 	public List<PostReply> getRepliesByPost(ForumPost post);
+
+	public PostReply getReplyForDislike(int id);
+	
+	public PostReply getReplyForLike(int id);
+
+	public void addDislikeReply(PostReply reply, Person person);
+
+	public void checkReplyLike(PostReply replyLike, Person person);
+
+	public List<DisLikeableReply> getAllDislikebyReply(PostReply reply);
+
+	List<LikeableReply> getAllLikebyReply(PostReply reply);
+
+	public void addlikeReply(PostReply reply, Person person);
+
+	public void checkReplyDislike(PostReply disLikeReply, Person person);
+	
+	
 }

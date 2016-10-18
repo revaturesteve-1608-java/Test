@@ -87,6 +87,34 @@ public class SimpleDaoImpl implements SimpleDao{
 
         return post;
 	}
+	
+	@Override
+	public PostReply getReplyForDislike(int id) {
+		
+		Criteria criteria = session.getCurrentSession().createCriteria(PostReply.class);
+        criteria.setFetchMode("author", FetchMode.JOIN);
+     //   criteria.setFetchMode("replys", FetchMode.JOIN);
+        criteria.setFetchMode("dislikes", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("id", id));
+        PostReply reply = (PostReply) criteria.list().get(0);
+        //System.out.println("--------here---");
+
+        return reply;
+	}
+	
+	@Override
+	public PostReply getReplyForLike(int id) {
+		
+		Criteria criteria = session.getCurrentSession().createCriteria(PostReply.class);
+        criteria.setFetchMode("author", FetchMode.JOIN);
+     //   criteria.setFetchMode("replys", FetchMode.JOIN);
+        criteria.setFetchMode("likes", FetchMode.JOIN);
+        criteria.add(Restrictions.eq("id", id));
+        PostReply reply = (PostReply) criteria.list().get(0);
+        //System.out.println("--------here---");
+
+        return reply;
+	}
 
 	@Override
 	public Person getPersonById(int id) {
@@ -385,5 +413,57 @@ public class SimpleDaoImpl implements SimpleDao{
 		
 		return replies;
 	}
+
+	@Override
+	public void saveDislikeReply(DisLikeableReply dislike) {
+			session.getCurrentSession().save(dislike);
+		
+	}
+
+	@Override
+	public void updateReply(PostReply reply) {
+			session.getCurrentSession().update(reply);
+		
+	}
+
+	@Override
+	public DisLikeableReply getDislikesReplyById(int id) {
+		Criteria criteria = session.getCurrentSession().createCriteria(DisLikeableReply.class);
+		criteria.setFetchMode("post", FetchMode.JOIN);
+		criteria.setFetchMode("author", FetchMode.JOIN);
+		criteria.add(Restrictions.eq("id", id));
+		List<DisLikeableReply> likes = (List<DisLikeableReply>) criteria.list();
+		return likes.get(0);
+	}
+
+	@Override
+	public void removeDislikeReply(DisLikeableReply dislikeable) {
+		session.getCurrentSession().delete(dislikeable);
+		
+	}
+
+	@Override
+	public LikeableReply getLikesReplyById(int id) {
+		Criteria criteria = session.getCurrentSession().createCriteria(LikeableReply.class);
+		criteria.setFetchMode("post", FetchMode.JOIN);
+		criteria.setFetchMode("author", FetchMode.JOIN);
+		criteria.add(Restrictions.eq("id", id));
+		List<LikeableReply> likes = (List<LikeableReply>) criteria.list();
+		return likes.get(0);
+	}
+
+	@Override
+	public void removeLikeReply(LikeableReply likeable) {
+		session.getCurrentSession().delete(likeable);
+		
+	}
+
+	@Override
+	public void saveLikeReply(LikeableReply like) {
+		session.getCurrentSession().save(like);
+		
+	}
+
+	
 	
 }
