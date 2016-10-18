@@ -1,31 +1,43 @@
 <div>
-	<div class="jumbotron">
-		<h3>Create a new user</h3><br>
+	
+		<h3>Create a new user</h3>
+		<br>
+	
 		<div data-ng-controller="newUserCtrl">
 			<form novalidate>
-			    First Name: 
-			    <input type="text" ng-model="person.first_name">
-			    Last Name: 
-			    <input type="text" ng-model="person.last_name">
-			    Email: 
-			    <input type="email" ng-model="person.email">
-			    Role: 
-			    <select ng-model="person.role" ng-options="x.roleName for x in roles">
+				    <div class="col-xs-4" >
+				<div class="form-group"> 	
+					<label for="fn">First Name:</label>
+				 <input type="text"
+						ng-model="person.first_name" id="fn" class="form-control" required>
+				</div>
+				
+				<div class="form-group">
+				<label for="ln">Last Name:</label>
+				<input type="text" ng-model="person.last_name" id="ln" class="form-control" required> 
+				</div>
+				
+				<div class="form-group">
+				<label for="email">Email:</label>
+				 <input type="email" ng-model="person.email" id="email" class="form-control" required>
+				 </div>
+				 
+				 <div class="form-group">
+				 <label for="role">Role:</label>
+				 <select
+					ng-model="person.role" ng-options="x.roleName for x in roles" id="role" class="form-control" required>
 				</select>
-			    <button class="btn-btn-secondary ng-click="createUser(person)">Create User</button>
+				</div>
+				<button type="button" class="btn btn-secondary" ng-click="createUser(person)">Create
+					User</button>
+					</div>
 			</form>
-		</div>
-		
-		<div data-ng-controller="newCatCtrl">
-			<form novalidate>
-			Enter New Category:
-			<input type="text" ng-model="category">
-		
-			</form>
-		
-		</div>
-	</div>
+	
+
 </div>
+	</div>
+
+
 <!-- 
 <script type="text/javascript" src="resources/js/newUser.js"></script>
 -->

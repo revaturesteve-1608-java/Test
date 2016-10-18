@@ -4,21 +4,33 @@
 <meta charset="ISO-8859-1">
 <title>Welcome {{user.first_name}}</title>
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
 
 <!-- Optional theme -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+	integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+	crossorigin="anonymous">
 
 <!-- jQuery CDN -->
-<script src="https://code.jquery.com/jquery-1.12.3.js" type="text/javascript" ></script>
+<script src="https://code.jquery.com/jquery-1.12.3.js"
+	type="text/javascript"></script>
 
 <!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+	integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+	crossorigin="anonymous"></script>
 
 
 <link rel="canonical" href="https://revature.com" />
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"> </script>
+<script
+	src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script
+	src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"> </script>
 
 <link href="css/bootstrap-3.3.7/dist/css/bootstrap.min.css"
 	rel="stylesheet">
@@ -34,33 +46,72 @@
 <link rel="apple-touch-icon" href="resources/imgs/favicon_192.png" />
 </head>
 <body ng-controller="indexCtrl">
+	
 
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-md-4">
-				<h3>Welcome {{user.first_name}} </h3>
-				<!-- Button trigger modal -->
 
-			</div>
+
+			<!-- Button trigger modal -->
+
+
 
 			<div class="col-md-8">
-				<h3>My Dashboard</h3>
-
-			</div>
-			<div class="col-md-10" ng-repeat="post in allPosts">
-				<md-card  md-theme-watch="">
-        <md-card-title>
-          <md-card-title-text>
-            <span class="md-headline"><a href='#post?id={{post.postId}}'>{{post.postTitle}}</a></span>
-            <span class="md-subhead">{{post.authorName}}</span>
-          </md-card-title-text>
-        </md-card-title>
-      </md-card>
+				<h1>My Dashboard</h1>
+<br> <hr>
+			
+			<div ng-repeat="post in allPosts">
+				 <span class="md-headline"><a
+					href='#post?id={{post.postId}}'>{{post.postTitle}}</a></span> <span
+					class="md-subhead"><i> by {{post.authorName}}</i></span> 
+<hr>
 			</div>
 		</div>
-	</div>
 
-<!-- Scripts for AngularJS -->
+		<!-- Blog Sidebar Widgets Column -->
+		<div class="col-md-4">
+
+			<!-- Blog Search Well -->
+			<div class="well">
+				<h4>Search Posts</h4>
+				<div class="input-group">
+					<input type="text" class="form-control"> <span
+						class="input-group-btn">
+						<button class="btn btn-default" type="button">
+							<span class="glyphicon glyphicon-search"></span>
+						</button>
+					</span>
+				</div>
+			<hr>
+				<h4>View Posts by Category</h4>
+				<div class="row">
+					<div class="col-lg-6">
+						<ul class="list-unstyled">
+							<li><a href="#">Category Name</a></li>
+							<li><a href="#">Category Name</a></li>
+							<li><a href="#">Category Name</a></li>
+							<li><a href="#">Category Name</a></li>
+						</ul>
+					</div>
+					<div class="col-lg-6">
+						<ul class="list-unstyled">
+							<li><a href="#">Category Name</a></li>
+							<li><a href="#">Category Name</a></li>
+							<li><a href="#">Category Name</a></li>
+							<li><a href="#">Category Name</a></li>
+						</ul>
+					</div>
+				</div>
+				<!-- /.row -->
+			</div>
+
+		
+
+		</div>
+
+	</div>
+</div>
+	<!-- Scripts for AngularJS -->
 	<script type="text/javascript"
 		src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.js"></script>
 	<script type="text/javascript"

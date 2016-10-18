@@ -52,7 +52,7 @@ public class PostsController {
 		
 		for(ForumPost post: posts){
 			List<List<String>> postContent = new ArrayList<>();
-			for(PostReply reply: post.getReplys()) {
+			for(PostReply reply: service.getRepliesByPost(post)) {
 				List<String> replies = new ArrayList<>();
 				replies.add(reply.getContent());
 				replies.add(reply.getAuthor().getUsername());
@@ -62,7 +62,7 @@ public class PostsController {
 			
 			
 			System.out.println("postId: " + post.getId() + "\tpostContent: " + postContent);
-			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), postContent);
+			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), post.getAuthor().getProfilePic(), postContent);
 			allPosts.add(p);
 			
 		//	System.out.println(p.getPostContent());
@@ -88,7 +88,7 @@ public class PostsController {
 				postContent.add(replies);
 			}
 			System.out.println("postId: " + post.getId() + "\tpostContent: " + postContent);
-			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), postContent);
+			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), post.getAuthor().getProfilePic(), postContent);
 			allPosts.add(p);
 		//	System.out.println(p.getPostContent());
 		}
@@ -116,7 +116,7 @@ public class PostsController {
 			}
 			
 			System.out.println("postId: " + post.getId() + "\tpostContent: " + postContent);
-			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), postContent);
+			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), post.getAuthor().getProfilePic(),  postContent);
 			allPosts.add(p);
 			System.out.println(p.getPostContent());
 		}
@@ -173,7 +173,7 @@ public class PostsController {
 			content.add(replies);
 		}
 		System.out.println("here end reply=================");
-		PostContainer pos = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), content);
+		PostContainer pos = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), post.getAuthor().getProfilePic(),  content);
 		//ForumPost forumPost = new ForumPost();
 		//PostContainer pos = new PostContainer();
 		System.out.println("here 1");

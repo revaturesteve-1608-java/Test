@@ -10,18 +10,28 @@ public class PostContainer {
 	private String postTitle;
 	private String postContent;
 	private int postId;
+	private String profPicURL;
 	private List<List<String>> replyContent;
 	//	private List<PostReply> replies;
 
 	public PostContainer(){}
 
-	public PostContainer(String authorName, String postTitle, String postContent, int postId, List<List<String>> replyContent) {
+	public PostContainer(String authorName, String postTitle, String postContent, int postId, String profPicURL, List<List<String>> replyContent) {
 		super();
 		this.authorName = authorName;
 		this.postTitle = postTitle;
 		this.postContent = postContent;
 		this.postId = postId;
+		this.profPicURL = profPicURL;
 		this.setReplyContent(replyContent);
+	}
+
+	public String getProfPicURL() {
+		return profPicURL;
+	}
+
+	public void setProfPicURL(String profPicURL) {
+		this.profPicURL = profPicURL;
 	}
 
 	public String getAuthorName() {
@@ -71,8 +81,9 @@ public class PostContainer {
 	@Override
 	public String toString() {
 		return "PostContainer [authorName=" + authorName + ", postTitle=" + postTitle + ", postContent=" + postContent
-				+ ", postId=" + postId + ", replyContent=" + replyContent + "]";
+				+ ", postId=" + postId + ", profPicURL=" + profPicURL + ", replyContent=" + replyContent + "]";
 	}
 
+	
 	
 }
