@@ -43,7 +43,8 @@ angular.module('updateTemp', [])
 			console.log(response + ' YAY!');
 			$window.alert(response.data);
 			if(response.data == "Updated"){
-				$window.location.href = 'login.html';
+				$window.location.href = 'index.jsp';
+				
 			} 
 			
 		}, function(error) {

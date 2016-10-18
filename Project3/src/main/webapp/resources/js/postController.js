@@ -23,6 +23,51 @@ app.controller("postCtrl", function($scope, $location, $http, createUserService,
 	
 	$scope.replys;
 	
+	$scope.dislikesReplysContainer;
+	
+	$scope.likesReplysContainer;
+	
+	//console.log(user);
+	
+	
+	$scope.likeReply = function(user, id, index) {
+		console.log(id);
+		$http({method: 'POST', url: 'rest/likeReply', data: $.param({username: user.username, id: id}), headers: {'Content-Type': 'application/x-www-form-urlencoded'} })
+		.success(function(data, status, headers, config) {
+			
+			$scope.likesReplysContainer[index] = data;
+			
+			createUserService.getAllReplyDislikes(info, function(response){
+				$scope.dislikesReplysContainer = response.data;
+				console.log($scope.dislikesReplysContainer);
+			});
+		})
+		.error(function(data, status, headers, config) {
+		//alert( "failure message: " + JSON.stringify({data: data}));
+		});
+		
+	}
+	
+	$scope.dislikeReply = function(user, id, index) {
+		console.log(id);
+		$http({method: 'POST', url: 'rest/dislikeReply', data: $.param({username: user.username, id: id}), headers: {'Content-Type': 'application/x-www-form-urlencoded'} })
+		.success(function(data, status, headers, config) {
+			
+			$scope.dislikesReplysContainer[index] = data;
+			
+			createUserService.getAllReplyLikes(info, function(response){
+				$scope.likesReplysContainer = response.data;
+				console.log($scope.likesReplysContainer);
+			});
+			
+		})
+		.error(function(data, status, headers, config) {
+		//alert( "failure message: " + JSON.stringify({data: data}));
+		});
+		
+	}
+	
+	
 	$scope.startReply = function() {
 		var currentElement = angular.element('#replyContainer');
 		
@@ -33,6 +78,10 @@ app.controller("postCtrl", function($scope, $location, $http, createUserService,
 		currentElement.append(newReply);
 	//	currentElement.append(submitReply);
 */	}
+	
+	$scope.deletePost = function(id) {
+		createUserService.deletePost(id);
+	}
 	
 	$scope.replyToPost = function(replyContext, user) {
 		
@@ -67,6 +116,9 @@ app.controller("postCtrl", function($scope, $location, $http, createUserService,
 		console.log('the post id: ' + $scope.post.postContent)
 		$scope.replys = $scope.post.replyContent;
 		console.log($scope.post)
+		if($scope.user.username === $scope.post.authorName) {
+			$scope.userRole = !$scope.userRole;
+		}
 	})
 	.error(function(data, status, headers, config) {
 	//alert( "failure message: " + JSON.stringify({data: data}));
@@ -77,9 +129,19 @@ app.controller("postCtrl", function($scope, $location, $http, createUserService,
 		console.log("size-----------------------------------------" + $scope.dislikesArray);
 	});
 	
+	createUserService.getAllReplyDislikes(info, function(response){
+		$scope.dislikesReplysContainer = response.data;
+		console.log($scope.dislikesReplysContainer);
+	});
+	
 	
 	createUserService.getLike(info, function(response) {
 		$scope.likesArray = response.data;
+	});
+	
+	createUserService.getAllReplyLikes(info, function(response){
+		$scope.likesReplysContainer = response.data;
+		console.log($scope.likesReplysContainer);
 	});
 	
 	$scope.dislike = function(user, postId) {

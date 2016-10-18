@@ -3,9 +3,11 @@ package project3.service;
 import java.util.List;
 
 import project3.dto.DisLikeablePost;
+import project3.dto.DisLikeableReply;
 import project3.dto.ForumCategory;
 import project3.dto.ForumPost;
 import project3.dto.LikeablePost;
+import project3.dto.LikeableReply;
 import project3.dto.Person;
 import project3.dto.PostReply;
 
@@ -20,7 +22,7 @@ public interface BusinessLogic {
 	public String updateTempPerson(String username, String pass, String oldPass, String newUsername);
 	
 	public String updateUserInfo(Person person, String oldPassword, String newPassword, String username, String newEmail, 
-			String newPhone, String newUniversity, String newLinkedIn);
+			String newPhone, String complex, String newUniversity, String newLinkedIn);
 	
 	public int createForumPost(String content, String title, Person author, List<ForumCategory> categories);
 	
@@ -61,4 +63,20 @@ public interface BusinessLogic {
 	public List<ForumCategory> getAllCategories();
 	
 	public ForumCategory getCategoryByName(String catName);
+
+	public PostReply getReplyForDislike(int id);
+	
+	public PostReply getReplyForLike(int id);
+
+	public void addDislikeReply(PostReply reply, Person person);
+
+	public void checkReplyLike(PostReply replyLike, Person person);
+
+	public List<DisLikeableReply> getAllDislikebyReply(PostReply reply);
+
+	List<LikeableReply> getAllLikebyReply(PostReply reply);
+
+	public void addlikeReply(PostReply reply, Person person);
+
+	public void checkReplyDislike(PostReply disLikeReply, Person person);
 }

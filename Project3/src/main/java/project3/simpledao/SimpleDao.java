@@ -5,14 +5,12 @@ import java.util.List;
 
 import project3.dto.AwsKey;
 import project3.dto.Complex;
+import project3.dto.DisLikeablePost;
 import project3.dto.DisLikeableReply;
 import project3.dto.ForumCategory;
 import project3.dto.ForumPost;
-import project3.dto.LikeableReply;
-import project3.dto.DisLikeablePost;
-import project3.dto.ForumCategory;
-import project3.dto.ForumPost;
 import project3.dto.LikeablePost;
+import project3.dto.LikeableReply;
 import project3.dto.Person;
 import project3.dto.PostReply;
 import project3.dto.Role;
@@ -91,4 +89,30 @@ public interface SimpleDao {
 	public List<PostReply> getRepliesByPost(ForumPost post);
 	
 	public ForumCategory getCategoryByName(String catName);
+
+	public PostReply getReplyForDislike(int id);
+
+	public void saveDislikeReply(DisLikeableReply dislike);
+
+	public void updateReply(PostReply reply);
+
+	public PostReply getReplyForLike(int id);
+
+	public DisLikeableReply getDislikesReplyById(int id);
+
+	public void removeDislikeReply(DisLikeableReply dislikeable);
+
+	public LikeableReply getLikesReplyById(int id);
+
+	public void removeLikeReply(LikeableReply likeable);
+
+	public void saveLikeReply(LikeableReply like);
+
+	public LikeableReply getLikesReplyByPerson(Person person);
+
+	public DisLikeableReply getDislikesByPerson(Person person);
+	
+	public Complex getComplexByName(String name);
+	
+	public List<Complex> getComplex();
 }

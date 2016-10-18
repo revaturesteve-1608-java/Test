@@ -41,7 +41,8 @@ angular.module('routingApp').controller('loginController', function($scope, $mdD
 						}
 					} else {
 						console.log("where2");
-						customAlert();
+						alert("Wrong Username/Password");
+//						customAlert();
 					}
 				}, function(error) {
 					customAlert();

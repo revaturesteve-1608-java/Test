@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import project3.dto.Complex;
 import project3.dto.Person;
 import project3.dto.Role;
 
@@ -16,5 +17,9 @@ public interface ServiceInterface {
 	public List<Role> getRoles();
 	
 	public Person updateProfilePic(Person person, MultipartFile picture);
+	
+	public Person getPersonByUsername(String username);
+	
+	public List<Complex> getComplex();
 
 }

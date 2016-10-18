@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import project3.dto.DisLikeablePost;
 import project3.dto.ForumCategory;
+import project3.dto.DisLikeableReply;
 import project3.dto.ForumPost;
 import project3.dto.LikeablePost;
+import project3.dto.LikeableReply;
 import project3.dto.Person;
 import project3.dto.PostReply;
 import project3.objectcontainer.PostContainer;
@@ -57,7 +59,8 @@ public class PostsController {
 		
 		for(ForumPost post: posts){
 			List<List<String>> postContent = new ArrayList<>();
-			for(PostReply reply: service.getRepliesByPost(post)) {
+			List<PostReply> replys = service.getRepliesByPost(post);
+			for(PostReply reply: replys) {
 				List<String> replies = new ArrayList<>();
 				replies.add(reply.getContent());
 				replies.add(reply.getAuthor().getUsername());
@@ -161,6 +164,7 @@ public class PostsController {
 			replies.add(reply.getAuthor().getUsername());
 			Date day = new Date(reply.getTimestamp().getTime());
 			replies.add(day.toString());
+			replies.add(reply.getId() + "");
 			content.add(replies);
 		}
 		System.out.println("here end reply=================");
@@ -186,6 +190,39 @@ public class PostsController {
 		return Integer.toString(dislikes.size());
 	}
 	
+	@RequestMapping(value="/dislikeReply", method=RequestMethod.POST)
+	@ResponseBody
+	public String dislikeReply(@RequestParam("username") String username, @RequestParam("id") int id) {
+		
+		System.out.println(username + "    " + id);
+		PostReply reply = service.getReplyForDislike(id);
+		Person person = service.getPersonByUsername(username);
+		PostReply replyLike = service.getReplyForLike(id);
+		service.addDislikeReply(reply, person);
+		service.checkReplyLike(replyLike, person);
+		List<DisLikeableReply> dislikes = service.getAllDislikebyReply(reply);
+		
+		return Integer.toString(dislikes.size());
+	}
+	
+	@RequestMapping(value="/likeReply", method=RequestMethod.POST)
+	@ResponseBody
+	public String likeReply(@RequestParam("username") String username, @RequestParam("id") int id) {
+		
+		System.out.println(username + "    " + id);
+		PostReply reply = service.getReplyForLike(id);
+		Person person = service.getPersonByUsername(username);
+		System.out.println("------------------before  getting dislike------------------------");
+		PostReply disLikeReply = service.getReplyForDislike(id);
+		System.out.println("------------------before adding reply------------------------");
+		service.addlikeReply(reply, person);
+		System.out.println("------------------before removing dislike------------------------");
+		service.checkReplyDislike(disLikeReply, person);
+		List<LikeableReply> likes = service.getAllLikebyReply(reply);
+		
+		return Integer.toString(likes.size());
+	}
+	
 	@RequestMapping(value="/like", method=RequestMethod.POST)
 	@ResponseBody
 	public String likePost(@RequestParam("username") String username, @RequestParam("id") int id) {
@@ -209,6 +246,44 @@ public class PostsController {
 		List<DisLikeablePost> dislikes = service.getAllDislikebyPost(post);
 		System.out.println("-----------------------------------------------here");
 		return Integer.toString(dislikes.size());
+	}
+	
+	@RequestMapping(value="/getDislikes", method=RequestMethod.POST)
+	@ResponseBody
+	public List<Integer> getAllDislikesReply(@RequestParam("id") int id) {
+		
+		ForumPost post = service.getPostForDislike(id);
+		
+		List<PostReply> replys = service.getRepliesByPost(post);
+		
+		List<Integer> dislikes = new ArrayList<>();
+		
+		for(PostReply item: replys) {
+			PostReply reply = service.getReplyForDislike(item.getId());
+			List<DisLikeableReply> dislikeReplyList = service.getAllDislikebyReply(reply);
+			dislikes.add(dislikeReplyList.size());
+		}
+		
+		return dislikes;
+	}
+	
+	@RequestMapping(value="/getLikes", method=RequestMethod.POST)
+	@ResponseBody
+	public List<Integer> getAllLikesReply(@RequestParam("id") int id) {
+		
+		ForumPost post = service.getPostForLike(id);
+		
+		List<PostReply> replys = service.getRepliesByPost(post);
+		
+		List<Integer> likes = new ArrayList<>();
+		
+		for(PostReply item: replys) {
+			PostReply reply = service.getReplyForLike(item.getId());
+			List<LikeableReply> likeReplyList = service.getAllLikebyReply(reply);
+			likes.add(likeReplyList.size());
+		}
+		
+		return likes;
 	}
 	
 	

@@ -7,15 +7,22 @@ angular.module('routingApp')
 .controller('updateUserCtrl', function($scope, updateUserData){
 	console.log('FIRST IN CONTROLLER')
 	$scope.updateInformation = function(oldPassword, newPassword, username, newEmail, newPhone, 
-			newUniversity, newLinkedIn){
+			complex, newUniversity, newLinkedIn){
 		console.log('EVENT LISTENER WORKED')
 		console.log("oldpass: " + oldPassword);
 		console.log("newpass: " + newPassword);
 					
-		var information = [oldPassword, newPassword, username, newEmail, newPhone, newUniversity, newLinkedIn]
+		var information = [oldPassword, newPassword, username, newEmail, newPhone, newUniversity, newLinkedIn, 
+		                   complex.complexName.complexName]
 		console.log(information);
 		updateUserData.update(information);
 	}
+	
+	$scope.getComplex = updateUserData.getComplex(
+			// pass in the callback function
+			function(response) {
+				$scope.complex = response.data;
+			})
 	
 //	$scope.user;
 //	
@@ -101,6 +108,11 @@ angular.module('routingApp')
 		}, function(error) {
 			console.log($q.reject(error));
 		});
+	}
+	
+	this.getComplex = function(callback) {
+		// callback is a function that takes a response
+		$http.post('rest/getComplex').then(callback);
 	}
 })
 
