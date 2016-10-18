@@ -354,9 +354,19 @@ textarea.ta-bind {
 	</div>
 
 	<div  infinite-scroll="getMorePosts(firstResult)" infinite-scroll-distance='1'>
-
 		<div class="col-sm-8 text-left">
+			
 			<div id="allPosts" data-ng-controller="postsCtrl">
+			<form>
+				<fieldset>
+					<div class="col-md-6">
+						Search: <input class="form-control input-sm" type="text" ng-model="searchBox" placeholder="Search..."/>
+					</div>
+					<div class="col-md-6">
+						Select category: <select class="form-control" id="sel1" ng-options="categories for categories in allCategories" ng-model="selectCat" ng-change="getPostsByCategory(selectCat)"></select>
+					</div>
+				</fieldset>
+			</form> <br>
 				<div id="newPost">
 					<ul class="list-group">
 						<li class="list-group-item">
@@ -368,8 +378,17 @@ textarea.ta-bind {
 						</li>
 						<li class="list-group-item">
 							<div id=title>
-								<input class="form-group" id="postContent" type="text"
-									placeholder="Title" ng-model="postTitle">
+							<form>
+								<fieldset>
+									<input class="form-control input-sm" id="postContent" type="text"
+										placeholder="Title" ng-model="postTitle">
+								</fieldset>
+							</form>
+								<div class="form-group">
+  									<label for="sel1">Category:</label>
+  										<select class="form-control" id="sel1" ng-options="categories for categories in allCategories" ng-model="categoryPicked">
+ 									 	</select>
+								</div>
 							</div>
 							<div>
 								<div>
@@ -382,7 +401,7 @@ textarea.ta-bind {
 									<hr>
 
 									<button id="submit" type="button" class="btn btn-primary"
-										ng-click="addPost(postTitle, htmlcontent)">Submit</button>
+										ng-click="addPost(postTitle, htmlcontent, categoryPicked)">Submit</button>
 									<button type="button" class="btn btn-primary"
 										ng-click="htmlcontent = emptyhtml">Reset</button>
 									<button type="button" class="btn btn-primary"
@@ -392,15 +411,14 @@ textarea.ta-bind {
 							</div>
 						</li>
 					</ul>
-				</div>
+				</div>				
 				
-				<input type="text" ng-model="searchBox"/>
 				<div id="posts" ng-repeat="postContainer in allPosts | filter:searchBox">
 					<div id="eachPost">
 						<ul class="list-group">
 							<li class="list-group-item" >
 								<div id="titleDiv">
-								<div class="col-md-8"><h4><b>{{postContainer.postTitle}}</b></h4></div>
+								<div class="col-md-8"><h4><a href="#post?id={{postContainer.postId}}"><b>{{postContainer.postTitle}}</b></a></h4></div>
 								<div class="col-md-4">
 									<button id="deleteBtn" type="button" class="btn btn-default"
 										aria-label="Right Align" ng-click="deletePost(postId)">
@@ -419,29 +437,18 @@ textarea.ta-bind {
 							<li class="list-group-item">
 								<div class="{{postContainer.postId}}">
 									<div id="singleReply" class="row" ng-repeat="replies in postContainer.replyContent">
-										<div class="col-md-8">{{replies}}</div>
-										<div class="col-md-4">
-											<button type="button" class="btn btn-default"
-												aria-label="Right Align">
-												<span class="glyphicon glyphicon-thumbs-up"
-													aria-hidden="true"></span>
-											</button>
-											<button type="button" class="btn btn-default"
-												aria-label="Right Align">
-												<span class="glyphicon glyphicon-thumbs-down"
-													aria-hidden="true"></span>
-											</button>
-										</div>
+										<div ng-bind-html="replies[0]" class="col-md-8">{{replies[0]}}</div>
 									</div>
 								</div>
 							</li>
 							<li class="list-group-item" id="theRepyTextBox"><input
 								id="post" name="post1" type="hidden"
-								ng-init="postId=postContainer.postId;" ng-model="postId" /> <input
-								class="form-group" id="replyText" type="text"
-								placeholder="reply" ng-model="userReply1">
+								ng-init="postId=postContainer.postId;" ng-model="postId" /> <form><fieldset><div class="col-md-6"> <input
+								class="form-control input-sm" id="replyText" type="text"
+								placeholder="reply" ng-model="userReply1"> </div>
+								<div class="col-md-6">
 								<button id="reply" type="button" class="btn btn-primary"
-									ng-click="addReply(userReply1, postId)">reply</button></li>
+									ng-click="addReply(userReply1, postId)">reply</button></div></fieldset></form></li>
 						</ul>
 					</div>
 				</div>

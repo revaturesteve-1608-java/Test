@@ -62,7 +62,7 @@ public interface SimpleDao {
 	
 	public List<ForumPost> getMorePosts(int firstResult);
 	
-	public List<ForumPost> getPostsByCategory(ForumCategory cat);
+	public List<ForumPost> getPostsByCategory();
 
 	public void updatePost(ForumPost post);
 
@@ -87,8 +87,10 @@ public interface SimpleDao {
 	public void removeDislike(DisLikeablePost dislike);
 	
 	public List<PostReply> getRepliesByPost(ForumPost post);
+	
+	public ForumCategory getCategoryByName(String catName);
 
-	PostReply getReplyForDislike(int id);
+	public PostReply getReplyForDislike(int id);
 
 	public void saveDislikeReply(DisLikeableReply dislike);
 
