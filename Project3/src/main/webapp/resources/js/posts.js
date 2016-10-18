@@ -104,7 +104,8 @@ angular.module('routingApp')
 				$scope.$apply()
 			})
 		} else{
-			postsService.getPostsByCategory(catName, function(response){
+			var info = [catName, $scope.user.username]
+			postsService.getPostsByCategory(info, function(response){
 				$scope.allPosts = response.data;
 				$scope.$apply()
 			})
@@ -144,8 +145,8 @@ angular.module('routingApp')
 		$http.post("rest/deletePost", postId).then(callback);
 	}
 	
-	this.getPostsByCategory = function(categoryName, callback){
-		$http.post("rest/getPostsCat", categoryName).then(callback);
+	this.getPostsByCategory = function(info, callback){
+		$http.post("rest/getPostsCatProf", info).then(callback);
 	}
 	
 	this.getAllCategories = function(callback){

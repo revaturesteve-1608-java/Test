@@ -63,6 +63,8 @@ public interface SimpleDao {
 	public List<ForumPost> getMorePosts(int firstResult);
 	
 	public List<ForumPost> getPostsByCategory();
+	
+	public List<ForumPost> getPostsByCategoryProf(Person author);
 
 	public void updatePost(ForumPost post);
 

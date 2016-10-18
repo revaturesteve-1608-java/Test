@@ -528,4 +528,18 @@ public class SimpleDaoImpl implements SimpleDao{
 	public List<Complex> getComplex() {
 		return session.getCurrentSession().createCriteria(Complex.class).list();
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ForumPost> getPostsByCategoryProf(Person author) {
+		// TODO Auto-generated method stub
+		Session currentSession = session.getCurrentSession();
+		Criteria criteria = currentSession.createCriteria(ForumPost.class);
+		criteria.add(Restrictions.eq("author", author));
+		criteria.setFetchMode("author", FetchMode.JOIN);
+		criteria.setFetchMode("category", FetchMode.JOIN);
+		criteria.addOrder(Order.desc("timestamp"));
+		List<ForumPost> posts = (List<ForumPost>) criteria.list();
+		return posts;
+	}
 }

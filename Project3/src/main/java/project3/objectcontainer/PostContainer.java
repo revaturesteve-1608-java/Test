@@ -10,6 +10,7 @@ public class PostContainer {
 	private int postId;
 	private String profPicURL;
 	private List<List<String>> replyContent;
+	private String date;
 	//	private List<PostReply> replies;
 
 	public PostContainer(){}
@@ -22,6 +23,18 @@ public class PostContainer {
 		this.postId = postId;
 		this.profPicURL = profPicURL;
 		this.setReplyContent(replyContent);
+	}
+
+	public PostContainer(String authorName, String postTitle, String postContent, int postId, String profPicURL,
+			List<List<String>> replyContent, String date) {
+		super();
+		this.authorName = authorName;
+		this.postTitle = postTitle;
+		this.postContent = postContent;
+		this.postId = postId;
+		this.profPicURL = profPicURL;
+		this.replyContent = replyContent;
+		this.date = date;
 	}
 
 	public String getProfPicURL() {
@@ -74,6 +87,14 @@ public class PostContainer {
 
 	public void setPostId(int postId) {
 		this.postId = postId;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 	@Override

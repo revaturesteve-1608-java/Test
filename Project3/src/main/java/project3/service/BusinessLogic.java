@@ -60,6 +60,8 @@ public interface BusinessLogic {
 	
 	public List<ForumPost> getPostsByCategory(String catName);
 	
+	public List<ForumPost> getPostsByCategoryProf(String catName, String username);
+	
 	public List<ForumCategory> getAllCategories();
 	
 	public ForumCategory getCategoryByName(String catName);

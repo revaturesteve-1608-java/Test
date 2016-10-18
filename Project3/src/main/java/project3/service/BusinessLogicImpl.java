@@ -441,4 +441,22 @@ public class BusinessLogicImpl implements BusinessLogic {
 	public List<LikeableReply> getAllLikebyReply(PostReply reply) {
 		return reply.getLikes();
 	}
+
+	@Override
+	public List<ForumPost> getPostsByCategoryProf(String catName, String username) {
+		// TODO Auto-generated method stub
+		Person author = dao.getPersonByUsername(username);
+		List<ForumPost> posts = getRidOfDupes(dao.getPostsByCategoryProf(author));
+		ForumCategory category = dao.getCategoryByName(catName);
+		List<ForumPost> filteredPosts = new ArrayList<>();
+		for(ForumPost post: posts){
+			for(ForumCategory cat: post.getCategory()){
+				if(cat.getCategoryName().equals(catName)){
+					filteredPosts.add(post);
+					break;
+				}
+			}
+		}
+		return filteredPosts;
+	}
 }
