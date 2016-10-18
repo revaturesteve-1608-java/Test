@@ -145,4 +145,18 @@ app.service('createUserService', function($http, $q, $window) {
 		$http({method: 'POST', url: 'rest/getLike', data: $.param({id: info}), headers: {'Content-Type': 'application/x-www-form-urlencoded'} }).then(callback);
 	}
 	
+	this.getAllReplyDislikes = function(info, callback) {
+		
+		$http({method: 'POST', url: 'rest/getDislikes', data: $.param({id: info}), headers: {'Content-Type': 'application/x-www-form-urlencoded'} }).then(callback);
+	}
+	
+	this.getAllReplyLikes = function(info, callback) {
+		
+		$http({method: 'POST', url: 'rest/getLikes', data: $.param({id: info}), headers: {'Content-Type': 'application/x-www-form-urlencoded'} }).then(callback);
+	}
+	
+	this.deletePost = function(postId){
+		$http.post("rest/deletePost", postId).then();
+	}
+	
 })
