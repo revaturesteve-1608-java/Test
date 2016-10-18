@@ -554,6 +554,17 @@ textarea.ta-bind {
 										<!-- Search input-->
 										<div class="form-group">
 											<label class="col-md-4 control-label" for="searchinput">
+												Complex</label>
+											<div class="col-md-8">
+												<select class="form-control" ng-model="complex.complexName" ng-options="x.complexName for x in complex">
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="component">
+										<!-- Search input-->
+										<div class="form-group">
+											<label class="col-md-4 control-label" for="searchinput">
 												University</label>
 											<div class="col-md-8">
 												<input class="form-control input-md" id="university"
@@ -602,7 +613,7 @@ textarea.ta-bind {
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 					<button type="button" class="btn btn-primary"
-						ng-click="updateInformation(oldPassword, newPassword, username, newEmail, newPhone, newUniversity, newLinkedIn)">Save
+						ng-click="updateInformation(oldPassword, newPassword, username, newEmail, newPhone, complex, newUniversity, newLinkedIn)">Save
 						Changes</button>
 				</div>
 			</div>

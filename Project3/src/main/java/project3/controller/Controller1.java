@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import project3.dto.Complex;
 import project3.dto.Person;
 import project3.service.BusinessLogic;
 import project3.service.ServiceInterface;
@@ -81,9 +82,10 @@ public class Controller1 {
 		String newPhone = information[4];
 		String newUniversity = information[5];
 		String newLinkedIn = information[6];
+		String complex = information[7];
 		
 		String updatedStatus = logic.updateUserInfo(person, oldPassword, newPassword, newUsername, newEmail, 
-				newPhone, newUniversity, newLinkedIn);
+				newPhone, complex, newUniversity, newLinkedIn);
 		
 		if(updatedStatus.equals("Updated")){
 			Person updatedPerson = logic.getPersonById(person.getId());
