@@ -90,21 +90,21 @@ public class BusinessLogicImpl implements BusinessLogic {
 			person.setEmail(newEmail);
 		}
 		// phone
-		if (newPhone == null || !("".equals(newPhone))) {
+		if (newPhone != null && !("".equals(newPhone))) {
 			person.setPhoneNumber(newPhone);
 		}
 		//complex
 		System.out.println("------------------------------here");
-		if (complex == null || !("".equals(complex))) {
+		if (complex != null && !("".equals(complex))) {
 			System.out.println(dao.getComplexByName(complex));
 			person.setComplex(dao.getComplexByName(complex));
 		}
 		// university
-		if (newUniversity == null || !("".equals(newUniversity))) {
+		if (newUniversity != null && !("".equals(newUniversity))) {
 			person.setUniversity(newUniversity);
 		}
 		// Linkedin
-		if (newLinkedIn == null || !("".equals(newLinkedIn))) {
+		if (newLinkedIn != null && !("".equals(newLinkedIn))) {
 			person.setLinkedin(newLinkedIn);
 		}
 		dao.updateUserInfo(person);

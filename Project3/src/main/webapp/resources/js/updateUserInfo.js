@@ -4,18 +4,32 @@
 
 angular.module('routingApp')
 
-.controller('updateUserCtrl', function($scope, updateUserData){
+.controller('updateUserCtrl', function($scope, updateUserData, $window, createUserService){
 	console.log('FIRST IN CONTROLLER')
 	$scope.updateInformation = function(oldPassword, newPassword, username, newEmail, newPhone, 
 			complex, newUniversity, newLinkedIn){
 		console.log('EVENT LISTENER WORKED')
 		console.log("oldpass: " + oldPassword);
 		console.log("newpass: " + newPassword);
-					
+		var complexN = "";
+		if(complex.complexName != null) {
+			complexN = complex.complexName.complexName;
+		}
 		var information = [oldPassword, newPassword, username, newEmail, newPhone, newUniversity, newLinkedIn, 
-		                   complex.complexName.complexName]
+		                   complexN]
 		console.log(information);
-		updateUserData.update(information);
+		updateUserData.update(information, function(response){
+			$window.alert(response.data);
+			createUserService.getUser(
+					function(response){
+//						console.log(response);
+//						console.log(response.data) 
+					//	console.log(typeof response.data[0].maker);
+						$scope.user = response.data; 	
+//						console.log($scope.user);
+					})
+			
+		});
 	}
 	
 	$scope.getComplex = updateUserData.getComplex(
@@ -91,14 +105,10 @@ angular.module('routingApp')
     }
 })
 
-.service('updateUserData', function($http, $window, $q){
-	this.update = function(information){
+.service('updateUserData', function($http, $window, $q, $route){
+	this.update = function(information, callback){
 		console.log('GOT INTO SERVICE')
-		$http.post("rest/updateInfo", information).then(function(response) {
-			$window.alert(response.data);
-		}, function(error) {
-			console.log($q.reject(error));
-		});
+		$http.post("rest/updateInfo", information).then(callback);
 	}
 	
 	this.updatePics = function(formdata){
