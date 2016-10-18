@@ -1,6 +1,5 @@
 package project3.dto;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -23,7 +22,7 @@ public class DisLikeableReply {
 	@GeneratedValue(generator="dislikeablereplySeq", strategy=GenerationType.SEQUENCE)
 	private int id;
 	
-	@OneToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)  
+	@OneToOne(fetch=FetchType.EAGER)  
 	@JoinColumn(name="u_id")
 	private Person author;
 	
@@ -34,6 +33,16 @@ public class DisLikeableReply {
 	public DisLikeableReply() {
 		
 	}
+	
+	
+
+	public DisLikeableReply(Person author, PostReply reply) {
+		super();
+		this.author = author;
+		this.reply = reply;
+	}
+
+
 
 	public DisLikeableReply(int id, Person author, PostReply reply) {
 		super();

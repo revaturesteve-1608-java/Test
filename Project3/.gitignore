@@ -1,13 +1,1 @@
-/bin/
-
-.classpath
-.settings
-/
-target/
-
-build/
-
-
-*/.metadata/*
-
-/pom.properties
+/target/

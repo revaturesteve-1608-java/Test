@@ -22,8 +22,10 @@ import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import project3.dto.AwsKey;
+import project3.dto.Complex;
 import project3.dto.Person;
 import project3.dto.Role;
 import project3.service.Crypt;
@@ -215,13 +217,13 @@ public class ServiceLogic implements ServiceInterface{
         					+ "<br>"
         					+ "<br>"
         					+ "Click the link below to login: "
-        					+ "<a rel=\"nofollow\" target=\"_blank\" href=\"http://ec2-54-152-99-76.compute-1.amazonaws.com:8080/Project3/login.html\">Login</a></p>"
+        					+ "<a rel=\"nofollow\" target=\"_blank\" href=\"http://ec2-54-152-99-76.compute-1.amazonaws.com:8080/Project3/\">Login</a></p>"
 
             				+ "<br>"
             				+ "<br>"
             				+ "<br>Regards<br>"
             				+ "<strong>RevPages</strong><br>"
-            				+ "<a rel=\"nofollow\" target=\"_blank\" href=\"http://ec2-54-152-99-76.compute-1.amazonaws.com:8080/Project3\">https://www.revpages.com</a></p>"
+            				+ "<a rel=\"nofollow\" target=\"_blank\" href=\"https://revature.com/\">https://www.revature.com</a></p>"
 
             			+ "</td>"
             		+ "</tr>"
@@ -248,6 +250,25 @@ public class ServiceLogic implements ServiceInterface{
 			return person;
 		}
 		return null;
+	}
+
+	@Override
+	public Person updateProfilePic(Person person, MultipartFile picture) {
+		AwsKey key = dao.getAWSKey();
+		person.setProfilePic(jetS3.uploadProfileItem(person.getId() + "", person.getId() + "", picture,
+				key.getAccessKey(), key.getSecretAccessKey()));
+		dao.updatePersonPic(person);
+		return person;
+	}
+
+	@Override
+	public Person getPersonByUsername(String username) {
+		return dao.getPersonByUsername(username);
+	}
+
+	@Override
+	public List<Complex> getComplex() {
+		return dao.getComplex();
 	}
 	
 

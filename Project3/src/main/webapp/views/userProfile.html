@@ -263,6 +263,9 @@ textarea.ta-bind {
 #thumbsUp {
 	margin-left: 10%;
 }
+#titleDiv{
+	padding-bottom: 4%;
+}
 </style>
  
 <script>
@@ -308,7 +311,7 @@ textarea.ta-bind {
 				<div class="ACon">
 					<div class="Profile">
 						<div>
-							<img src="{{user.profilePic}}" class="Img">
+							<img id = "profilePic" src="{{user.profilePic}}" class="Img">
 							<div class="overlay">
 								<span><img /></span>
 							</div>
@@ -332,13 +335,13 @@ textarea.ta-bind {
 							</h5>
 							<h5 class="buttons">
 								<a class="username" href="">Complex:
-									{{user.complex.categoryName}}</a>
+									{{user.complex.complexName}}</a>
 							</h5>
-
-							<div>
+                            
+                         	<div>
 								<button type="button" class="btn btn-secondary"
-									data-toggle="modal" data-target="#myModal">Edit
-									Profile Information</button>
+								data-toggle="modal" data-target="#myModal">Edit
+								Profile Information</button>
 							</div>
 
 						</div>
@@ -351,9 +354,19 @@ textarea.ta-bind {
 	</div>
 
 	<div  infinite-scroll="getMorePosts(firstResult)" infinite-scroll-distance='1'>
-
 		<div class="col-sm-8 text-left">
+			
 			<div id="allPosts" data-ng-controller="postsCtrl">
+			<form>
+				<fieldset>
+					<div class="col-md-6">
+						Search: <input class="form-control input-sm" type="text" ng-model="searchBox" placeholder="Search..."/>
+					</div>
+					<div class="col-md-6">
+						Select category: <select class="form-control" id="sel1" ng-options="categories for categories in allCategories" ng-model="selectCat" ng-change="getPostsByCategory(selectCat)"></select>
+					</div>
+				</fieldset>
+			</form> <br>
 				<div id="newPost">
 					<ul class="list-group">
 						<li class="list-group-item">
@@ -365,8 +378,17 @@ textarea.ta-bind {
 						</li>
 						<li class="list-group-item">
 							<div id=title>
-								<input class="form-group" id="postContent" type="text"
-									placeholder="Title" ng-model="postTitle">
+							<form>
+								<fieldset>
+									<input class="form-control input-sm" id="postContent" type="text"
+										placeholder="Title" ng-model="postTitle">
+								</fieldset>
+							</form>
+								<div class="form-group">
+  									<label for="sel1">Category:</label>
+  										<select class="form-control" id="sel1" ng-options="categories for categories in allCategories" ng-model="categoryPicked">
+ 									 	</select>
+								</div>
 							</div>
 							<div>
 								<div>
@@ -379,7 +401,7 @@ textarea.ta-bind {
 									<hr>
 
 									<button id="submit" type="button" class="btn btn-primary"
-										ng-click="addPost(postTitle, htmlcontent)">Submit</button>
+										ng-click="addPost(postTitle, htmlcontent, categoryPicked)">Submit</button>
 									<button type="button" class="btn btn-primary"
 										ng-click="htmlcontent = emptyhtml">Reset</button>
 									<button type="button" class="btn btn-primary"
@@ -389,14 +411,21 @@ textarea.ta-bind {
 							</div>
 						</li>
 					</ul>
-				</div>
-
-				<div id="posts" ng-repeat="postContainer in allPosts">
+				</div>				
+				
+				<div id="posts" ng-repeat="postContainer in allPosts | filter:searchBox">
 					<div id="eachPost">
 						<ul class="list-group">
-							<li class="list-group-item">
-								<div>
-									<h2 id="thePost">{{postContainer.postTitle}}</h2>
+							<li class="list-group-item" >
+								<div id="titleDiv">
+								<div class="col-md-8"><h4><a href="#post?id={{postContainer.postId}}"><b>{{postContainer.postTitle}}</b></a></h4></div>
+								<div class="col-md-4">
+									<button id="deleteBtn" type="button" class="btn btn-default"
+										aria-label="Right Align" ng-click="deletePost(postId)">
+										<span class="glyphicon glyphicon-remove"
+											aria-hidden="true"></span>
+									</button>
+								</div>
 								</div>
 							</li>
 							<li class="list-group-item">
@@ -408,29 +437,18 @@ textarea.ta-bind {
 							<li class="list-group-item">
 								<div class="{{postContainer.postId}}">
 									<div id="singleReply" class="row" ng-repeat="replies in postContainer.replyContent">
-										<div class="col-md-8">{{replies}}</div>
-										<div class="col-md-4">
-											<button type="button" class="btn btn-default"
-												aria-label="Right Align">
-												<span class="glyphicon glyphicon-thumbs-up"
-													aria-hidden="true"></span>
-											</button>
-											<button type="button" class="btn btn-default"
-												aria-label="Right Align">
-												<span class="glyphicon glyphicon-thumbs-down"
-													aria-hidden="true"></span>
-											</button>
-										</div>
+										<div ng-bind-html="replies[0]" class="col-md-8">{{replies[0]}}</div>
 									</div>
 								</div>
 							</li>
 							<li class="list-group-item" id="theRepyTextBox"><input
 								id="post" name="post1" type="hidden"
-								ng-init="postId=postContainer.postId;" ng-model="postId" /> <input
-								class="form-group" id="replyText" type="text"
-								placeholder="reply" ng-model="userReply1">
+								ng-init="postId=postContainer.postId;" ng-model="postId" /> <form><fieldset><div class="col-md-6"> <input
+								class="form-control input-sm" id="replyText" type="text"
+								placeholder="reply" ng-model="userReply1"> </div>
+								<div class="col-md-6">
 								<button id="reply" type="button" class="btn btn-primary"
-									ng-click="addReply(userReply1, postId)">reply</button></li>
+									ng-click="addReply(userReply1, postId)">reply</button></div></fieldset></form></li>
 						</ul>
 					</div>
 				</div>
@@ -543,6 +561,17 @@ textarea.ta-bind {
 										<!-- Search input-->
 										<div class="form-group">
 											<label class="col-md-4 control-label" for="searchinput">
+												Complex</label>
+											<div class="col-md-8">
+												<select class="form-control" ng-model="complex.complexName" ng-options="x.complexName for x in complex">
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="component">
+										<!-- Search input-->
+										<div class="form-group">
+											<label class="col-md-4 control-label" for="searchinput">
 												University</label>
 											<div class="col-md-8">
 												<input class="form-control input-md" id="university"
@@ -563,7 +592,19 @@ textarea.ta-bind {
 											</div>
 										</div>
 									</div>
-
+									
+									<div class="component">
+										<!-- Search input-->
+										<div class="form-group">
+											<label class="col-md-4 control-label" for="searchinput">
+												File to upload</label>
+											<div class="col-md-8">
+												<input type="file" id ="fileChooser" name="file" /><br/>
+                                    			<input type="submit" id="fileUploadButton" value="Upload" />
+											</div>
+										</div>
+									</div>
+									
 
 								</div>
 							</div>
@@ -579,17 +620,52 @@ textarea.ta-bind {
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 					<button type="button" class="btn btn-primary"
-						ng-click="updateInformation(oldPassword, newPassword, username, newEmail, newPhone, newUniversity, newLinkedIn)">Save
+						ng-click="updateInformation(oldPassword, newPassword, username, newEmail, newPhone, complex, newUniversity, newLinkedIn)">Save
 						Changes</button>
 				</div>
 			</div>
 		</div>
 	</div>
-	
+<script type="text/javascript">
+$(document).ready(function(){
+	var currentPicture = '{{user.profilePic}}';
+	$("#fileChooser").change(function(event){
+		if(event.target.files[0].type.includes("image")) {
+			console.log("here1")
+			newPicture = URL.createObjectURL(event.target.files[0]);
+			$("#profilePic").attr("src", newPicture);
+			
+			$("#fileUploadButton").click(function(e){
+				console.log("here2")
+				if(event.target.files[0].type.includes("image")) {
+					console.log("here3")
+					var data = new FormData();
+					
+					data.append("file",$("#fileChooser")[0].files[0]);
+					$.ajax({
+						url: "rest/upload-remote",
+						data: data,
+						contentType: false,
+						processData: false,
+						type: "POST",
+						cache: false,
+						success: function(response){
+							
+								alert("Profile Picture Updated");
+						}		
+					});
+					
+					e.preventDefault();
+				}
+			})
+		} else {
+    		alert("Only image");
+    	}
+	})
+			
+});
+</script>
 	
 </body>
 
 </html>
-
-
-

@@ -56,25 +56,33 @@ app.controller("frontCtrl", function($scope, $http, $window, $cookies, createUse
 	
 	$scope.homePage = function() {
 //		console.log($cookies.user)
-		
+		console.log($scope.user.vaildated === false);
+		console.log($scope.user.id);
 		if($scope.user.id == 0){
-			$window.location.href = 'login.html';
+//			$window.location.href = 'login.html';
+			$("#myModal").modal() 
 		} else {
-			$window.location.href = 'moderate-view.html';
+			console.log($scope.user.vaildated);
+			if($scope.user.vaildated !== false) {
+				if($scope.user.role.roleName === "Moderator") {
+					$window.location.href = 'moderate-view.html';
+				} else {
+					$window.location.href = 'associate-view.html';
+				}
+			} else {
+				$window.location.href = 'updateTempInfo.html';
+			}
+			
 		}
 	}
 	
 	$scope.getUser = createUserService.getUser(
 			function(response){
-				console.log(response);
-				console.log(response.data) 
+//				console.log(response);
+//				console.log(response.data) 
 			//	console.log(typeof response.data[0].maker);
 				$scope.user = response.data; 	
-				
-				
-				
-				console.log($scope.user);
-				
+//				console.log($scope.user);
 			})
 
 })
@@ -111,7 +119,7 @@ app.service('createUserService', function($http, $q, $window) {
 		$http.post('rest/logout').then(function(response) {
 			
 			console.log("here");
-			$window.location.href = 'login.html';
+			$window.location.href = 'index.jsp';
 			
 			//$window.alert(response.data);
 		}, function(error) {
@@ -127,5 +135,46 @@ app.service('createUserService', function($http, $q, $window) {
 		$http.get("rest/getForm").then(callback)
 	}
 	
+	this.getDislike = function(info, callback) {
+	
+	$http({method: 'POST', url: 'rest/getDislike', data: $.param({id: info}), headers: {'Content-Type': 'application/x-www-form-urlencoded'} }).then(callback);
+	}
+	
+	this.getLike = function(info, callback) {
+		
+		$http({method: 'POST', url: 'rest/getLike', data: $.param({id: info}), headers: {'Content-Type': 'application/x-www-form-urlencoded'} }).then(callback);
+	}
+	
+	this.getAllReplyDislikes = function(info, callback) {
+		
+		$http({method: 'POST', url: 'rest/getDislikes', data: $.param({id: info}), headers: {'Content-Type': 'application/x-www-form-urlencoded'} }).then(callback);
+	}
+	
+	this.getAllReplyLikes = function(info, callback) {
+		
+		$http({method: 'POST', url: 'rest/getLikes', data: $.param({id: info}), headers: {'Content-Type': 'application/x-www-form-urlencoded'} }).then(callback);
+	}
+	
+	this.deletePost = function(postId){
+		$http.post("rest/deletePost", postId).then();
+		if($window.location.href.includes("associate-view")) {
+			$window.location.href = 'associate-view.html';
+		} else {
+			$window.location.href = 'moderate-view.html';
+		}
+		
+	}
+	
+	this.getPostsByCategory = function(categoryName, callback){
+		$http.post("rest/getPostsCat", categoryName).then(callback);
+	}
+	
+	this.getAllCategories = function(callback){
+		$http.post("rest/getAllCat").then(callback);
+	}
+	
+	this.getPostsByUsername = function(username, callback){
+		$http.post("rest/getPostsByUsername", username).then(callback)
+	}
 	
 })

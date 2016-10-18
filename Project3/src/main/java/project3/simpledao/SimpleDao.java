@@ -5,15 +5,14 @@ import java.util.List;
 
 import project3.dto.AwsKey;
 import project3.dto.Complex;
+import project3.dto.DisLikeablePost;
 import project3.dto.DisLikeableReply;
 import project3.dto.ForumCategory;
 import project3.dto.ForumPost;
-import project3.dto.LikeableReply;
-import project3.dto.DisLikeablePost;
-import project3.dto.ForumCategory;
-import project3.dto.ForumPost;
 import project3.dto.LikeablePost;
+import project3.dto.LikeableReply;
 import project3.dto.Person;
+import project3.dto.PostReply;
 import project3.dto.Role;
 
 public interface SimpleDao {
@@ -63,9 +62,9 @@ public interface SimpleDao {
 	
 	public List<ForumPost> getMorePosts(int firstResult);
 	
-	public void addDislike(ForumPost post, DisLikeablePost dislike);
+	public List<ForumPost> getPostsByCategory();
 
-	public void addLike(ForumPost post, LikeablePost like);
+	public void updatePost(ForumPost post);
 
 	public void saveDislike(DisLikeablePost dislike);
 
@@ -74,4 +73,46 @@ public interface SimpleDao {
 	public ForumPost getPostForLike(int id);
 
 	public void saveLike(LikeablePost like);
+	
+	public List<ForumPost> getMorePostsByUsername(int firstResult, Person author);
+
+	public void removeLike(ForumPost post, LikeablePost like);
+	
+	public LikeablePost getLikesByPerson(Person person, int i);
+
+	public LikeablePost getLikeById(int id);
+
+	public DisLikeablePost getDislikesById(int id);
+
+	public void removeDislike(DisLikeablePost dislike);
+	
+	public List<PostReply> getRepliesByPost(ForumPost post);
+	
+	public ForumCategory getCategoryByName(String catName);
+
+	public PostReply getReplyForDislike(int id);
+
+	public void saveDislikeReply(DisLikeableReply dislike);
+
+	public void updateReply(PostReply reply);
+
+	public PostReply getReplyForLike(int id);
+
+	public DisLikeableReply getDislikesReplyById(int id);
+
+	public void removeDislikeReply(DisLikeableReply dislikeable);
+
+	public LikeableReply getLikesReplyById(int id);
+
+	public void removeLikeReply(LikeableReply likeable);
+
+	public void saveLikeReply(LikeableReply like);
+
+	public LikeableReply getLikesReplyByPerson(Person person);
+
+	public DisLikeableReply getDislikesByPerson(Person person);
+	
+	public Complex getComplexByName(String name);
+	
+	public List<Complex> getComplex();
 }
