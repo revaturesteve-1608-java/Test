@@ -5,7 +5,7 @@ var app = angular.module('routingApp');
 app.config(function($mdThemingProvider) {
 	  $mdThemingProvider.theme('dark-grey').backgroundPalette('red');
 	})
-app.controller("postCtrl", function($scope, $location, $http, createUserService, $filter) {
+app.controller("postCtrl", function($scope, $location, $http, createUserService, $filter, $route) {
 	
 	$scope.currentUrl = $location.search();
 	
@@ -27,6 +27,7 @@ app.controller("postCtrl", function($scope, $location, $http, createUserService,
 	
 	$scope.likesReplysContainer;
 	
+	//$scope.userRole = true;
 	//console.log(user);
 	
 	
@@ -98,17 +99,15 @@ app.controller("postCtrl", function($scope, $location, $http, createUserService,
 		
 		//postsService.createReply(replyInfo);
 		$http.post("rest/createReply", replyInfo).then(function(response) {
-			var container = angular.element("#replys");
+			//var container = angular.element("#theReplies");
+			$route.reload();
 			
-			var context = '<md-card><md-card-title><md-card-title-text><span class="md-headline">' + replyContext +
-			'</span><span class="md-subhead">' + user.username + ' ' + day + '</span></md-card-title-text></md-card-title></md-card';
-			
-			container.append(context);
 		});
 		
 		$scope.replyContext="";
 		
 	}
+	
 	
 	$http({method: 'POST', url: 'rest/getPostById', data: $.param({id:info}), headers: {'Content-Type': 'application/x-www-form-urlencoded'} })
 	.success(function(data, status, headers, config) {
@@ -116,7 +115,8 @@ app.controller("postCtrl", function($scope, $location, $http, createUserService,
 		console.log('the post id: ' + $scope.post.postContent)
 		$scope.replys = $scope.post.replyContent;
 		console.log($scope.post)
-		if($scope.user.username === $scope.post.authorName) {
+		console.log($scope.user.role.id)
+		if(($scope.user.username === $scope.post.authorName) || $scope.user.role.id == 1) {
 			$scope.userRole = !$scope.userRole;
 		}
 	})

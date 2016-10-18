@@ -23,7 +23,7 @@ import project3.service.ServiceInterface;
 @RestController
 @SessionAttributes("person")
 public class Controller1 {
-	
+	  
 	@Autowired
 	BusinessLogic logic;
 	

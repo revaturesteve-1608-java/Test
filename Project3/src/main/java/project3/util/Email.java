@@ -11,8 +11,8 @@ import javax.mail.PasswordAuthentication;
 public class Email {
 
 	//The "From" fields for an existing GMAIL account:
-		public static final String from ="revature.reimbursements@gmail.com";
-		public static final String username ="revature.reimbursements@gmail.com";
+		public static final String from ="revature.pages@gmail.com";
+		public static final String username ="revature.pages@gmail.com";
 		public static final String password ="p4ssw0rd$123";
 		
 		

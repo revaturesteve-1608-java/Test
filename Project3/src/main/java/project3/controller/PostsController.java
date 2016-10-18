@@ -70,7 +70,7 @@ public class PostsController {
 			
 			
 			System.out.println("postId: " + post.getId() + "\tpostContent: " + postContent);
-			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), postContent);
+			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), post.getAuthor().getProfilePic(), postContent);
 			allPosts.add(p);
 			
 		//	System.out.println(p.getPostContent());
@@ -96,7 +96,7 @@ public class PostsController {
 				postContent.add(replies);
 			}
 			System.out.println("postId: " + post.getId() + "\tpostContent: " + postContent);
-			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), postContent);
+			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), post.getAuthor().getProfilePic(), postContent);
 			allPosts.add(p);
 		//	System.out.println(p.getPostContent());
 		}
@@ -124,7 +124,7 @@ public class PostsController {
 			}
 			
 			System.out.println("postId: " + post.getId() + "\tpostContent: " + postContent);
-			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), postContent);
+			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), post.getAuthor().getProfilePic(),  postContent);
 			allPosts.add(p);
 			System.out.println(p.getPostContent());
 		}
@@ -146,6 +146,19 @@ public class PostsController {
 		service.createReply(replyContent, postId, username);
 	}
 
+		
+//		List<ForumPost> posts = service.getAllPosts();
+//		System.out.println("id: " + posts.get(0).getId() + "\ttitle: " + posts.get(0).getTitle() + "\tcontent: " + posts.get(0).getContent());
+//		System.out.println("author: " + posts.get(0).getAuthor().getRole().getRoleName());
+//		List<PostContainer> allPosts = new ArrayList<>();
+//		for(ForumPost post: posts){
+//			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId());
+//			allPosts.add(p);
+//			System.out.println(p.getPostContent());
+//		new ResponseEntity<List<PostContainer>>(allPosts, HttpStatus.OK)
+		
+
+
 	@RequestMapping(value="/getPostById", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PostContainer> getPost(@RequestParam("id") int id){
 		
@@ -153,6 +166,7 @@ public class PostsController {
 		
 		ForumPost post = service.getPostById(id, false, false);
 		//System.out.println(forumPost.toString());
+
 		//System.out.println(post.toString());
 		List<List<String>> content = new ArrayList<>();
 		
@@ -168,7 +182,7 @@ public class PostsController {
 			content.add(replies);
 		}
 		System.out.println("here end reply=================");
-		PostContainer pos = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), content);
+		PostContainer pos = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), post.getAuthor().getProfilePic(),  content);
 		//ForumPost forumPost = new ForumPost();
 		//PostContainer pos = new PostContainer();
 		System.out.println("here 1");
@@ -321,7 +335,7 @@ public class PostsController {
 			}
 			
 			System.out.println("postId: " + post.getId() + "\tpostContent: " + postContent);
-			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), postContent);
+			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(),post.getAuthor().getProfilePic() , postContent);
 			allPosts.add(p);
 			System.out.println(p.getPostContent());
 		}
