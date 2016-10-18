@@ -108,7 +108,7 @@ public class BusinessLogicImpl implements BusinessLogic {
 	public int createForumPost(String content, String title, Person author, List<ForumCategory> categories) {
 		// TODO Auto-generated method stub
 		ForumPost post = new ForumPost(author, title, content, GetTimestamp.getCurrentTime(), false);
-		// post.setCategory(categories);
+		post.setCategory(categories);
 		return dao.createForumPost(post);
 	}
 
@@ -277,5 +277,50 @@ public class BusinessLogicImpl implements BusinessLogic {
 	}
 	public List<PostReply> getRepliesByPost(ForumPost post) {
 		return dao.getRepliesByPost(post);
+	}
+
+	@Override
+	public void createForumCategory(String categoryName) {
+		// TODO Auto-generated method stub
+		dao.createForumCategory(categoryName);
+	}
+
+	@Override
+	public List<ForumPost> getPostsByCategory(String catName) {
+		// TODO Auto-generated method stub
+		
+		List<ForumPost> posts = getRidOfDupes(dao.getPostsByCategory());
+		ForumCategory category = dao.getCategoryByName(catName);
+		List<ForumPost> filteredPosts = new ArrayList<>();
+		for(ForumPost post: posts){
+			for(ForumCategory cat: post.getCategory()){
+				if(cat.getCategoryName().equals(catName)){
+					filteredPosts.add(post);
+					break;
+				}
+			}
+		}
+		return filteredPosts;
+	}
+
+	@Override
+	public List<ForumCategory> getAllCategories() {
+		// TODO Auto-generated method stub
+		return getRidOfDupesCategory(dao.getForumCategory());
+	}
+	
+	private List<ForumCategory> getRidOfDupesCategory(List<ForumCategory> categories) {
+		List<ForumCategory> filteredList = new ArrayList<>();
+		for (ForumCategory cat : categories) {
+			if (!filteredList.contains(cat))
+				filteredList.add(cat);
+		}
+		return filteredList;
+	}
+
+	@Override
+	public ForumCategory getCategoryByName(String catName) {
+		// TODO Auto-generated method stub
+		return dao.getCategoryByName(catName);
 	}
 }

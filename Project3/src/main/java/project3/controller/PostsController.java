@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import project3.dto.DisLikeablePost;
+import project3.dto.ForumCategory;
 import project3.dto.ForumPost;
 import project3.dto.LikeablePost;
 import project3.dto.Person;
@@ -35,11 +36,15 @@ public class PostsController {
 		String title = postInfo[0];
 		String content = postInfo[1];
 		String username = postInfo[2];
-		System.out.println("content: " + postInfo[1]);
+		String category = postInfo[3];
+		System.out.println("contentuksahdaiushdaiadasds: " + postInfo[3]);
+		List<ForumCategory> catList = new ArrayList<>();
+		catList.add(service.getCategoryByName(category));
+		
 		System.out.println("username: " + postInfo[2]);
 		Person author = service.getPersonByUsername(username);
 		System.out.println(author.getUsername());
-		int postId = service.createForumPost(content, title, author, null);
+		int postId = service.createForumPost(content, title, author, catList);
 		return new ResponseEntity<Integer>(postId, HttpStatus.OK);
 	}
 	
@@ -52,7 +57,7 @@ public class PostsController {
 		
 		for(ForumPost post: posts){
 			List<List<String>> postContent = new ArrayList<>();
-			for(PostReply reply: post.getReplys()) {
+			for(PostReply reply: service.getRepliesByPost(post)) {
 				List<String> replies = new ArrayList<>();
 				replies.add(reply.getContent());
 				replies.add(reply.getAuthor().getUsername());
@@ -221,5 +226,44 @@ public class PostsController {
 	public void deletePost(@RequestBody String postIdStr){
 		int postId = Integer.parseInt(postIdStr);
 		service.deletePost(postId);
+	}
+	
+	@RequestMapping(value="/getPostsCat")
+	public ResponseEntity<List<PostContainer>> getPostsByCategory(@RequestBody String catName){
+		
+		List<ForumPost> posts = service.getPostsByCategory(catName);
+		
+		List<PostContainer> allPosts = new ArrayList<>();
+		
+		for(ForumPost post: posts){
+			List<List<String>> postContent = new ArrayList<>();
+			for(PostReply reply: service.getRepliesByPost(post)) {
+				List<String> replies = new ArrayList<>();
+				replies.add(reply.getContent());
+				replies.add(reply.getAuthor().getUsername());
+				replies.add(reply.getTimestamp().toString());
+				postContent.add(replies);
+			}
+			
+			System.out.println("postId: " + post.getId() + "\tpostContent: " + postContent);
+			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), postContent);
+			allPosts.add(p);
+			System.out.println(p.getPostContent());
+		}
+		
+		for(ForumPost p: posts)
+			System.out.println("post title: " + p.getTitle());
+		return new ResponseEntity<List<PostContainer>>(allPosts, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/getAllCat")
+	public ResponseEntity<List<String>> getAllCategories(){
+		
+		List<ForumCategory> categories = service.getAllCategories();
+		List<String> catNames = new ArrayList<>();
+		for(ForumCategory cat: categories){
+			catNames.add(cat.getCategoryName());
+		}
+		return new ResponseEntity<List<String>>(catNames, HttpStatus.OK);
 	}
 }
