@@ -182,7 +182,8 @@ public class PostsController {
 			content.add(replies);
 		}
 		System.out.println("here end reply=================");
-		PostContainer pos = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), post.getAuthor().getProfilePic(),  content);
+		Date day = new Date(post.getTimestamp().getTime());
+		PostContainer pos = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), post.getAuthor().getProfilePic(),  content, day.toString());
 		//ForumPost forumPost = new ForumPost();
 		//PostContainer pos = new PostContainer();
 		System.out.println("here 1");
@@ -321,6 +322,35 @@ public class PostsController {
 	public ResponseEntity<List<PostContainer>> getPostsByCategory(@RequestBody String catName){
 		
 		List<ForumPost> posts = service.getPostsByCategory(catName);
+		
+		List<PostContainer> allPosts = new ArrayList<>();
+		
+		for(ForumPost post: posts){
+			List<List<String>> postContent = new ArrayList<>();
+			for(PostReply reply: service.getRepliesByPost(post)) {
+				List<String> replies = new ArrayList<>();
+				replies.add(reply.getContent());
+				replies.add(reply.getAuthor().getUsername());
+				replies.add(reply.getTimestamp().toString());
+				postContent.add(replies);
+			}
+			
+			System.out.println("postId: " + post.getId() + "\tpostContent: " + postContent);
+			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(),post.getAuthor().getProfilePic() , postContent);
+			allPosts.add(p);
+			System.out.println(p.getPostContent());
+		}
+		
+		for(ForumPost p: posts)
+			System.out.println("post title: " + p.getTitle());
+		return new ResponseEntity<List<PostContainer>>(allPosts, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/getPostsCatProf")
+	public ResponseEntity<List<PostContainer>> getPostsByCategoryInProf(@RequestBody String[] info){
+		String catName = info[0];
+		String username = info[1];
+		List<ForumPost> posts = service.getPostsByCategoryProf(catName, username);
 		
 		List<PostContainer> allPosts = new ArrayList<>();
 		
