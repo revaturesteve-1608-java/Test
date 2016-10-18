@@ -107,4 +107,8 @@ public interface SimpleDao {
 	public void removeLikeReply(LikeableReply likeable);
 
 	public void saveLikeReply(LikeableReply like);
+
+	public LikeableReply getLikesReplyByPerson(Person person);
+
+	public DisLikeableReply getDislikesByPerson(Person person);
 }
