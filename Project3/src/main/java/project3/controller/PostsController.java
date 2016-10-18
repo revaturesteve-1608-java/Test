@@ -335,7 +335,7 @@ public class PostsController {
 			}
 			
 			System.out.println("postId: " + post.getId() + "\tpostContent: " + postContent);
-			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), postContent);
+			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(),post.getAuthor().getProfilePic() , postContent);
 			allPosts.add(p);
 			System.out.println(p.getPostContent());
 		}
