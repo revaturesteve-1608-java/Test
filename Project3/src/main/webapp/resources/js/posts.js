@@ -57,7 +57,7 @@ angular.module('routingApp')
 		postsService.getAllCategories(function(response){
 			$scope.allCategories = response.data;
 			var newArray = $scope.allCategories.slice(0); //clone the array, or you'll end up with a new "None" option added to your "values" array on every digest cycle.
-	        newArray.unshift("None");
+	        newArray.unshift("Show all");
 	        $scope.allCategories = newArray
 		})
 		postsService.getPostsByUsername($scope.user.username, function(response){
@@ -98,13 +98,14 @@ angular.module('routingApp')
 	
 	$scope.getPostsByCategory = function(catName){
 		console.log("INSIDE POSTCAT: " + catName)
-		if(catName === "None"){
+		if(catName === "Show all"){
 			postsService.getPostsByUsername($scope.user.username, function(response){
 				$scope.allPosts = response.data;
 				$scope.$apply()
 			})
 		} else{
-			postsService.getPostsByCategory(catName, function(response){
+			var info = [catName, $scope.user.username]
+			postsService.getPostsByCategory(info, function(response){
 				$scope.allPosts = response.data;
 				$scope.$apply()
 			})
@@ -144,8 +145,8 @@ angular.module('routingApp')
 		$http.post("rest/deletePost", postId).then(callback);
 	}
 	
-	this.getPostsByCategory = function(categoryName, callback){
-		$http.post("rest/getPostsCat", categoryName).then(callback);
+	this.getPostsByCategory = function(info, callback){
+		$http.post("rest/getPostsCatProf", info).then(callback);
 	}
 	
 	this.getAllCategories = function(callback){
