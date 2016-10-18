@@ -55,6 +55,14 @@ public interface BusinessLogic {
 	void checkForDislike(ForumPost post, Person person);
 	
 	public List<PostReply> getRepliesByPost(ForumPost post);
+	
+	public void createForumCategory(String categoryName);
+	
+	public List<ForumPost> getPostsByCategory(String catName);
+	
+	public List<ForumCategory> getAllCategories();
+	
+	public ForumCategory getCategoryByName(String catName);
 
 	public PostReply getReplyForDislike(int id);
 	
@@ -71,6 +79,4 @@ public interface BusinessLogic {
 	public void addlikeReply(PostReply reply, Person person);
 
 	public void checkReplyDislike(PostReply disLikeReply, Person person);
-	
-	
 }

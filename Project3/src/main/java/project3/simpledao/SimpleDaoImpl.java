@@ -9,6 +9,8 @@ import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -282,6 +284,8 @@ public class SimpleDaoImpl implements SimpleDao{
 		Criteria criteria = currentSession.createCriteria(ForumPost.class);
 		criteria.setFetchMode("author", FetchMode.JOIN);
 		criteria.setFetchMode("replys", FetchMode.JOIN);
+		criteria.addOrder(Order.desc("timestamp"));
+		
 //		criteria.setFirstResult(firstResult);
 //		criteria.setMaxResults(firstResult + 2);
 		List<ForumPost> posts = (List<ForumPost>) criteria.list();
@@ -304,14 +308,17 @@ public class SimpleDaoImpl implements SimpleDao{
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<ForumPost> getPostsByCategory(ForumCategory cat) {
+	public List<ForumPost> getPostsByCategory() {
 		// TODO Auto-generated method stub
 		Session currentSession = session.getCurrentSession();
 		Criteria criteria = currentSession.createCriteria(ForumPost.class);
 		criteria.setFetchMode("author", FetchMode.JOIN);
-		criteria.setFetchMode("replys", FetchMode.JOIN);
-		return null;
+		criteria.setFetchMode("category", FetchMode.JOIN);
+		criteria.addOrder(Order.desc("timestamp"));
+		List<ForumPost> posts = (List<ForumPost>) criteria.list();
+		return posts;
 	}
 		
 	public void saveDislike(DisLikeablePost dislike) {
@@ -348,6 +355,7 @@ public class SimpleDaoImpl implements SimpleDao{
 		Criteria criteria = currentSession.createCriteria(ForumPost.class);
 		criteria.setFetchMode("author", FetchMode.JOIN);
 		criteria.setFetchMode("replys", FetchMode.JOIN);
+		criteria.addOrder(Order.desc("timestamp"));
 		System.out.println("username inside of the dao: " + author.getUsername());
 		criteria.add(Restrictions.eq("author", author));
 //		criteria.setFirstResult(firstResult);
@@ -385,6 +393,7 @@ public class SimpleDaoImpl implements SimpleDao{
 		return like;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public DisLikeablePost getDislikesById(int id) {
 		
@@ -399,7 +408,6 @@ public class SimpleDaoImpl implements SimpleDao{
 	@Override
 	public void removeDislike(DisLikeablePost dislike) {
 		session.getCurrentSession().delete(dislike);
-		
 	}
 
 	@SuppressWarnings("unchecked")
@@ -417,6 +425,15 @@ public class SimpleDaoImpl implements SimpleDao{
 	}
 
 	@Override
+	public ForumCategory getCategoryByName(String catName) {
+		// TODO Auto-generated method stub
+		Criteria criteria = session.getCurrentSession().createCriteria(ForumCategory.class);
+		System.out.println("categroy name: " + catName);
+		criteria.add(Restrictions.eq("categoryName", catName));
+		System.out.println("size of category: " + criteria.list().size());
+		return (ForumCategory) criteria.list().get(0);
+	}
+
 	public void saveDislikeReply(DisLikeableReply dislike) {
 			session.getCurrentSession().save(dislike);
 		
@@ -511,7 +528,4 @@ public class SimpleDaoImpl implements SimpleDao{
 	public List<Complex> getComplex() {
 		return session.getCurrentSession().createCriteria(Complex.class).list();
 	}
-
-	
-	
 }
