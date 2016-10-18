@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import project3.dto.Complex;
 import project3.dto.DisLikeablePost;
 import project3.dto.DisLikeableReply;
 import project3.dto.ForumCategory;
@@ -66,7 +67,7 @@ public class BusinessLogicImpl implements BusinessLogic {
 	@Override
 	@Transactional
 	public String updateUserInfo(Person person, String oldPassword, String newPassword, String username,
-			String newEmail, String newPhone, String newUniversity, String newLinkedIn) {
+			String newEmail, String newPhone, String complex, String newUniversity, String newLinkedIn) {
 		// password
 		if (oldPassword != null && newPassword != null && !("".equals(newPassword) && !("".equals(newPassword)))) {
 			if (checkUserPassword(person.getUsername(), oldPassword, person.getPassword())) {
@@ -91,6 +92,12 @@ public class BusinessLogicImpl implements BusinessLogic {
 		// phone
 		if (newPhone == null || !("".equals(newPhone))) {
 			person.setPhoneNumber(newPhone);
+		}
+		//complex
+		System.out.println("------------------------------here");
+		if (complex == null || !("".equals(complex))) {
+			System.out.println(dao.getComplexByName(complex));
+			person.setComplex(dao.getComplexByName(complex));
 		}
 		// university
 		if (newUniversity == null || !("".equals(newUniversity))) {

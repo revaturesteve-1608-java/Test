@@ -338,16 +338,10 @@ textarea.ta-bind {
 									{{user.complex.categoryName}}</a>
 							</h5>
                             
-                            <div>
-                                    File to upload:<br/>
-                                    <input type="file" id ="fileChooser" name="file" /><br/>
-                                    <input type="submit" id="fileUploadButton" value="Upload" />
-                            </div>
-
-							<div>
+                         	<div>
 								<button type="button" class="btn btn-secondary"
-									data-toggle="modal" data-target="#myModal">Edit
-									Profile Information</button>
+								data-toggle="modal" data-target="#myModal">Edit
+								Profile Information</button>
 							</div>
 
 						</div>
@@ -560,6 +554,17 @@ textarea.ta-bind {
 										<!-- Search input-->
 										<div class="form-group">
 											<label class="col-md-4 control-label" for="searchinput">
+												Complex</label>
+											<div class="col-md-8">
+												<select class="form-control" ng-model="complex.complexName" ng-options="x.complexName for x in complex">
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="component">
+										<!-- Search input-->
+										<div class="form-group">
+											<label class="col-md-4 control-label" for="searchinput">
 												University</label>
 											<div class="col-md-8">
 												<input class="form-control input-md" id="university"
@@ -580,6 +585,19 @@ textarea.ta-bind {
 											</div>
 										</div>
 									</div>
+									
+									<div class="component">
+										<!-- Search input-->
+										<div class="form-group">
+											<label class="col-md-4 control-label" for="searchinput">
+												File to upload</label>
+											<div class="col-md-8">
+												<input type="file" id ="fileChooser" name="file" /><br/>
+                                    			<input type="submit" id="fileUploadButton" value="Upload" />
+											</div>
+										</div>
+									</div>
+									
 
 								</div>
 							</div>
@@ -595,7 +613,7 @@ textarea.ta-bind {
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 					<button type="button" class="btn btn-primary"
-						ng-click="updateInformation(oldPassword, newPassword, username, newEmail, newPhone, newUniversity, newLinkedIn)">Save
+						ng-click="updateInformation(oldPassword, newPassword, username, newEmail, newPhone, complex, newUniversity, newLinkedIn)">Save
 						Changes</button>
 				</div>
 			</div>
@@ -605,30 +623,37 @@ textarea.ta-bind {
 $(document).ready(function(){
 	var currentPicture = '{{user.profilePic}}';
 	$("#fileChooser").change(function(event){
-		console.log("here1")
-		newPicture = URL.createObjectURL(event.target.files[0]);
-		$("#profilePic").attr("src", newPicture);
-		
-		$("#fileUploadButton").click(function(e){
-			console.log("here2")
-			var data = new FormData();
+		if(event.target.files[0].type.includes("image")) {
+			console.log("here1")
+			newPicture = URL.createObjectURL(event.target.files[0]);
+			$("#profilePic").attr("src", newPicture);
 			
-			data.append("file",$("#fileChooser")[0].files[0]);
-			$.ajax({
-				url: "rest/upload-remote",
-				data: data,
-				contentType: false,
-				processData: false,
-				type: "POST",
-				cache: false,
-				success: function(response){
+			$("#fileUploadButton").click(function(e){
+				console.log("here2")
+				if(event.target.files[0].type.includes("image")) {
+					console.log("here3")
+					var data = new FormData();
 					
-						location.reload();
-				}		
-			});
-			
-			e.preventDefault();
-		})
+					data.append("file",$("#fileChooser")[0].files[0]);
+					$.ajax({
+						url: "rest/upload-remote",
+						data: data,
+						contentType: false,
+						processData: false,
+						type: "POST",
+						cache: false,
+						success: function(response){
+							
+								alert("Profile Picture Updated");
+						}		
+					});
+					
+					e.preventDefault();
+				}
+			})
+		} else {
+    		alert("Only image");
+    	}
 	})
 			
 });
