@@ -2,8 +2,6 @@ package project3.objectcontainer;
 
 import java.util.List;
 
-import project3.dto.PostReply;
-
 public class PostContainer {
 
 	private String authorName;

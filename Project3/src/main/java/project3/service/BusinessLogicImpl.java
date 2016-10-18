@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import project3.dto.Complex;
 import project3.dto.DisLikeablePost;
 import project3.dto.DisLikeableReply;
 import project3.dto.ForumCategory;
@@ -66,7 +67,7 @@ public class BusinessLogicImpl implements BusinessLogic {
 	@Override
 	@Transactional
 	public String updateUserInfo(Person person, String oldPassword, String newPassword, String username,
-			String newEmail, String newPhone, String newUniversity, String newLinkedIn) {
+			String newEmail, String newPhone, String complex, String newUniversity, String newLinkedIn) {
 		// password
 		if (oldPassword != null && newPassword != null && !("".equals(newPassword) && !("".equals(newPassword)))) {
 			if (checkUserPassword(person.getUsername(), oldPassword, person.getPassword())) {
@@ -92,6 +93,12 @@ public class BusinessLogicImpl implements BusinessLogic {
 		if (newPhone == null || !("".equals(newPhone))) {
 			person.setPhoneNumber(newPhone);
 		}
+		//complex
+		System.out.println("------------------------------here");
+		if (complex == null || !("".equals(complex))) {
+			System.out.println(dao.getComplexByName(complex));
+			person.setComplex(dao.getComplexByName(complex));
+		}
 		// university
 		if (newUniversity == null || !("".equals(newUniversity))) {
 			person.setUniversity(newUniversity);
@@ -108,7 +115,7 @@ public class BusinessLogicImpl implements BusinessLogic {
 	public int createForumPost(String content, String title, Person author, List<ForumCategory> categories) {
 		// TODO Auto-generated method stub
 		ForumPost post = new ForumPost(author, title, content, GetTimestamp.getCurrentTime(), false);
-		// post.setCategory(categories);
+		post.setCategory(categories);
 		return dao.createForumPost(post);
 	}
 
@@ -254,6 +261,11 @@ public class BusinessLogicImpl implements BusinessLogic {
 	}
 
 	@Override
+	public PostReply getReplyForDislike(int id){
+		return dao.getReplyForDislike(id);
+	}
+	
+	@Override
 	public ForumPost getPostForLike(int id) {
 		return dao.getPostForLike(id);
 	}
@@ -277,5 +289,156 @@ public class BusinessLogicImpl implements BusinessLogic {
 	}
 	public List<PostReply> getRepliesByPost(ForumPost post) {
 		return dao.getRepliesByPost(post);
+	}
+
+	@Override
+	public void createForumCategory(String categoryName) {
+		// TODO Auto-generated method stub
+		dao.createForumCategory(categoryName);
+	}
+
+	@Override
+	public List<ForumPost> getPostsByCategory(String catName) {
+		// TODO Auto-generated method stub
+		
+		List<ForumPost> posts = getRidOfDupes(dao.getPostsByCategory());
+		ForumCategory category = dao.getCategoryByName(catName);
+		List<ForumPost> filteredPosts = new ArrayList<>();
+		for(ForumPost post: posts){
+			for(ForumCategory cat: post.getCategory()){
+				if(cat.getCategoryName().equals(catName)){
+					filteredPosts.add(post);
+					break;
+				}
+			}
+		}
+		return filteredPosts;
+	}
+
+	@Override
+	public List<ForumCategory> getAllCategories() {
+		// TODO Auto-generated method stub
+		return getRidOfDupesCategory(dao.getForumCategory());
+	}
+	
+	private List<ForumCategory> getRidOfDupesCategory(List<ForumCategory> categories) {
+		List<ForumCategory> filteredList = new ArrayList<>();
+		for (ForumCategory cat : categories) {
+			if (!filteredList.contains(cat))
+				filteredList.add(cat);
+		}
+		return filteredList;
+	}
+
+	@Override
+	public ForumCategory getCategoryByName(String catName) {
+		// TODO Auto-generated method stub
+		return dao.getCategoryByName(catName);
+	}
+	
+	public void addDislikeReply(PostReply reply, Person person) {
+		
+		DisLikeableReply dislike = new DisLikeableReply(person, reply);
+
+		boolean exist = false;
+
+		for (DisLikeableReply dis : reply.getDislikes()) {
+			if (dis.getAuthor().getUsername().equals(person.getUsername())) {
+				exist = true;
+			}
+		}
+
+		System.out.println("in add dislike part 2");
+		if (exist) {
+			System.out.println("in add dislike part 3");
+		} else {
+			dao.saveDislikeReply(dislike);
+			reply.getDislikes().add(dislike);
+			System.out.println(reply.getDislikes().size());
+			dao.updateReply(reply);
+		}
+		
+	}
+	
+	@Override
+	public void addlikeReply(PostReply reply, Person person) {
+		
+		LikeableReply like = new LikeableReply(person, reply);
+		
+		boolean exist = false;
+		
+		for(LikeableReply liken : reply.getLikes()) {
+			if (liken.getAuthor().getUsername().equals(person.getUsername())) {
+				exist = true;
+			}
+		}
+		
+		
+		
+		System.out.println("in add like part 2");
+		if (exist) {
+			System.out.println("in add like part 3");
+		} else {
+			System.out.println("in add like part 4");
+			dao.saveLikeReply(like);
+			reply.getLikes().add(like);
+			dao.updateReply(reply);
+			System.out.println("in add like part 5");
+
+		}
+		
+	}
+
+	@Override
+	public void checkReplyLike(PostReply replyLike, Person person) {
+		
+		for (LikeableReply like : replyLike.getLikes()) {
+			if (like.getAuthor().getUsername().equals(person.getUsername())) {
+				LikeableReply likeable = dao.getLikesReplyById(like.getId());
+				// LikeablePost likes = dao.getLikeById(like.getId());
+				// post.getLikes().remove(likeable);
+				// dao.updatePost(post);
+				dao.removeLikeReply(likeable);
+				// System.out.println(likeable.toString());
+				// dao.removeLike(post, likeable);
+
+			}
+		}
+		
+	}
+	
+	@Override
+	public void checkReplyDislike(PostReply disLikeReply, Person person) {
+		
+		for (DisLikeableReply dislike : disLikeReply.getDislikes()) {
+			System.out.println("------------------here-------------1----------");
+			if (dislike.getAuthor().getUsername().equals(person.getUsername())) {
+				DisLikeableReply likeable = dao.getDislikesReplyById(dislike.getId());
+				System.out.println("------------------here------2----------------");
+				// LikeablePost likes = dao.getLikeById(like.getId());
+				// post.getLikes().remove(likeable);
+				// dao.updatePost(post);
+				dao.removeDislikeReply(likeable);
+				// System.out.println(likeable.toString());
+				// dao.removeLike(post, likeable);
+
+			}
+		}
+		
+	}
+
+	@Override
+	public PostReply getReplyForLike(int id) {
+		return dao.getReplyForLike(id);
+	}
+
+	@Override
+	public List<DisLikeableReply> getAllDislikebyReply(PostReply reply) {
+		return reply.getDislikes();
+	}
+	
+	@Override
+	public List<LikeableReply> getAllLikebyReply(PostReply reply) {
+		return reply.getLikes();
 	}
 }

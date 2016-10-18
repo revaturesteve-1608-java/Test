@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 
 <a href='#dashboard'><i>back to all posts</i></a>
 
@@ -47,6 +48,7 @@
 				{{dislikesArray}} </md-button>
 				<md-button ng-hide="myReply" ng-click="startReply()"
 					class="replyButton"> Reply</md-button>
+					<md-button ng-show="userRole" ng-click="deletePost(post.postId)">Delete</md-button>
 				</md-card-actions>
 				</md-card>
 
@@ -85,8 +87,16 @@
 									{{reply[1]}} {{reply[2] | date }} </i> </span> </small>
 						<h4 class="media-heading">
 							<span ng-bind-html="reply[0]" class="md-headline">{{reply[0]}}</span>
+							
 
 						</h4>
+						Likes: {{likesReplysContainer[$index]}} Dislikes: {{dislikesReplysContainer[$index]}}
+<md-button type="button" class="btn btn-default" aria-label="Right Align" ng-click="likeReply(user, reply[3], $index )">
+	<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+</md-button>
+<md-button type="button" class="btn btn-default" aria-label="Right Align" ng-click="dislikeReply(user, reply[3], $index )">
+	<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+</md-button>
 						<br>
 					</div>
 					<br>
@@ -95,5 +105,6 @@
 			</div>
 		</div>
 	</div>
+
 </div>
 
