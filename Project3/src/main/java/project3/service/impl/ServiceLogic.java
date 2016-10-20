@@ -208,7 +208,7 @@ public class ServiceLogic implements ServiceInterface{
             	+ "<tbody>"
             		+ "<tr>"
             			+ "<td style=\"padding-top:0;padding-right:18px;padding-bottom:9px;padding-left:18px;\" valign=\"top\">"
-            				+ "<h3 style=\"text-align:left;\">Hello " + person.getFirst_name() + " " + person.getLast_name() + "</h3>"
+            				+ "<h3 style=\"text-align:left;\">Hello " + person.getFirstName() + " " + person.getLastName() + "</h3>"
             				+ "<p style=\"text-align:left;\"> Your account had been approve<br><br>"
             				
             				+ "Here is your login information <br><br>" 
