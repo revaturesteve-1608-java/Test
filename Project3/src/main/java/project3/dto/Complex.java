@@ -34,7 +34,7 @@ public class Complex {
 	 * An empty constructor for initialize the Complex object.
 	 */
 	public Complex() {
-		
+		// Do nothing because of Hibernate to create the object
 	}
 	
 	/**

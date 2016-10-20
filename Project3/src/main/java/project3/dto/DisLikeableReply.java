@@ -47,7 +47,7 @@ public class DisLikeableReply {
 	 * An empty constructor for initialize the DisLikeableReply object.
 	 */
 	public DisLikeableReply() {
-		
+		// Do nothing because of Hibernate to create the object
 	}
 
 	/**
