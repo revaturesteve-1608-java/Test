@@ -434,7 +434,13 @@ textarea.ta-bind {
 							<li class="list-group-item">
 								<div class="{{postContainer.postId}}">
 									<div id="singleReply" class="row" ng-repeat="replies in postContainer.replyContent">
-										<div ng-bind-html="replies[0]" class="col-md-8">{{replies[0]}}</div>
+										<div ng-bind-html="replies[0]" class="col-md-8">
+											{{replies[0]}}
+
+										</div>
+										<br>
+										<p align="right"><b>Replied By: </b><i>{{replies[1]}}</i></p>
+										<p align="right"><b>Replied On: </b><i>{{replies[2]}}</i></p>
 									</div>
 								</div>
 							</li>
