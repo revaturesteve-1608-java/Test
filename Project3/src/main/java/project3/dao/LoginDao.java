@@ -1,4 +1,4 @@
-package project3.simpledao;
+package project3.dao;
 
 import project3.dto.Person;
 

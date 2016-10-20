@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import project3.dao.SimpleDao;
 import project3.dto.Complex;
 import project3.dto.DisLikeablePost;
 import project3.dto.DisLikeableReply;
@@ -17,7 +18,6 @@ import project3.dto.LikeablePost;
 import project3.dto.LikeableReply;
 import project3.dto.Person;
 import project3.dto.PostReply;
-import project3.simpledao.SimpleDao;
 import project3.util.GetTimestamp;
 
 @SuppressWarnings("unused")

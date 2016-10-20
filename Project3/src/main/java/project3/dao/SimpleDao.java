@@ -1,4 +1,4 @@
-package project3.simpledao;
+package project3.dao;
 
 import java.sql.Timestamp;
 import java.util.List;

@@ -1,4 +1,4 @@
-package project3.simpledao;
+package project3.dao.impl;
 
 import javax.transaction.Transactional;
 
@@ -9,6 +9,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import project3.dao.LoginDao;
 import project3.dto.Person;
 
 @Repository

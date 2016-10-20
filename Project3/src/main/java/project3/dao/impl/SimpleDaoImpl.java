@@ -1,4 +1,4 @@
-package project3.simpledao;
+package project3.dao.impl;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -15,6 +15,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import project3.dao.SimpleDao;
 import project3.dto.AwsKey;
 import project3.dto.Complex;
 import project3.dto.DisLikeableReply;

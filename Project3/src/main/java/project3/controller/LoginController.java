@@ -20,10 +20,10 @@ import org.springframework.web.bind.support.SessionAttributeStore;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.request.WebRequest;
 
+import project3.dao.LoginDao;
+import project3.dao.impl.SimpleDaoImpl;
 import project3.dto.Person;
 import project3.service.ServiceInterface;
-import project3.simpledao.LoginDao;
-import project3.simpledao.SimpleDaoImpl;
 
 @RestController
 @SessionAttributes("person")

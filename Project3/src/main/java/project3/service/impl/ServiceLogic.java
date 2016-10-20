@@ -24,6 +24,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import project3.dao.LoginDao;
+import project3.dao.SimpleDao;
 import project3.dto.AwsKey;
 import project3.dto.Complex;
 import project3.dto.Person;
@@ -31,8 +33,6 @@ import project3.dto.Role;
 import project3.service.Crypt;
 import project3.service.Jets3;
 import project3.service.ServiceInterface;
-import project3.simpledao.LoginDao;
-import project3.simpledao.SimpleDao;
 import project3.util.Email;
 import project3.util.ProfileImage;
 
