@@ -46,7 +46,7 @@ public class DisLikeablePost {
 	 * An empty constructor for initialize the DisLikeablePost object.
 	 */
 	public DisLikeablePost() {
-		
+		// Do nothing because of Hibernate to create the object
 	}
 
 	/**

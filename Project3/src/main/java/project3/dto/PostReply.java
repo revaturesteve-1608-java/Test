@@ -81,7 +81,7 @@ public class PostReply {
 	 * An empty constructor for initialize the PostReply object.
 	 */
 	public PostReply() {
-		
+		// Do nothing because of Hibernate to create the object
 	}
 	
 	/**

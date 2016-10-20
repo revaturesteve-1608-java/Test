@@ -24,6 +24,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import project3.dao.LoginDao;
+import project3.dao.SimpleDao;
 import project3.dto.AwsKey;
 import project3.dto.Complex;
 import project3.dto.Person;
@@ -31,8 +33,6 @@ import project3.dto.Role;
 import project3.service.Crypt;
 import project3.service.Jets3;
 import project3.service.ServiceInterface;
-import project3.simpledao.LoginDao;
-import project3.simpledao.SimpleDao;
 import project3.util.Email;
 import project3.util.ProfileImage;
 
@@ -208,7 +208,7 @@ public class ServiceLogic implements ServiceInterface{
             	+ "<tbody>"
             		+ "<tr>"
             			+ "<td style=\"padding-top:0;padding-right:18px;padding-bottom:9px;padding-left:18px;\" valign=\"top\">"
-            				+ "<h3 style=\"text-align:left;\">Hello " + person.getFirst_name() + " " + person.getLast_name() + "</h3>"
+            				+ "<h3 style=\"text-align:left;\">Hello " + person.getFirstName() + " " + person.getLastName() + "</h3>"
             				+ "<p style=\"text-align:left;\"> Your account had been approve<br><br>"
             				
             				+ "Here is your login information <br><br>" 

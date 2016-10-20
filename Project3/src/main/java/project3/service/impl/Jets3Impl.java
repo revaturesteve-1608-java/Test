@@ -16,9 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import project3.dao.SimpleDao;
 import project3.service.Jets3;
 import project3.service.ServiceInterface;
-import project3.simpledao.SimpleDao;
 
 @Component
 public class Jets3Impl implements Jets3{
