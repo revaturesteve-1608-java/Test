@@ -26,6 +26,7 @@ angular.module('routingApp')
 //						console.log(response.data) 
 					//	console.log(typeof response.data[0].maker);
 						$scope.user = response.data; 	
+						$window.location.reload();
 //						console.log($scope.user);
 					})
 			
