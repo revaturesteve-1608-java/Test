@@ -40,4 +40,18 @@ public interface PersonInformationDao {
 	 * @param person The person to be updated
 	 */
 	public void updatePersonPic(Person person);
+	
+	/**
+	 * Update the person when they are first login
+	 * @param username The old user name of the person 
+	 * @param pass The new password of the person 
+	 * @param newUsername The new user name of the person 
+	 */
+	public void updateTempPerson(String username, String pass, String newUsername);
+	
+	/**
+	 * Update the user information
+	 * @param person The new person's information
+	 */
+	public void updateUserInfo(Person person);
 }

@@ -65,7 +65,7 @@ public class BusinessLogicImpl implements BusinessLogic {
 		if (checkUsername == null) {
 			if (crypt.validate(oldPass, person.getPassword())) {
 				String encryptPass = crypt.encrypt(pass);
-				dao.updateTempPerson(username, encryptPass, newUsername);
+				PersonDao.updateTempPerson(username, encryptPass, newUsername);
 				return "[\"Updated\"]";
 			} else {
 				return "[\"Inputed Wrong Password\"]";
@@ -119,7 +119,7 @@ public class BusinessLogicImpl implements BusinessLogic {
 		if (newLinkedIn != null && !("".equals(newLinkedIn))) {
 			person.setLinkedin(newLinkedIn);
 		}
-		dao.updateUserInfo(person);
+		PersonDao.updateUserInfo(person);
 		return "[\"Updated\"]";
 	}
 
