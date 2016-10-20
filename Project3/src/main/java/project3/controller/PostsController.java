@@ -164,7 +164,7 @@ public class PostsController {
 		
 		System.out.println("id is  " + id);
 		
-		ForumPost post = service.getPostById(id, false, false);
+		ForumPost post = service.getPostById(id);
 		//System.out.println(forumPost.toString());
 
 		//System.out.println(post.toString());
