@@ -4,7 +4,7 @@
 
 angular.module('routingApp')
 
-.controller('postsCtrl', function($scope, postsService, $compile, $route){
+.controller('postsCtrl', function($scope, postsService, $compile, $route, $window){
 	
 	$scope.orightml = '<p><i><b>What would you like to ask your colleagues?</b></i></p>';
 	$scope.htmlcontent = $scope.orightml;
@@ -92,7 +92,7 @@ angular.module('routingApp')
 //		console.log("GETTING IN HERERERERERE: " + authorName)
 		console.log("post id in the delete: " + postId)
 		postsService.deletePost(postId, function(response){
-			$route.reload();
+			$window.location.reload();
 		});
 	}
 	
