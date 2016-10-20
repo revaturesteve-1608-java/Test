@@ -5,6 +5,7 @@ import project3.dto.Person;
 /**
  * Access the database for login a User
  */
+@FunctionalInterface
 public interface LoginDao {
 	
 	/**

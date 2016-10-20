@@ -1,6 +1,5 @@
 package project3.dao.impl;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -9,8 +8,6 @@ import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -18,16 +15,8 @@ import org.springframework.stereotype.Repository;
 import project3.dao.SimpleDao;
 import project3.dto.AwsKey;
 import project3.dto.Complex;
-import project3.dto.DisLikeableReply;
 import project3.dto.ForumCategory;
-import project3.dto.ForumPost;
-import project3.dto.LikeableReply;
-import project3.dto.DisLikeablePost;
-import project3.dto.ForumCategory;
-import project3.dto.ForumPost;
-import project3.dto.LikeablePost;
 import project3.dto.Person;
-import project3.dto.PostReply;
 import project3.dto.Role;
 
 @Repository
@@ -45,78 +34,6 @@ public class SimpleDaoImpl implements SimpleDao{
 	 */
 	private void addColumn(String column, Criteria criteria) {
 		criteria.setFetchMode(column, FetchMode.JOIN);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<ForumPost> getAllPosts() {
-		Criteria criteria = session.getCurrentSession().createCriteria(ForumPost.class);
-		criteria.setFetchMode("author", FetchMode.JOIN);
-		criteria.setFetchMode("replys", FetchMode.JOIN);
-		
-//		criteria.setFetchMode("role", FetchMode.EAGER);
-//		criteria.setFetchMode("complex", FetchMode.EAGER);
-		System.out.println("=============================here====================================");
-		List<ForumPost> posts = (List<ForumPost>) criteria.list();
-//		System.out.println("length of posts list: " + posts.size() + "\tpostId1: " + posts.get(0).getId() + "\tpostId2: " + posts.get(1).getId());
-		return criteria.list();
-	}
-
-	@Override
-	public ForumPost getPostById(int id, boolean like, boolean dislike) {
-		
-		Criteria criteria = session.getCurrentSession().createCriteria(ForumPost.class);
-        criteria.setFetchMode("author", FetchMode.JOIN);
-        criteria.setFetchMode("replys", FetchMode.JOIN);
-        
-        criteria.add(Restrictions.eq("id", id));
-        ForumPost post = (ForumPost) criteria.list().get(0);
-        
-        System.out.println("end----------------------------");
-        
-        return post;
-	}
-	
-	@Override
-	public ForumPost getPostForDislike(int id) {
-		
-		Criteria criteria = session.getCurrentSession().createCriteria(ForumPost.class);
-        criteria.setFetchMode("author", FetchMode.JOIN);
-     //   criteria.setFetchMode("replys", FetchMode.JOIN);
-        criteria.setFetchMode("dislikes", FetchMode.JOIN);
-        criteria.add(Restrictions.eq("id", id));
-        ForumPost post = (ForumPost) criteria.list().get(0);
-        System.out.println("--------here---");
-
-        return post;
-	}
-	
-	@Override
-	public PostReply getReplyForDislike(int id) {
-		
-		Criteria criteria = session.getCurrentSession().createCriteria(PostReply.class);
-        criteria.setFetchMode("author", FetchMode.JOIN);
-     //   criteria.setFetchMode("replys", FetchMode.JOIN);
-        criteria.setFetchMode("dislikes", FetchMode.JOIN);
-        criteria.add(Restrictions.eq("id", id));
-        PostReply reply = (PostReply) criteria.list().get(0);
-        //System.out.println("--------here---");
-
-        return reply;
-	}
-	
-	@Override
-	public PostReply getReplyForLike(int id) {
-		
-		Criteria criteria = session.getCurrentSession().createCriteria(PostReply.class);
-        criteria.setFetchMode("author", FetchMode.JOIN);
-     //   criteria.setFetchMode("replys", FetchMode.JOIN);
-        criteria.setFetchMode("likes", FetchMode.JOIN);
-        criteria.add(Restrictions.eq("id", id));
-        PostReply reply = (PostReply) criteria.list().get(0);
-        //System.out.println("--------here---");
-
-        return reply;
 	}
 
 	@Override
@@ -192,41 +109,9 @@ public class SimpleDaoImpl implements SimpleDao{
 	}
 
 	@Override
-	public void createPostReply(int postId, Person author, List<LikeableReply> likes, List<DisLikeableReply> dislikes, boolean approval, 
-			String content, Timestamp timestamp) {
-		Session currentSession = session.getCurrentSession();
-		
-		ForumPost post = (ForumPost) currentSession.get(ForumPost.class, postId);
-		System.out.println("forum post id: " + post.getId());
-		System.out.println("forum author username: " + post.getAuthor().getId());
-		Person getAuthorAgain = (Person) currentSession.get(Person.class, author.getId());
-		PostReply newReply = new PostReply(post, getAuthorAgain, likes, dislikes, approval, content, timestamp);
-//		System.out.println("we");
-//		session.getCurrentSession().save(newReply);
-//		System.out.println("here");
-		post.getReplys().add(newReply);
-	}
-
-	@Override
 	public void createComplex(String complexName) {
 		Complex newComplex = new Complex(complexName);
 		session.getCurrentSession().save(newComplex);
-	}
-
-	@Override
-	public void deleteForumPost(int id) {
-		Session currentSession = session.getCurrentSession();
-		ForumPost post = (ForumPost) currentSession.get(ForumPost.class, id);
-//		for(PostReply reply: post.getReplys())
-//			currentSession.delete(reply);
-		currentSession.delete(post);
-	}
-
-	@Override
-	public void deletePostReply(int id) {
-		Session currentSession = session.getCurrentSession();
-		PostReply reply = (PostReply) currentSession.get(PostReply.class, id);
-		currentSession.delete(reply);
 	}
 
 	@Override
@@ -257,14 +142,6 @@ public class SimpleDaoImpl implements SimpleDao{
 	}
 
 	@Override
-	public int createForumPost(ForumPost post) {
-		session.getCurrentSession().save(post);
-		ForumPost newForumPost = (ForumPost) session.getCurrentSession().merge(post);
-		System.out.println("id assigned to new post: " + newForumPost.getId());
-		return newForumPost.getId();
-	}
-
-	@Override
 	public AwsKey getAWSKey() {
 		return (AwsKey) session.getCurrentSession().get(AwsKey.class, 1);
 	}
@@ -277,154 +154,6 @@ public class SimpleDaoImpl implements SimpleDao{
 		tempPerson.setProfilePic(person.getProfilePic());
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<ForumPost> getMorePosts(int firstResult) {
-		// TODO Auto-generated method stub
-		Session currentSession = session.getCurrentSession();
-		Criteria criteria = currentSession.createCriteria(ForumPost.class);
-		criteria.setFetchMode("author", FetchMode.JOIN);
-		criteria.setFetchMode("replys", FetchMode.JOIN);
-		criteria.addOrder(Order.desc("timestamp"));
-		
-//		criteria.setFirstResult(firstResult);
-//		criteria.setMaxResults(firstResult + 2);
-		List<ForumPost> posts = (List<ForumPost>) criteria.list();
-		System.out.println("size of posts: " + posts.size());
-		
-//		Criteria criteria = session.createCriteria(Client.class);
-//		criteria.createAlias("address", "address");
-//		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-//		criteria.setFirstResult(init);
-//		criteria.setMaxResults(max);
-//		List<Client> clients = criteria.list();
-		return posts;
-		}
-		
-	
-
-	@Override
-	public void updatePost(ForumPost post) {
-		session.getCurrentSession().update(post);
-		
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<ForumPost> getPostsByCategory() {
-		// TODO Auto-generated method stub
-		Session currentSession = session.getCurrentSession();
-		Criteria criteria = currentSession.createCriteria(ForumPost.class);
-		criteria.setFetchMode("author", FetchMode.JOIN);
-		criteria.setFetchMode("category", FetchMode.JOIN);
-		criteria.addOrder(Order.desc("timestamp"));
-		List<ForumPost> posts = (List<ForumPost>) criteria.list();
-		return posts;
-	}
-		
-	public void saveDislike(DisLikeablePost dislike) {
-		System.out.println("-------------------------------saving----------------------------------");
-		session.getCurrentSession().save(dislike);
-		
-	}
-
-	@Override
-	public ForumPost getPostForLike(int id) {
-		
-		Criteria criteria = session.getCurrentSession().createCriteria(ForumPost.class);
-        criteria.setFetchMode("author", FetchMode.JOIN);
-     //   criteria.setFetchMode("replys", FetchMode.JOIN);
-        criteria.setFetchMode("likes", FetchMode.JOIN);
-        criteria.add(Restrictions.eq("id", id));
-        ForumPost post = (ForumPost) criteria.list().get(0);
-        System.out.println("--------here---");
-		
-		return post;
-	}
-
-	@Override
-	public void saveLike(LikeablePost like) {
-		session.getCurrentSession().save(like);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<ForumPost> getMorePostsByUsername(int firstResult, Person author) {
-		// TODO Auto-generated method stub
-		
-		Session currentSession = session.getCurrentSession();
-		Criteria criteria = currentSession.createCriteria(ForumPost.class);
-		criteria.setFetchMode("author", FetchMode.JOIN);
-		criteria.setFetchMode("replys", FetchMode.JOIN);
-		criteria.addOrder(Order.desc("timestamp"));
-		System.out.println("username inside of the dao: " + author.getUsername());
-		criteria.add(Restrictions.eq("author", author));
-//		criteria.setFirstResult(firstResult);
-//		criteria.setMaxResults(firstResult + 2);
-		List<ForumPost> posts = (List<ForumPost>) criteria.list();
-		System.out.println("size of posts: " + posts.size());
-		
-		return posts;
-	}
-
-	@Override
-	public void removeLike(ForumPost post, LikeablePost like) {
-		session.getCurrentSession().delete(like);
-		
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public LikeablePost getLikesByPerson(Person person, int id) {
-		
-		Criteria criteria = session.getCurrentSession().createCriteria(LikeablePost.class);
-		criteria.setFetchMode("post", FetchMode.JOIN);
-		criteria.setFetchMode("author", FetchMode.JOIN);
-		criteria.add(Restrictions.eq("id", id));
-		List<LikeablePost> likes = (List<LikeablePost>) criteria.list();
-		
-		return likes.get(0);
-	}
-
-	@Override
-	public LikeablePost getLikeById(int id) {
-		
-		LikeablePost like = (LikeablePost) session.getCurrentSession().get(LikeablePost.class, id);
-		
-		return like;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public DisLikeablePost getDislikesById(int id) {
-		
-		Criteria criteria = session.getCurrentSession().createCriteria(DisLikeablePost.class);
-		criteria.setFetchMode("post", FetchMode.JOIN);
-		criteria.setFetchMode("author", FetchMode.JOIN);
-		criteria.add(Restrictions.eq("id", id));
-		List<DisLikeablePost> likes = (List<DisLikeablePost>) criteria.list();
-		return likes.get(0);
-	}
-
-	@Override
-	public void removeDislike(DisLikeablePost dislike) {
-		session.getCurrentSession().delete(dislike);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<PostReply> getRepliesByPost(ForumPost post) {
-		
-		Criteria criteria = session.getCurrentSession().createCriteria(PostReply.class);
-		criteria.setFetchMode("author", FetchMode.JOIN);
-		criteria.setFetchMode("post", FetchMode.JOIN);
-		criteria.add(Restrictions.eq("post", post));
-		
-		List<PostReply> replies = (List<PostReply>) criteria.list();
-		
-		return replies;
-	}
-
 	@Override
 	public ForumCategory getCategoryByName(String catName) {
 		// TODO Auto-generated method stub
@@ -434,89 +163,6 @@ public class SimpleDaoImpl implements SimpleDao{
 		System.out.println("size of category: " + criteria.list().size());
 		return (ForumCategory) criteria.list().get(0);
 	}
-
-	public void saveDislikeReply(DisLikeableReply dislike) {
-			session.getCurrentSession().save(dislike);
-		
-	}
-
-	@Override
-	public void updateReply(PostReply reply) {
-			session.getCurrentSession().update(reply);
-		
-	}
-
-	@Override
-	public DisLikeableReply getDislikesReplyById(int id) {
-		Criteria criteria = session.getCurrentSession().createCriteria(DisLikeableReply.class);
-		criteria.setFetchMode("reply", FetchMode.JOIN);
-		criteria.setFetchMode("author", FetchMode.JOIN);
-		criteria.add(Restrictions.eq("id", id));
-		List<DisLikeableReply> likes = (List<DisLikeableReply>) criteria.list();
-		return likes.get(0);
-	}
-
-	@Override
-	public void removeDislikeReply(DisLikeableReply dislikeable) {
-		session.getCurrentSession().delete(dislikeable);
-		
-	}
-
-	@Override
-	public LikeableReply getLikesReplyById(int id) {
-		Criteria criteria = session.getCurrentSession().createCriteria(LikeableReply.class);
-		criteria.setFetchMode("reply", FetchMode.JOIN);
-		criteria.setFetchMode("author", FetchMode.JOIN);
-		criteria.add(Restrictions.eq("id", id));
-		List<LikeableReply> likes = (List<LikeableReply>) criteria.list();
-		return likes.get(0);
-	}
-
-	@Override
-	public void removeLikeReply(LikeableReply likeable) {
-		session.getCurrentSession().delete(likeable);
-		
-	}
-
-	@Override
-	public void saveLikeReply(LikeableReply like) {
-		session.getCurrentSession().save(like);
-		
-	}
-
-	@Override
-	public LikeableReply getLikesReplyByPerson(Person person) {
-		Criteria criteria = session.getCurrentSession().createCriteria(LikeableReply.class);
-		criteria.setFetchMode("reply", FetchMode.JOIN);
-		criteria.setFetchMode("author", FetchMode.JOIN);
-		System.out.println("before                                       person");
-		criteria.add(Restrictions.eq("author", person));
-		System.out.println("after                                       person");
-		List<LikeableReply> likes = (List<LikeableReply>) criteria.list();
-		if(likes.size() > 0) {
-		return likes.get(0);
-		} else {
-			return null;
-		}
-	}
-
-	@Override
-	public DisLikeableReply getDislikesByPerson(Person person) {
-		Criteria criteria = session.getCurrentSession().createCriteria(DisLikeableReply.class);
-		criteria.setFetchMode("reply", FetchMode.JOIN);
-		criteria.setFetchMode("author", FetchMode.JOIN);
-		System.out.println("before                                       person");
-		criteria.add(Restrictions.eq("author", person));
-		System.out.println("after                                       person");
-		List<DisLikeableReply> likes = (List<DisLikeableReply>) criteria.list();
-		if(likes.size() > 0) {
-		return likes.get(0);
-		} else {
-			return null;
-		}
-	}
-
-	
 	
 	@Override
 	public Complex getComplexByName(String name) {
@@ -528,19 +174,5 @@ public class SimpleDaoImpl implements SimpleDao{
 	@Override
 	public List<Complex> getComplex() {
 		return session.getCurrentSession().createCriteria(Complex.class).list();
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<ForumPost> getPostsByCategoryProf(Person author) {
-		// TODO Auto-generated method stub
-		Session currentSession = session.getCurrentSession();
-		Criteria criteria = currentSession.createCriteria(ForumPost.class);
-		criteria.add(Restrictions.eq("author", author));
-		criteria.setFetchMode("author", FetchMode.JOIN);
-		criteria.setFetchMode("category", FetchMode.JOIN);
-		criteria.addOrder(Order.desc("timestamp"));
-		List<ForumPost> posts = (List<ForumPost>) criteria.list();
-		return posts;
 	}
 }
