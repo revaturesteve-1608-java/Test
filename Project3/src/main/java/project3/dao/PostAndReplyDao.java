@@ -9,6 +9,9 @@ import project3.dto.LikeableReply;
 import project3.dto.Person;
 import project3.dto.PostReply;
 
+/**
+ * Access the database for post and reply
+ */
 public interface PostAndReplyDao {
 	
 	/**

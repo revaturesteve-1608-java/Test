@@ -26,49 +26,6 @@ public class SimpleDaoImpl implements SimpleDao{
 	@Autowired
 	SessionFactory session;
 	
-	/**
-	 * A private method to join the table together
-	 * 
-	 * @param column the column to join
-	 * @param criteria where it joining to
-	 */
-	private void addColumn(String column, Criteria criteria) {
-		criteria.setFetchMode(column, FetchMode.JOIN);
-	}
-
-	@Override
-	public Person getPersonById(int id) {
-		Person person = (Person) session.getCurrentSession().get(Person.class, id);
-		return person;
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public Person getPersonByUsername(String username) {
-		Session currentSession = session.getCurrentSession();
-		Criteria criteria = currentSession.createCriteria(Person.class);
-		addColumn("role", criteria);
-		addColumn("complex", criteria);
-		List<Person> persons = (List<Person>) criteria.add(Restrictions.eq("username", username)).list();
-		if(persons.size() == 0) {
-			return null;
-		} else {
-			return persons.get(0);
-		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public Person getPersonByEmail(String email) {
-		List<Person> persons = session.getCurrentSession().createCriteria(Person.class).
-				add(Restrictions.eq("email", email)).list();
-		if(persons.size() == 0) {
-			return null;
-		} else {
-			return persons.get(0);
-		}
-	}
-	
 	@Override
 	public ForumCategory getForumCategoryById(int id) {
 		return (ForumCategory) session.getCurrentSession().get(ForumCategory.class, id);
@@ -84,22 +41,6 @@ public class SimpleDaoImpl implements SimpleDao{
 	@Override
 	public List<ForumCategory> getForumCategory() {
 		return (List<ForumCategory>) session.getCurrentSession().createCriteria(ForumCategory.class).list();
-	}
-	
-	@Override
-	public Person createUser(Person person) {
-		session.getCurrentSession().save(person);
-		return (Person) session.getCurrentSession().merge(person);
-	}
-
-	//not using this method
-	@Override
-	public void createPerson(String first_name, String last_name, String username, String password, String email, Role role,
-			String profilePic, Complex complex, String phoneNumber, String bio, String unviersity, boolean vaildated,
-			String linkedin) {
-		Person newPerson = new Person(first_name, last_name, username, password, email, role, profilePic, 
-				complex, phoneNumber, bio, unviersity, vaildated, linkedin);
-		session.getCurrentSession().save(newPerson);
 	}
 
 	@Override
@@ -144,14 +85,6 @@ public class SimpleDaoImpl implements SimpleDao{
 	@Override
 	public AwsKey getAWSKey() {
 		return (AwsKey) session.getCurrentSession().get(AwsKey.class, 1);
-	}
-
-	@Override
-	public void updatePersonPic(Person person) {
-		Session currentSession = session.getCurrentSession();
-		Criteria criteria = currentSession.createCriteria(Person.class);
-		Person tempPerson = (Person) criteria.add(Restrictions.eq("username", person.getUsername())).list().get(0);
-		tempPerson.setProfilePic(person.getProfilePic());
 	}
 
 	@Override

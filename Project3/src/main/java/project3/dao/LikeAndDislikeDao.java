@@ -6,6 +6,9 @@ import project3.dto.LikeablePost;
 import project3.dto.LikeableReply;
 import project3.dto.Person;
 
+/**
+ * Access the database for like and dislike
+ */
 public interface LikeAndDislikeDao {
 	
 	/**
