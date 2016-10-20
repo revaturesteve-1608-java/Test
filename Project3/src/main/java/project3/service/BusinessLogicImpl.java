@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import project3.dao.LikeAndDislikeDao;
+import project3.dao.PersonInformationDao;
 import project3.dao.PostAndReplyDao;
 import project3.dao.SimpleDao;
 import project3.dto.Complex;
@@ -37,6 +38,9 @@ public class BusinessLogicImpl implements BusinessLogic {
 	
 	@Autowired
 	LikeAndDislikeDao likeDislikeDao;
+	
+	@Autowired
+	PersonInformationDao PersonDao;
 
 	public boolean checkUserPassword(String username, String password, String curpassword) {
 		return crypt.validate(password, curpassword);
@@ -44,20 +48,20 @@ public class BusinessLogicImpl implements BusinessLogic {
 
 	@Override
 	public Person getPersonById(int id) {
-		return dao.getPersonById(id);
+		return PersonDao.getPersonById(id);
 	}
 
 	@Override
 	public Person getPersonByUsername(String username) {
-		return dao.getPersonByUsername(username);
+		return PersonDao.getPersonByUsername(username);
 	}
 
 	@Override
 	@Transactional
 	public String updateTempPerson(String username, String pass, String oldPass, String newUsername) {
-		Person person = dao.getPersonByUsername(username);
+		Person person = PersonDao.getPersonByUsername(username);
 		// System.out.println("ere" + username);
-		Person checkUsername = dao.getPersonByUsername(newUsername);
+		Person checkUsername = PersonDao.getPersonByUsername(newUsername);
 		if (checkUsername == null) {
 			if (crypt.validate(oldPass, person.getPassword())) {
 				String encryptPass = crypt.encrypt(pass);
@@ -86,7 +90,7 @@ public class BusinessLogicImpl implements BusinessLogic {
 		}
 		// username
 		if (username != null && !("".equals(username))) {
-			Person checkUsername = dao.getPersonByUsername(username);
+			Person checkUsername = PersonDao.getPersonByUsername(username);
 			if (checkUsername == null) {
 				person.setUsername(username);
 			} else {
@@ -137,7 +141,7 @@ public class BusinessLogicImpl implements BusinessLogic {
 		// TODO Auto-generated method stub
 		// ForumPost post = dao.getPostById(postId);
 		// System.out.println("postId in the service method: " + post.getId());
-		Person author = dao.getPersonByUsername(username);
+		Person author = PersonDao.getPersonByUsername(username);
 		postReplyDao.createPostReply(postId, author, new ArrayList<LikeableReply>(), new ArrayList<DisLikeableReply>(), false,
 				replyContent, GetTimestamp.getCurrentTime());
 	}
@@ -286,7 +290,7 @@ public class BusinessLogicImpl implements BusinessLogic {
 	@Override
 	public List<ForumPost> getPostsByUsername(int firstResult, String username) {
 		// TODO Auto-generated method stub
-		Person author = dao.getPersonByUsername(username);
+		Person author = PersonDao.getPersonByUsername(username);
 		return getRidOfDupes(postReplyDao.getMorePostsByAuthor(author));
 	}
 
@@ -453,7 +457,7 @@ public class BusinessLogicImpl implements BusinessLogic {
 	@Override
 	public List<ForumPost> getPostsByCategoryProf(String catName, String username) {
 		// TODO Auto-generated method stub
-		Person author = dao.getPersonByUsername(username);
+		Person author = PersonDao.getPersonByUsername(username);
 		List<ForumPost> posts = getRidOfDupes(postReplyDao.getPostsByCategoryProf(author));
 		ForumCategory category = dao.getCategoryByName(catName);
 		List<ForumPost> filteredPosts = new ArrayList<>();
