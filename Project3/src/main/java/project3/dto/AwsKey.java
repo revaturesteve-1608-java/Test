@@ -35,7 +35,7 @@ public class AwsKey {
 	 * An empty constructor for initialize the AwsKey object.
 	 */
 	public AwsKey() {
-		
+		// Do nothing because of Hibernate to create the object
 	}
 
 	/**

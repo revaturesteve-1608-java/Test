@@ -34,7 +34,7 @@ public class Role {
 	 * An empty constructor for initialize the role object.
 	 */
 	public Role() {
-		
+		// Do nothing because of Hibernate to create the object
 	}
 
 	/**

@@ -32,13 +32,13 @@ public class Person {
 	 * The first name of the person
 	 */
 	@Column(name="u_firstName", nullable=false)
-	private String first_name;
+	private String firstName;
 	
 	/**
 	 * The last name of the person
 	 */
 	@Column(name="u_lastName", nullable=false)
-	private String last_name;
+	private String lastName;
 
 	/**
 	 * The user name of the person
@@ -119,13 +119,13 @@ public class Person {
 	 * An empty constructor for initialize the Person object.
 	 */
 	public Person() {
-		
+		// Do nothing because of Hibernate to create the object
 	}
 	
 	/**
 	 * A constructor for initialize the Person object.
-	 * @param first_name The first name of the person
-	 * @param last_name The last name of the person
+	 * @param firstName The first name of the person
+	 * @param lastName The last name of the person
 	 * @param username The user name of the person
 	 * @param password The password of the person
 	 * @param email The email of the person
@@ -138,13 +138,13 @@ public class Person {
 	 * @param vaildated Whether the user had been validated by login in
 	 * @param linkedin The URL to the person's Linkedin
 	 */
-	public Person(String first_name, String last_name, String username, String password,
+	public Person(String firstName, String lastName, String username, String password,
 			String email, Role role, String profilePic, Complex complex, 
 			String phoneNumber, String bio, String university, boolean vaildated,
 			String linkedin) {
 		super();
-		this.first_name = first_name;
-		this.last_name = last_name;
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.username = username;
 		this.password = password;
 		this.email = email;
@@ -161,8 +161,8 @@ public class Person {
 	/**
 	 * A constructor for initialize the Person object.
 	 * @param id The primary ID of the Person
-	 * @param first_name The first name of the person
-	 * @param last_name The last name of the person
+	 * @param firstName The first name of the person
+	 * @param lastName The last name of the person
 	 * @param username The user name of the person
 	 * @param password The password of the person
 	 * @param email The email of the person
@@ -176,14 +176,14 @@ public class Person {
 	 * @param linkedin The URL to the person's Linkedin
 	 * @param totalLikes The total likes a person had gotten
 	 */
-	public Person(int id, String first_name, String last_name, String username, 
+	public Person(int id, String firstName, String lastName, String username, 
 			String password, String email, Role role, String profilePic, Complex complex, 
 			String phoneNumber, String bio, String university, boolean vaildated, 
 			String linkedin, int totalLikes) {
 		super();
 		this.id = id;
-		this.first_name = first_name;
-		this.last_name = last_name;
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.username = username;
 		this.password = password;
 		this.email = email;
@@ -218,32 +218,32 @@ public class Person {
 	 * Getting the first name of the Person
 	 * @return The first name of the Person
 	 */
-	public String getFirst_name() {
-		return first_name;
+	public String getFirstName() {
+		return firstName;
 	}
 
 	/**
 	 * Set a new first name for the Person
-	 * @param first_name The first name to be set
+	 * @param firstName The first name to be set
 	 */
-	public void setFirst_name(String first_name) {
-		this.first_name = first_name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
 	/**
 	 * Getting the last name of the Person
 	 * @return The last name of the Person
 	 */
-	public String getLast_name() {
-		return last_name;
+	public String getLastName() {
+		return lastName;
 	}
 
 	/**
 	 * Set a new last name for the Person
-	 * @param last_name The last name to be set
+	 * @param lastName The last name to be set
 	 */
-	public void setLast_name(String last_name) {
-		this.last_name = last_name;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	/**
@@ -443,8 +443,8 @@ public class Person {
 	 */
 	@Override
 	public String toString() {
-		return "Person [id=" + id + ", first_name=" + first_name + ", last_name=" 
-				+ last_name + ", username=" + username + ", password=" + password 
+		return "Person [id=" + id + ", firstName=" + firstName + ", lastName=" 
+				+ lastName + ", username=" + username + ", password=" + password 
 				+ ", email=" + email + ", role=" + role + ", profilePic=" + profilePic
 				+ ", complex=" + complex + ", phoneNumber=" + phoneNumber + ", bio=" 
 				+ bio + ", unviersity=" + university + ", vaildated=" + vaildated 
