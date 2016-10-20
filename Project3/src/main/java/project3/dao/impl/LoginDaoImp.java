@@ -3,7 +3,6 @@ package project3.dao.impl;
 import javax.transaction.Transactional;
 
 import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import project3.dao.LoginDao;
 import project3.dto.Person;
+import project3.util.JoinColumn;
 
 /**
  * The implementation of the loginDao
@@ -26,16 +26,6 @@ public class LoginDaoImp implements LoginDao {
 	SessionFactory session;
 	
 	/**
-	 * A private method to join the table together
-	 * 
-	 * @param column the column to join
-	 * @param criteria where it joining to
-	 */
-	private void addColumn(String column, Criteria criteria) {
-		criteria.setFetchMode(column, FetchMode.JOIN);
-	}
-	
-	/**
 	 * Getting information about the user base on the user name and password.
 	 * @param username The user name of the person
 	 * @param password The password of the person
@@ -45,8 +35,8 @@ public class LoginDaoImp implements LoginDao {
 	public Person loginUser(String username, String password) {
 		Criteria criteria = session.getCurrentSession().createCriteria(Person.class)
 				.add(Restrictions.eq("username", username));
-		addColumn("role", criteria);
-		addColumn("complex", criteria);
+		JoinColumn.addColumnByJoin("role", criteria);
+		JoinColumn.addColumnByJoin("complex", criteria);
 		return (Person) criteria.list().get(0);
 	}
 

@@ -8,6 +8,8 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import project3.dao.LikeAndDislikeDao;
+import project3.dao.PostAndReplyDao;
 import project3.dao.SimpleDao;
 import project3.dto.Complex;
 import project3.dto.DisLikeablePost;
@@ -29,6 +31,12 @@ public class BusinessLogicImpl implements BusinessLogic {
 
 	@Autowired
 	SimpleDao dao;
+	
+	@Autowired
+	PostAndReplyDao postReplyDao;
+	
+	@Autowired
+	LikeAndDislikeDao likeDislikeDao;
 
 	public boolean checkUserPassword(String username, String password, String curpassword) {
 		return crypt.validate(password, curpassword);
@@ -116,12 +124,12 @@ public class BusinessLogicImpl implements BusinessLogic {
 		// TODO Auto-generated method stub
 		ForumPost post = new ForumPost(author, title, content, GetTimestamp.getCurrentTime(), false);
 		post.setCategory(categories);
-		return dao.createForumPost(post);
+		return postReplyDao.createForumPost(post);
 	}
 
 	@Override
 	public List<ForumPost> getAllPosts() {
-		return getRidOfDupes(dao.getAllPosts());
+		return getRidOfDupes(postReplyDao.getAllPosts());
 	}
 
 	@Override
@@ -130,7 +138,7 @@ public class BusinessLogicImpl implements BusinessLogic {
 		// ForumPost post = dao.getPostById(postId);
 		// System.out.println("postId in the service method: " + post.getId());
 		Person author = dao.getPersonByUsername(username);
-		dao.createPostReply(postId, author, new ArrayList<LikeableReply>(), new ArrayList<DisLikeableReply>(), false,
+		postReplyDao.createPostReply(postId, author, new ArrayList<LikeableReply>(), new ArrayList<DisLikeableReply>(), false,
 				replyContent, GetTimestamp.getCurrentTime());
 	}
 
@@ -145,14 +153,14 @@ public class BusinessLogicImpl implements BusinessLogic {
 
 	@Override
 	@Transactional
-	public ForumPost getPostById(int id, boolean like, boolean dislike) {
-		return dao.getPostById(id, like, dislike);
+	public ForumPost getPostById(int id) {
+		return postReplyDao.getPostById(id);
 	}
 
 	@Override
 	public List<ForumPost> getMorePosts(int firstResult) {
 		// TODO Auto-generated method stub
-		return getRidOfDupes(dao.getMorePosts(firstResult));
+		return getRidOfDupes(postReplyDao.getMorePosts());
 	}
 
 	@Transactional
@@ -173,10 +181,10 @@ public class BusinessLogicImpl implements BusinessLogic {
 		if (exist) {
 			System.out.println("in add dislike part 3");
 		} else {
-			dao.saveDislike(dislike);
+			likeDislikeDao.saveDislikePost(dislike);
 			post.getDislikes().add(dislike);
 			System.out.println(post.getDislikes().size());
-			dao.updatePost(post);
+			postReplyDao.updatePost(post);
 		}
 
 	}
@@ -190,11 +198,11 @@ public class BusinessLogicImpl implements BusinessLogic {
 		// likeable = dao.getLikesByPerson(person);
 		for (LikeablePost like : post.getLikes()) {
 			if (like.getAuthor().getUsername().equals(person.getUsername())) {
-				LikeablePost likeable = dao.getLikesByPerson(person, like.getId());
+				LikeablePost likeable = likeDislikeDao.getLikesById(like.getId());
 				// LikeablePost likes = dao.getLikeById(like.getId());
 				// post.getLikes().remove(likeable);
 				// dao.updatePost(post);
-				dao.removeLike(post, likeable);
+				likeDislikeDao.removeLikePost(likeable);
 				// System.out.println(likeable.toString());
 				// dao.removeLike(post, likeable);
 
@@ -212,11 +220,11 @@ public class BusinessLogicImpl implements BusinessLogic {
 		// likeable = dao.getLikesByPerson(person);
 		for (DisLikeablePost dislike : post.getDislikes()) {
 			if (dislike.getAuthor().getUsername().equals(person.getUsername())) {
-				DisLikeablePost dislikeable = dao.getDislikesById(dislike.getId());
+				DisLikeablePost dislikeable = likeDislikeDao.getDislikesPostById(dislike.getId());
 				// LikeablePost likes = dao.getLikeById(like.getId());
 				// post.getLikes().remove(likeable);
 				// dao.updatePost(post);
-				dao.removeDislike(dislikeable);
+				likeDislikeDao.removeDislikePost(dislikeable);
 				// System.out.println(likeable.toString());
 				// dao.removeLike(post, likeable);
 
@@ -249,25 +257,25 @@ public class BusinessLogicImpl implements BusinessLogic {
 		if (exist) {
 
 		} else {
-			dao.saveLike(like);
+			likeDislikeDao.saveLikePost(like);
 			post.getLikes().add(like);
-			dao.updatePost(post);
+			postReplyDao.updatePost(post);
 		}
 	}
 
 	@Override
 	public ForumPost getPostForDislike(int id) {
-		return dao.getPostForDislike(id);
+		return postReplyDao.getPostForDislike(id);
 	}
 
 	@Override
 	public PostReply getReplyForDislike(int id){
-		return dao.getReplyForDislike(id);
+		return postReplyDao.getReplyForDislike(id);
 	}
 	
 	@Override
 	public ForumPost getPostForLike(int id) {
-		return dao.getPostForLike(id);
+		return postReplyDao.getPostForLike(id);
 	}
 
 	@Override
@@ -279,16 +287,16 @@ public class BusinessLogicImpl implements BusinessLogic {
 	public List<ForumPost> getPostsByUsername(int firstResult, String username) {
 		// TODO Auto-generated method stub
 		Person author = dao.getPersonByUsername(username);
-		return getRidOfDupes(dao.getMorePostsByUsername(firstResult, author));
+		return getRidOfDupes(postReplyDao.getMorePostsByAuthor(author));
 	}
 
 	@Override
 	public void deletePost(int postId) {
 		// TODO Auto-generated method stub
-		dao.deleteForumPost(postId);
+		postReplyDao.deleteForumPost(postId);
 	}
 	public List<PostReply> getRepliesByPost(ForumPost post) {
-		return dao.getRepliesByPost(post);
+		return postReplyDao.getRepliesByPost(post);
 	}
 
 	@Override
@@ -301,7 +309,7 @@ public class BusinessLogicImpl implements BusinessLogic {
 	public List<ForumPost> getPostsByCategory(String catName) {
 		// TODO Auto-generated method stub
 		
-		List<ForumPost> posts = getRidOfDupes(dao.getPostsByCategory());
+		List<ForumPost> posts = getRidOfDupes(postReplyDao.getPostsByCategory());
 		ForumCategory category = dao.getCategoryByName(catName);
 		List<ForumPost> filteredPosts = new ArrayList<>();
 		for(ForumPost post: posts){
@@ -352,10 +360,10 @@ public class BusinessLogicImpl implements BusinessLogic {
 		if (exist) {
 			System.out.println("in add dislike part 3");
 		} else {
-			dao.saveDislikeReply(dislike);
+			likeDislikeDao.saveDislikeReply(dislike);
 			reply.getDislikes().add(dislike);
 			System.out.println(reply.getDislikes().size());
-			dao.updateReply(reply);
+			postReplyDao.updateReply(reply);
 		}
 		
 	}
@@ -380,9 +388,9 @@ public class BusinessLogicImpl implements BusinessLogic {
 			System.out.println("in add like part 3");
 		} else {
 			System.out.println("in add like part 4");
-			dao.saveLikeReply(like);
+			likeDislikeDao.saveLikeReply(like);
 			reply.getLikes().add(like);
-			dao.updateReply(reply);
+			postReplyDao.updateReply(reply);
 			System.out.println("in add like part 5");
 
 		}
@@ -394,11 +402,11 @@ public class BusinessLogicImpl implements BusinessLogic {
 		
 		for (LikeableReply like : replyLike.getLikes()) {
 			if (like.getAuthor().getUsername().equals(person.getUsername())) {
-				LikeableReply likeable = dao.getLikesReplyById(like.getId());
+				LikeableReply likeable = likeDislikeDao.getLikesReplyById(like.getId());
 				// LikeablePost likes = dao.getLikeById(like.getId());
 				// post.getLikes().remove(likeable);
 				// dao.updatePost(post);
-				dao.removeLikeReply(likeable);
+				likeDislikeDao.removeLikeReply(likeable);
 				// System.out.println(likeable.toString());
 				// dao.removeLike(post, likeable);
 
@@ -413,12 +421,12 @@ public class BusinessLogicImpl implements BusinessLogic {
 		for (DisLikeableReply dislike : disLikeReply.getDislikes()) {
 			System.out.println("------------------here-------------1----------");
 			if (dislike.getAuthor().getUsername().equals(person.getUsername())) {
-				DisLikeableReply likeable = dao.getDislikesReplyById(dislike.getId());
+				DisLikeableReply likeable = likeDislikeDao.getDislikesReplyById(dislike.getId());
 				System.out.println("------------------here------2----------------");
 				// LikeablePost likes = dao.getLikeById(like.getId());
 				// post.getLikes().remove(likeable);
 				// dao.updatePost(post);
-				dao.removeDislikeReply(likeable);
+				likeDislikeDao.removeDislikeReply(likeable);
 				// System.out.println(likeable.toString());
 				// dao.removeLike(post, likeable);
 
@@ -429,7 +437,7 @@ public class BusinessLogicImpl implements BusinessLogic {
 
 	@Override
 	public PostReply getReplyForLike(int id) {
-		return dao.getReplyForLike(id);
+		return postReplyDao.getReplyForLike(id);
 	}
 
 	@Override
@@ -446,7 +454,7 @@ public class BusinessLogicImpl implements BusinessLogic {
 	public List<ForumPost> getPostsByCategoryProf(String catName, String username) {
 		// TODO Auto-generated method stub
 		Person author = dao.getPersonByUsername(username);
-		List<ForumPost> posts = getRidOfDupes(dao.getPostsByCategoryProf(author));
+		List<ForumPost> posts = getRidOfDupes(postReplyDao.getPostsByCategoryProf(author));
 		ForumCategory category = dao.getCategoryByName(catName);
 		List<ForumPost> filteredPosts = new ArrayList<>();
 		for(ForumPost post: posts){
