@@ -32,29 +32,29 @@ public class PostsController {
 	@Autowired
 	BusinessLogic service;
 	
+	/**
+	 * URL mapping for when a post is created
+	 * @param Array of information about the posts such as the title, content, author, and category of the post
+	 */
 	@RequestMapping(value="/createPost", method=RequestMethod.POST)
 	public ResponseEntity<Integer> createPost(@RequestBody String[] postInfo){
-		System.out.println("title: " + postInfo[0]);
 		String title = postInfo[0];
 		String content = postInfo[1];
 		String username = postInfo[2];
 		String category = postInfo[3];
-		System.out.println("contentuksahdaiushdaiadasds: " + postInfo[3]);
 		List<ForumCategory> catList = new ArrayList<>();
 		catList.add(service.getCategoryByName(category));
-		
-		System.out.println("username: " + postInfo[2]);
 		Person author = service.getPersonByUsername(username);
-		System.out.println(author.getUsername());
 		int postId = service.createForumPost(content, title, author, catList);
 		return new ResponseEntity<Integer>(postId, HttpStatus.OK);
 	}
 	
+	/**
+	 * URL mapping for to get all of the posts
+	 */
 	@RequestMapping(value="/getPosts", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<PostContainer>> getPosts(){
 		List<ForumPost> posts = service.getMorePosts(0);
-//		System.out.println("id: " + posts.get(0).getId() + "\ttitle: " + posts.get(0).getTitle() + "\tcontent: " + posts.get(0).getContent());
-//		System.out.println("author: " + posts.get(0).getAuthor().getRole().getRoleName());
 		List<PostContainer> allPosts = new ArrayList<>();
 		
 		for(ForumPost post: posts){
@@ -67,21 +67,18 @@ public class PostsController {
 				replies.add(reply.getTimestamp().toString());
 				postContent.add(replies);
 			}
-			
-			
-			System.out.println("postId: " + post.getId() + "\tpostContent: " + postContent);
 			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), post.getAuthor().getProfilePic(), postContent);
 			allPosts.add(p);
-			
-		//	System.out.println(p.getPostContent());
 		}
 		return new ResponseEntity<List<PostContainer>>(allPosts, HttpStatus.OK);
 	}
 	
-	
+	/**
+	 * URL mapping for getting all the posts pertaining to a specific user
+	 * @param takes in the username of the user
+	 */
 	@RequestMapping(value="/getPostsByUsername", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<PostContainer>> getPostsByUsername(@RequestBody String username){
-		System.out.println("username in the controller: " + username);
 		List<ForumPost> posts = service.getPostsByUsername(0, username);
 		List<PostContainer> allPosts = new ArrayList<>();
 		for(ForumPost post: posts){
@@ -95,22 +92,22 @@ public class PostsController {
 				replies.add(day.toString());
 				postContent.add(replies);
 			}
-			System.out.println("postId: " + post.getId() + "\tpostContent: " + postContent);
-			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), post.getAuthor().getProfilePic(), postContent);
+			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), 
+					post.getContent(), post.getId(), post.getAuthor().getProfilePic(), postContent);
 			allPosts.add(p);
-		//	System.out.println(p.getPostContent());
 		}
 		return new ResponseEntity<List<PostContainer>>(allPosts, HttpStatus.OK);
 	}
 	
-	
+	/**
+	 * URL mapping for loading more posts onto the page
+	 * Not implemented yet. Meant to be integrated for infinite scrolling
+	 * @param Takes in an array containing where to start loading the posts
+	 */
 	@RequestMapping(value="/getMorePosts", method=RequestMethod.GET, produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<PostContainer>> getMorePosts(@RequestBody String[] getPostResult){
 		int firstResult = Integer.parseInt(getPostResult[0]);
-		String username = getPostResult[1];
 		List<ForumPost> posts = service.getMorePosts(firstResult);
-//		System.out.println("id: " + posts.get(0).getId() + "\ttitle: " + posts.get(0).getTitle() + "\tcontent: " + posts.get(0).getContent());
-//		System.out.println("author: " + posts.gset(0).getAuthor().getRole().getRoleName());
 		List<PostContainer> allPosts = new ArrayList<>();
 		
 		for(ForumPost post: posts){
@@ -122,79 +119,53 @@ public class PostsController {
 				replies.add(reply.getTimestamp().toString());
 				postContent.add(replies);
 			}
-			
-			System.out.println("postId: " + post.getId() + "\tpostContent: " + postContent);
-			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), post.getAuthor().getProfilePic(),  postContent);
+			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), 
+					post.getContent(), post.getId(), post.getAuthor().getProfilePic(),  postContent);
 			allPosts.add(p);
-			System.out.println(p.getPostContent());
 		}
 		return new ResponseEntity<List<PostContainer>>(allPosts, HttpStatus.OK);
 	}
 	
-	
-	
+	/**
+	 * URL mapping for when a reply is created
+	 * @param takes in an array containing the content of the reply, author of the reply 
+	 * and id of the post that it belongs to
+	 */
 	@RequestMapping(value="/createReply", method=RequestMethod.POST)
 	public void createReply(@RequestBody String[] postInfo){
-		System.out.println("GOT INTO CREATEREPLY");
-		System.out.println(postInfo[0]);
-		System.out.println(postInfo[1]);
 		String replyContent = postInfo[0];
 		String username = postInfo[2];
-		System.out.println("third param: " + postInfo[2]);
 		int postId = Integer.parseInt(postInfo[1]);
-		System.out.println("post id in the controller: " + postId);
 		service.createReply(replyContent, postId, username);
 	}
 
-		
-//		List<ForumPost> posts = service.getAllPosts();
-//		System.out.println("id: " + posts.get(0).getId() + "\ttitle: " + posts.get(0).getTitle() + "\tcontent: " + posts.get(0).getContent());
-//		System.out.println("author: " + posts.get(0).getAuthor().getRole().getRoleName());
-//		List<PostContainer> allPosts = new ArrayList<>();
-//		for(ForumPost post: posts){
-//			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId());
-//			allPosts.add(p);
-//			System.out.println(p.getPostContent());
-//		new ResponseEntity<List<PostContainer>>(allPosts, HttpStatus.OK)
-		
-
-
+	/**
+	 * URL mapping for getting a specific post by its id
+	 * @param takes in the id of the post needed
+	 */
 	@RequestMapping(value="/getPostById", method=RequestMethod.POST, produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PostContainer> getPost(@RequestParam("id") int id){
-		
-		System.out.println("id is  " + id);
-		
 		ForumPost post = service.getPostById(id);
-		//System.out.println(forumPost.toString());
-
-		//System.out.println(post.toString());
 		List<List<String>> content = new ArrayList<>();
 		
 		List<PostReply> replys = service.getRepliesByPost(post);
-		System.out.println("here 1st----------");
 		for(PostReply reply: replys) {
 			List<String> replies = new ArrayList<>();
 			replies.add(reply.getContent());
 			replies.add(reply.getAuthor().getUsername());
 			Date day = new Date(reply.getTimestamp().getTime());
 			replies.add(day.toString());
-			replies.add(reply.getId() + "");
 			content.add(replies);
 		}
-		System.out.println("here end reply=================");
 		Date day = new Date(post.getTimestamp().getTime());
-		PostContainer pos = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(), post.getAuthor().getProfilePic(),  content, day.toString());
-		//ForumPost forumPost = new ForumPost();
-		//PostContainer pos = new PostContainer();
-		System.out.println("here 1");
+		PostContainer pos = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), 
+				post.getContent(), post.getId(), post.getAuthor().getProfilePic(),  content, day.toString());
 		return new ResponseEntity<PostContainer>(pos, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value="/dislike", method=RequestMethod.POST)
 	@ResponseBody
 	public String dislikePost(@RequestParam("username") String username, @RequestParam("id") int id) {
-		
-		System.out.println(username + "    " + id);
 		ForumPost post = service.getPostForDislike(id);
 		Person person = service.getPersonByUsername(username);
 		ForumPost postLike = service.getPostForLike(id);
@@ -208,8 +179,6 @@ public class PostsController {
 	@RequestMapping(value="/dislikeReply", method=RequestMethod.POST)
 	@ResponseBody
 	public String dislikeReply(@RequestParam("username") String username, @RequestParam("id") int id) {
-		
-		System.out.println(username + "    " + id);
 		PostReply reply = service.getReplyForDislike(id);
 		Person person = service.getPersonByUsername(username);
 		PostReply replyLike = service.getReplyForLike(id);
@@ -223,15 +192,10 @@ public class PostsController {
 	@RequestMapping(value="/likeReply", method=RequestMethod.POST)
 	@ResponseBody
 	public String likeReply(@RequestParam("username") String username, @RequestParam("id") int id) {
-		
-		System.out.println(username + "    " + id);
 		PostReply reply = service.getReplyForLike(id);
 		Person person = service.getPersonByUsername(username);
-		System.out.println("------------------before  getting dislike------------------------");
 		PostReply disLikeReply = service.getReplyForDislike(id);
-		System.out.println("------------------before adding reply------------------------");
 		service.addlikeReply(reply, person);
-		System.out.println("------------------before removing dislike------------------------");
 		service.checkReplyDislike(disLikeReply, person);
 		List<LikeableReply> likes = service.getAllLikebyReply(reply);
 		
@@ -241,8 +205,6 @@ public class PostsController {
 	@RequestMapping(value="/like", method=RequestMethod.POST)
 	@ResponseBody
 	public String likePost(@RequestParam("username") String username, @RequestParam("id") int id) {
-		
-		System.out.println(username + "    " + id);
 		ForumPost post = service.getPostForLike(id);
 		Person person = service.getPersonByUsername(username);
 		service.addLike(post, person);
@@ -256,21 +218,16 @@ public class PostsController {
 	@RequestMapping(value="/getDislike", method=RequestMethod.POST)
 	@ResponseBody
 	public String getAllDislikes(@RequestParam("id") int id) {
-		
 		ForumPost post = service.getPostForDislike(id);
 		List<DisLikeablePost> dislikes = service.getAllDislikebyPost(post);
-		System.out.println("-----------------------------------------------here");
 		return Integer.toString(dislikes.size());
 	}
 	
 	@RequestMapping(value="/getDislikes", method=RequestMethod.POST)
 	@ResponseBody
 	public List<Integer> getAllDislikesReply(@RequestParam("id") int id) {
-		
 		ForumPost post = service.getPostForDislike(id);
-		
 		List<PostReply> replys = service.getRepliesByPost(post);
-		
 		List<Integer> dislikes = new ArrayList<>();
 		
 		for(PostReply item: replys) {
@@ -285,11 +242,8 @@ public class PostsController {
 	@RequestMapping(value="/getLikes", method=RequestMethod.POST)
 	@ResponseBody
 	public List<Integer> getAllLikesReply(@RequestParam("id") int id) {
-		
 		ForumPost post = service.getPostForLike(id);
-		
 		List<PostReply> replys = service.getRepliesByPost(post);
-		
 		List<Integer> likes = new ArrayList<>();
 		
 		for(PostReply item: replys) {
@@ -305,24 +259,28 @@ public class PostsController {
 	@RequestMapping(value="/getLike", method=RequestMethod.POST)
 	@ResponseBody
 	public String getAllLikes(@RequestParam("id") int id) {
-		
 		ForumPost post = service.getPostForLike(id);
 		List<LikeablePost> likes = service.getAllLikesbyPost(post);
-		System.out.println("-----------------------------------------------here");
 		return Integer.toString(likes.size());
 	}
 	
+	/**
+	 * URL mapping for deleting a post
+	 * @param takes in the id of the post that is to be deleted
+	 */
 	@RequestMapping(value="/deletePost")
 	public void deletePost(@RequestBody String postIdStr){
 		int postId = Integer.parseInt(postIdStr);
 		service.deletePost(postId);
 	}
 	
+	/**
+	 * URL mapping to get all posts by a particular category
+	 * @param takes in the name of the category
+	 */
 	@RequestMapping(value="/getPostsCat")
 	public ResponseEntity<List<PostContainer>> getPostsByCategory(@RequestBody String catName){
-		
 		List<ForumPost> posts = service.getPostsByCategory(catName);
-		
 		List<PostContainer> allPosts = new ArrayList<>();
 		
 		for(ForumPost post: posts){
@@ -335,23 +293,22 @@ public class PostsController {
 				postContent.add(replies);
 			}
 			
-			System.out.println("postId: " + post.getId() + "\tpostContent: " + postContent);
-			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(),post.getAuthor().getProfilePic() , postContent);
+			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), 
+					post.getContent(), post.getId(),post.getAuthor().getProfilePic() , postContent);
 			allPosts.add(p);
-			System.out.println(p.getPostContent());
 		}
-		
-		for(ForumPost p: posts)
-			System.out.println("post title: " + p.getTitle());
 		return new ResponseEntity<List<PostContainer>>(allPosts, HttpStatus.OK);
 	}
 	
+	/**
+	 * URL mapping to get posts of by a category and user 
+	 * @param Takes in an array containing the category name an username of the user
+	 */
 	@RequestMapping(value="/getPostsCatProf")
 	public ResponseEntity<List<PostContainer>> getPostsByCategoryInProf(@RequestBody String[] info){
 		String catName = info[0];
 		String username = info[1];
 		List<ForumPost> posts = service.getPostsByCategoryProf(catName, username);
-		
 		List<PostContainer> allPosts = new ArrayList<>();
 		
 		for(ForumPost post: posts){
@@ -363,21 +320,18 @@ public class PostsController {
 				replies.add(reply.getTimestamp().toString());
 				postContent.add(replies);
 			}
-			
-			System.out.println("postId: " + post.getId() + "\tpostContent: " + postContent);
-			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), post.getContent(), post.getId(),post.getAuthor().getProfilePic() , postContent);
+			PostContainer p = new PostContainer(post.getAuthor().getUsername(), post.getTitle(), 
+					post.getContent(), post.getId(),post.getAuthor().getProfilePic() , postContent);
 			allPosts.add(p);
-			System.out.println(p.getPostContent());
 		}
-		
-		for(ForumPost p: posts)
-			System.out.println("post title: " + p.getTitle());
 		return new ResponseEntity<List<PostContainer>>(allPosts, HttpStatus.OK);
 	}
 	
+	/**
+	 * URL mapping for getting all the categories
+	 */
 	@RequestMapping(value="/getAllCat")
 	public ResponseEntity<List<String>> getAllCategories(){
-		
 		List<ForumCategory> categories = service.getAllCategories();
 		List<String> catNames = new ArrayList<>();
 		for(ForumCategory cat: categories){

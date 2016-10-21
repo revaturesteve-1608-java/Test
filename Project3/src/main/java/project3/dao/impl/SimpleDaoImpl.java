@@ -59,11 +59,8 @@ public class SimpleDaoImpl implements SimpleDao{
 
 	@Override
 	public ForumCategory getCategoryByName(String catName) {
-		// TODO Auto-generated method stub
 		Criteria criteria = session.getCurrentSession().createCriteria(ForumCategory.class);
-		System.out.println("categroy name: " + catName);
 		criteria.add(Restrictions.eq("categoryName", catName));
-		System.out.println("size of category: " + criteria.list().size());
 		return (ForumCategory) criteria.list().get(0);
 	}
 	

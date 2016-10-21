@@ -1,6 +1,5 @@
 package project3.service.impl;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 
@@ -12,13 +11,10 @@ import org.jets3t.service.impl.rest.httpclient.RestS3Service;
 import org.jets3t.service.model.S3Bucket;
 import org.jets3t.service.model.S3Object;
 import org.jets3t.service.security.AWSCredentials;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import project3.dao.SimpleDao;
 import project3.service.Jets3;
-import project3.service.ServiceInterface;
 
 @Component
 public class Jets3Impl implements Jets3{
