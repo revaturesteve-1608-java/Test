@@ -47,20 +47,10 @@
 				
 	</div>
 
-	<div  infinite-scroll="getMorePosts(firstResult)" infinite-scroll-distance='1'>
+	<div>
 		<div class="col-sm-8 text-left">
 			
 			<div id="allPosts" data-ng-controller="postsCtrl">
-			<form>
-				<fieldset>
-					<div class="col-md-6">
-						Search: <input class="form-control input-sm" type="text" ng-model="searchBox" placeholder="Search..."/>
-					</div>
-					<div class="col-md-6">
-						Select category: <select class="form-control" id="sel1" ng-options="categories for categories in allCategories" ng-model="selectCat" ng-change="getPostsByCategory(selectCat)"></select>
-					</div>
-				</fieldset>
-			</form> <br>
 				<div id="newPost">
 					<ul class="list-group">
 						<li class="list-group-item">
@@ -105,6 +95,17 @@
 						</li>
 					</ul>
 				</div>				
+				
+				<form id="filterSearch">
+				<fieldset>
+					<div class="col-md-6">
+						Search: <input class="form-control input-sm" type="text" ng-model="searchBox" placeholder="Search..."/>
+					</div>
+					<div class="col-md-6">
+						Select category: <select class="form-control" id="sel1" ng-options="categories for categories in allCategories" ng-model="selectCat" ng-change="getPostsByCategory(selectCat)"></select>
+					</div>
+				</fieldset>
+			</form> <br>
 				
 				<div id="posts" ng-repeat="postContainer in allPosts | filter:searchBox">
 					<div id="eachPost">

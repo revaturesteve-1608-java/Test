@@ -8,7 +8,6 @@ angular.module('routingApp')
 // scope is basically an object
 .controller('newCatCtrl', function($scope, createCategoryService) {
 	$scope.addCategory = function(category) {
-		console.log('About to create ' + category);
 		createCategoryService.createUser(category);
 	}
 

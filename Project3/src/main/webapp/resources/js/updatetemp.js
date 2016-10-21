@@ -37,10 +37,7 @@ angular.module('updateTemp', [])
 .service('updateTempDataService', function($http, $window, $q){
 	
 	this.update = function(usernamePass){
-		console.log('GOT INTO SERVICE')
 		$http.post("rest/updateTemp", usernamePass).then(function(response) {
-			console.log(' YAY!');
-			console.log(response + ' YAY!');
 			$window.alert(response.data);
 			if(response.data == "Updated"){
 				$window.location.href = 'index.jsp';

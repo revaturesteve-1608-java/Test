@@ -3,11 +3,6 @@
  */
 angular.module('routingApp').controller('loginController', function($scope, $mdDialog, $http, $window, $cookies, createUserService) {
 
-//			$scope.loginUser = function(person) {
-//				console.log(person);
-//				loginService.loginUser(person);
-//			}
-
 			$scope.status = '  ';
 			$scope.customFullscreen = false;
 			
@@ -16,16 +11,8 @@ angular.module('routingApp').controller('loginController', function($scope, $mdD
 			}
 			
 			$scope.signIn = function(person) {
-				console.log("here");
 				$http.post('rest/login', person).then(function(response) {
-					//	console.log(typeof response.data);
-					//	console.log(response.data);
 					var person = response.data;
-					
-					console.log(person);
-					console.log(person.id);
-					
-					
 					if(person.id !== 0){
 						$cookies.user = person;
 						if(person.vaildated) {
@@ -40,9 +27,7 @@ angular.module('routingApp').controller('loginController', function($scope, $mdD
 							$window.location.href = 'updateTempInfo.html';
 						}
 					} else {
-						console.log("where2");
 						alert("Wrong Username/Password");
-//						customAlert();
 					}
 				}, function(error) {
 					customAlert();

@@ -97,7 +97,6 @@ app.service('createUserService', function($http, $q, $window) {
 	
 	this.createUser = function(person) {
 		$http.post('rest/createUser', person).then(function(response) {
-			console.log(response + ' YAY!');
 			$window.alert(response.data);
 		}, function(error) {
 			console.log($q.reject(error));
@@ -115,11 +114,7 @@ app.service('createUserService', function($http, $q, $window) {
 	
 	this.logout = function() {
 		$http.post('rest/logout').then(function(response) {
-			
-			console.log("here");
 			$window.location.href = 'index.jsp';
-			
-			//$window.alert(response.data);
 		}, function(error) {
 			console.log($q.reject(error));
 		});

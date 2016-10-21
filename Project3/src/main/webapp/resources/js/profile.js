@@ -45,7 +45,6 @@ app.service('profileService', function($http, $q, $window) {
 	
 	this.createUser = function(person) {
 		$http.post('rest/createUser', person).then(function(response) {
-			console.log(response + ' YAY!');
 			$window.alert(response.data);
 		}, function(error) {
 			console.log($q.reject(error));
