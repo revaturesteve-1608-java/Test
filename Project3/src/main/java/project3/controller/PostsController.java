@@ -155,6 +155,7 @@ public class PostsController {
 			replies.add(reply.getAuthor().getUsername());
 			Date day = new Date(reply.getTimestamp().getTime());
 			replies.add(day.toString());
+			replies.add(reply.getAuthor().getProfilePic());
 			content.add(replies);
 		}
 		Date day = new Date(post.getTimestamp().getTime());

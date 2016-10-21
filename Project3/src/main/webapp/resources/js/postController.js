@@ -55,14 +55,12 @@ app.controller("postCtrl", function($scope, $location, $http, createUserService,
 			
 			createUserService.getAllReplyLikes(info, function(response){
 				$scope.likesReplysContainer = response.data;
-				console.log($scope.likesReplysContainer);
 			});
 			
 		})
 		.error(function(data, status, headers, config) {
 		
 		});
-		
 	}
 	
 	
@@ -89,12 +87,8 @@ app.controller("postCtrl", function($scope, $location, $http, createUserService,
 		console.log(replyInfo);
 		
 		var day = $filter('date')(new Date(), "MMM d, y");
-		
-		//postsService.createReply(replyInfo);
 		$http.post("rest/createReply", replyInfo).then(function(response) {
-			//var container = angular.element("#theReplies");
 			$route.reload();
-			
 		});
 		
 		$scope.replyContext="";
@@ -105,7 +99,6 @@ app.controller("postCtrl", function($scope, $location, $http, createUserService,
 	$http({method: 'POST', url: 'rest/getPostById', data: $.param({id:info}), headers: {'Content-Type': 'application/x-www-form-urlencoded'} })
 	.success(function(data, status, headers, config) {
 		$scope.post = data;
-		console.log('the post id: ' + $scope.post.postContent)
 		$scope.replys = $scope.post.replyContent;
 		console.log($scope.post)
 		console.log($scope.user.role.id)
@@ -114,17 +107,14 @@ app.controller("postCtrl", function($scope, $location, $http, createUserService,
 		}
 	})
 	.error(function(data, status, headers, config) {
-	//alert( "failure message: " + JSON.stringify({data: data}));
 	});
 	
 	createUserService.getDislike(info, function(response) {
 		$scope.dislikesArray = response.data;
-		console.log("size-----------------------------------------" + $scope.dislikesArray);
 	});
 	
 	createUserService.getAllReplyDislikes(info, function(response){
 		$scope.dislikesReplysContainer = response.data;
-		console.log($scope.dislikesReplysContainer);
 	});
 	
 	
@@ -134,11 +124,9 @@ app.controller("postCtrl", function($scope, $location, $http, createUserService,
 	
 	createUserService.getAllReplyLikes(info, function(response){
 		$scope.likesReplysContainer = response.data;
-		console.log($scope.likesReplysContainer);
 	});
 	
 	$scope.dislike = function(user, postId) {
-		console.log(user.username + "--------------------" + postId.postId);
 		$http({method: 'POST', url: 'rest/dislike', data: $.param({username: user.username, id: postId.postId}), headers: {'Content-Type': 'application/x-www-form-urlencoded'} })
 		.success(function(data, status, headers, config) {
 			
@@ -157,11 +145,9 @@ app.controller("postCtrl", function($scope, $location, $http, createUserService,
 		$http({method: 'POST', url: 'rest/like', data: $.param({username:user.username, id: postId.postId}), headers: {'Content-Type': 'application/x-www-form-urlencoded'} })
 		.success(function(data, status, headers, config) {
 			$scope.likesArray = data;
-			console.log("size-----------------------------------------" + $scope.likesArray);
 			
 			createUserService.getDislike(info, function(response) {
 				$scope.dislikesArray = response.data;
-				console.log("size-----------------------------------------" + $scope.dislikesArray);
 			});
 		})
 		.error(function(data, status, headers, config) {

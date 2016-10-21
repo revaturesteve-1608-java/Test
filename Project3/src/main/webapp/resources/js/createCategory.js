@@ -9,7 +9,6 @@ angular.module('createCategory', [])
 	
 	$scope.createCat = function(catName){
 		catService.createCat(catName, function(response){
-			console.log("got back here!!!")
 		})
 	}
 	
@@ -18,7 +17,6 @@ angular.module('createCategory', [])
 .service('catService', function($http){
 	
 	this.createCat = function(catName, callback){
-		console.log("got into the service!!!")
 		$http.post("rest/createCategory", catName).then(callback)
 	}
 })

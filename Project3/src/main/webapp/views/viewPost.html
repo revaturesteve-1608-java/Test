@@ -10,6 +10,8 @@
 			<!-- Blog Post -->
 
 			<!-- Title -->
+			<img class="w3-circle" src="{{post.profPicURL}}"
+							alt="" style="width: 65px; height: 65px;">
 			<h1>
 				<b>{{post.postTitle}}</b>
 			</h1>
@@ -77,9 +79,9 @@
 				<div ng-repeat="reply in replys">
 					<div id="theReplies">
 					<div class="media-body" align="right">
-						<a href="#"> <img class="w3-circle" src="{{post.profPicURL}}"
+					<img class="w3-circle" src="{{reply[3]}}"
 							alt="" style="width: 65px; height: 65px;">
-						</a> <small><span class="md-subhead"><i>by
+						 <small><span class="md-subhead"><i>by
 									{{reply[1]}} {{reply[2] | date }} </i> </span> </small>
 						<h4 class="media-heading">
 							<span ng-bind-html="reply[0]" class="md-headline">{{reply[0]}}</span>
