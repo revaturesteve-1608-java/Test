@@ -3,12 +3,8 @@ package project3.service.impl;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.awt.image.WritableRaster;
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -20,10 +16,12 @@ import javax.imageio.stream.ImageInputStream;
 
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import project3.dao.LoginDao;
+import project3.dao.PersonInformationDao;
+import project3.dao.SimpleDao;
 import project3.dto.AwsKey;
 import project3.dto.Complex;
 import project3.dto.Person;
@@ -31,10 +29,7 @@ import project3.dto.Role;
 import project3.service.Crypt;
 import project3.service.Jets3;
 import project3.service.ServiceInterface;
-import project3.simpledao.LoginDao;
-import project3.simpledao.SimpleDao;
 import project3.util.Email;
-import project3.util.ProfileImage;
 
 @Service
 public class ServiceLogic implements ServiceInterface{
@@ -53,6 +48,9 @@ public class ServiceLogic implements ServiceInterface{
 	
 	@Autowired
 	LoginDao loginDao;
+	
+	@Autowired
+	PersonInformationDao PersonDao;
 	
 	private String getRandom(int length){
 		return crypt.getRandom(length);
@@ -123,7 +121,7 @@ public class ServiceLogic implements ServiceInterface{
 	public String createUser(Person person) {
 		person.setEmail(person.getEmail().toLowerCase());
 		// Check if email exists
-		if(dao.getPersonByEmail(person.getEmail()) == null) {
+		if(PersonDao.getPersonByEmail(person.getEmail()) == null) {
 			//make new user name 
 			person.setUsername(person.getEmail());
 			System.out.println("password: " + person.getPassword());
@@ -177,12 +175,12 @@ public class ServiceLogic implements ServiceInterface{
 //						(person.getEmail()));
 //			}
 			// Save in Database
-			Person user = dao.createUser(person);
+			Person user = PersonDao.createUser(person);
 			// set a default profile picture
 			AwsKey key = dao.getAWSKey();
 			person.setProfilePic(jetS3.uploadProfileItem(user.getId() + "", user.getId() + "", 
 					key.getAccessKey(), key.getSecretAccessKey()));
-			dao.updatePersonPic(person);
+			PersonDao.updatePersonPic(person);
 			// Send Email to Account
 			String subject = "Welcome to Revature";
 			String message = 
@@ -208,7 +206,7 @@ public class ServiceLogic implements ServiceInterface{
             	+ "<tbody>"
             		+ "<tr>"
             			+ "<td style=\"padding-top:0;padding-right:18px;padding-bottom:9px;padding-left:18px;\" valign=\"top\">"
-            				+ "<h3 style=\"text-align:left;\">Hello " + person.getFirst_name() + " " + person.getLast_name() + "</h3>"
+            				+ "<h3 style=\"text-align:left;\">Hello " + person.getFirstName() + " " + person.getLastName() + "</h3>"
             				+ "<p style=\"text-align:left;\"> Your account had been approve<br><br>"
             				
             				+ "Here is your login information <br><br>" 
@@ -245,7 +243,7 @@ public class ServiceLogic implements ServiceInterface{
 
 	@Override
 	public Person loginUser(String username, String password) {
-		Person person = dao.getPersonByUsername(username);
+		Person person = PersonDao.getPersonByUsername(username);
 		if(person != null && crypt.validate(password, person.getPassword())) {
 			return person;
 		}
@@ -257,13 +255,13 @@ public class ServiceLogic implements ServiceInterface{
 		AwsKey key = dao.getAWSKey();
 		person.setProfilePic(jetS3.uploadProfileItem(person.getId() + "", person.getId() + "", picture,
 				key.getAccessKey(), key.getSecretAccessKey()));
-		dao.updatePersonPic(person);
+		PersonDao.updatePersonPic(person);
 		return person;
 	}
 
 	@Override
 	public Person getPersonByUsername(String username) {
-		return dao.getPersonByUsername(username);
+		return PersonDao.getPersonByUsername(username);
 	}
 
 	@Override

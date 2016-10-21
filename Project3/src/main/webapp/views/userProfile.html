@@ -9,8 +9,6 @@ body {
 }
 
 .click {
-	background:
-		url('http://cdn2.digitalartsonline.co.uk/cmsdata/slideshow/3513552/polybreno_1500.jpg');
 	background-size: contain;
 	position: relative;
 	-webkit-border-radius: 50%;
@@ -319,8 +317,8 @@ textarea.ta-bind {
 						<div class="PopUp">Open Profile</div>
 						<div class="clickPopUp">
 							<h4>
-								<a class="username" href="">{{user.first_name}}
-									{{user.last_name}}, {{user.role.roleName}}</a>
+								<a class="username" text-align="center" href="">{{user.firstName}}
+									{{user.lastName}}, {{user.role.roleName}}</a>
 							</h4>
 							<h5 class="buttons">
 								<a class="username" href="">{{user.bio}}</a>
@@ -371,9 +369,8 @@ textarea.ta-bind {
 					<ul class="list-group">
 						<li class="list-group-item">
 							<div class="row">
-								<div>
-									<p id="theUsername">{{user.username}}</p>
-								</div>
+								<h3><i> <div id="theUsername" align="center"> {{user.username}} 
+								</div> </h3></i>
 							</div>
 						</li>
 						<li class="list-group-item">
@@ -437,7 +434,13 @@ textarea.ta-bind {
 							<li class="list-group-item">
 								<div class="{{postContainer.postId}}">
 									<div id="singleReply" class="row" ng-repeat="replies in postContainer.replyContent">
-										<div ng-bind-html="replies[0]" class="col-md-8">{{replies[0]}}</div>
+										<div ng-bind-html="replies[0]" class="col-md-8">
+											{{replies[0]}}
+
+										</div>
+										<br>
+										<p align="right"><b>Replied By: </b><i>{{replies[1]}}</i></p>
+										<p align="right"><b>Replied On: </b><i>{{replies[2]}}</i></p>
 									</div>
 								</div>
 							</li>

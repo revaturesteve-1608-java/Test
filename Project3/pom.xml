@@ -112,7 +112,7 @@
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.2</version>
 				<configuration>
-					<url>http://ec2-54-152-99-76.compute-1.amazonaws.com:8080/manager/text</url>
+					<url>http://ec2-52-72-127-66.compute-1.amazonaws.com:8080/manager/text</url>
 					<server>tommy</server>
 					<username>tomcat</username>
 					<password>secret</password>

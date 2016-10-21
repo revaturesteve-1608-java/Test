@@ -62,13 +62,13 @@ app.controller("indexCtrl", function($scope, $http, $window, $location, $cookies
 	createUserService.getAllCategories(function(response){
 			$scope.allCategories = response.data;
 			var newArray = $scope.allCategories.slice(0); //clone the array, or you'll end up with a new "None" option added to your "values" array on every digest cycle.
-	        newArray.unshift("None");
+	        newArray.unshift("Show all");
 	        $scope.allCategories = newArray
 		})
 	
 	$scope.getPostsByCategory = function(catName){
 		console.log("GOT INTO HERERERER")
-		if(catName === "None"){
+		if(catName === "Show all"){
 			createUserService.getPosts(function(response){
 				console.log("GOT BACKKKKK")
 				$scope.allPosts = response.data;
