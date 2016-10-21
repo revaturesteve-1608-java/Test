@@ -11,7 +11,6 @@ public class PostContainer {
 	private String profPicURL;
 	private List<List<String>> replyContent;
 	private String date;
-	//	private List<PostReply> replies;
 
 	public PostContainer(){}
 
