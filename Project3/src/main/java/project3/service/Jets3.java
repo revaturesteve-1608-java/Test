@@ -41,17 +41,23 @@ public interface Jets3 {
 	 * @param fileName the destination name of the file, a valid extension should be included
 	 * @param loginName the name (or email) the user logs in with
 	 * @param file a file that is to be uploaded to the S3 server
+	 * @param publicKey The public key of S3
+	 * @param privateKey The private key of S3
 	 * @return the URL where the file was uploaded if successful, null otherwise
 	 */
-	public String uploadProfileItem(String loginName, String fileName, MultipartFile file);
-	
 	public String uploadProfileItem(String loginName, String fileName, MultipartFile file, 
 			String publicKey, String privateKey);
 	
 	public String uploadProfileItem(String folderPath, String fileName, File file);
 	
-	public String uploadProfileItem(String folderPath, String fileName);
-	
+	/**
+	 * Attempts to upload a profile picture to the S3 server
+	 * @param loginName the name (or email) the user logs in with
+	 * @param fileName the destination name of the file, a valid extension should be included
+	 * @param publicKey The public key of S3
+	 * @param privateKey The private key of S3
+	 * @return the URL where the file was uploaded if successful, null otherwise
+	 */
 	public String uploadProfileItem(String loginName, String fileName, String publicKey, String privateKey);
 	
 	public String uploadProfileItem(String loginName, File file);

@@ -27,6 +27,11 @@ public class CryptImpl implements Crypt{
 	private char[] alphabet1 = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
     private char[] alphabet2 = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
 
+    /**
+     * A helper method to check if the number in ASCII code is a letter and number
+     * @param num
+     * @return
+     */
     private boolean condition(int num){
 		if((num > 47 && num < 57) || (num > 65 && num < 90) || (num > 97 && num < 122)) {
 			return true;
@@ -34,11 +39,18 @@ public class CryptImpl implements Crypt{
 		return false;
 	}
 
+    /**
+	 * Getting a random string for the password
+	 * @param length The length of the string
+	 * @return A random string for the password
+	 */
     @Override
 	public String getRandom(int length) {
+    	//It provides a cryptographically strong random number generator  
 		SecureRandom random = new SecureRandom();
 		String randomString = "";
 		for(int i = 0; i < length; i++){
+			//grab a number between 33 and 122
 			int num = random.nextInt(94) + 33;
 			if(condition(num)) {
 				randomString += Character.toString((char)num);
@@ -79,6 +91,13 @@ public class CryptImpl implements Crypt{
 		return encrypt(temp, eKeys[0], eKeys[1]);
 	}
 	
+	/**
+	 * A helper method to encrypt the code
+	 * @param target The current encrypt code
+	 * @param key1 The first key that will encrypt with target
+	 * @param key2 The second key that will encrypt with target
+	 * @return encrypt password
+	 */
 	private String encrypt(String target, String key1, String key2){
 		
 		String temp = target;
@@ -107,6 +126,12 @@ public class CryptImpl implements Crypt{
 		return holder;
 	}
 
+	/**
+	 * A helper method to encrypt the password with the key
+	 * @param target The password that had been encrypt
+	 * @param keyword The key to that will encrypt with
+	 * @return new encrypt password
+	 */
 	private String encrypt(String target, String keyword){
 	
 		char[] tempPassword = target.toCharArray();
@@ -117,6 +142,7 @@ public class CryptImpl implements Crypt{
 	    int keyCeil = tempUsername.length;
 	    int keyIndex;
 	    
+	    //going through each character to hash it
 		for(int i = 0; i < tempPassword.length; i++){
 			if(Character.isAlphabetic(tempPassword[i])){
 				keyIndex = keyBase % keyCeil;

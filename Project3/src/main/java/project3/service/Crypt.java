@@ -10,6 +10,11 @@ public interface Crypt {
 	 */
 	public String encrypt(String target);
 
+	/**
+	 * Getting a random string for the password
+	 * @param length The length of the string
+	 * @return A random string for the password
+	 */
 	public String getRandom(int length);
 	
 	/**
