@@ -9,8 +9,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
 
-	<!-- it is scanning for annotation such @component @service(service logic 
-		@Transactiona(start the transactional for you @repository use it for daoimpl -->
+
 	<context:component-scan base-package="project3"></context:component-scan>
 	<!-- Sets you your Spring context to allow for dispatching requests to Controllers. -->
 	<mvc:annotation-driven></mvc:annotation-driven>
@@ -24,6 +23,9 @@
 		<property name="password" value="p4ssword"></property>
 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
 	</bean>
+	
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	</bean>
 
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
@@ -34,7 +36,7 @@
 				<prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop>
 				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.format_sql">true</prop>
-				<prop key="hibernate.hbm2ddl.auto">create</prop>
+				<prop key="hibernate.hbm2ddl.auto">none</prop>
 			</props>
 		</property>
 	</bean>
