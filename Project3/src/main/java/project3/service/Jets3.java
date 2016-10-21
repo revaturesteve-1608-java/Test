@@ -80,8 +80,5 @@ public interface Jets3 {
 	 * Used to grab a list of items from the s3 bucket
 	 */
 	public String[] list();
-	
-
-//	public void syncBusinessDelegate(ServiceInterface businessDelegate);
 
 }
