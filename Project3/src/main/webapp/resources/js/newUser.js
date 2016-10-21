@@ -8,7 +8,6 @@ angular.module('routingApp')
 // scope is basically an object
 .controller('newUserCtrl', function($scope, createUserService) {
 	$scope.createUser = function(person) {
-		console.log('About to create ' + person.firsName);
 		createUserService.createUser(person);
 	}
 

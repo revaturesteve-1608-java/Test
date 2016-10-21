@@ -12,11 +12,8 @@ angular.module('routingApp')
 	$scope.disabled = false;
 	console.log($scope.htmlcontent);
 	$scope.addReply = function(userReply, postId){
-		console.log("the postId: " + postId)
-		console.log("reply: " + userReply)
 		var getElem = "." + postId;
 		var elem = angular.element(getElem);
-		console.log("elements: " + elem)
 		var replyInfo = [userReply, postId, $scope.user.username]
 		postsService.createReply(replyInfo)
 		
@@ -29,13 +26,10 @@ angular.module('routingApp')
 	$scope.addPost = function(postTitle, postContent, category){
 		
 		var postInfo = [postTitle, postContent, $scope.user.username, category]
-		console.log("category in the controller: " + category)
-		console.log("username: " + $scope.user.username)
 		postsService.createPost(postInfo, function(response){
 			var postId = response.data;
-			console.log("postId in the controller: " + postId);
 			
-			var elem = angular.element('#newPost');
+			var elem = angular.element('#filterSearch');
 			var append = '<div id="eachPost"><ul class="list-group">'
 				                +'<li class="list-group-item"> <div id="titleDiv"><div class="col-md-8"><h4><a href="#post?id=' + postId + '"><b>' + postTitle + '</b></a></h4></div><div class="col-md-4"><button id="deleteBtn" type="button" class="btn btn-default" aria-label="Right Align" ng-click="deletePost(postId)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button></div> </li><li class="list-group-item"><div><p id="thePost">'+ postContent + '</p></div></li><li class="list-group-item">'
 				                +'<div class="'+ postId + '"><div class="replies" class="row" ></div></div></li>'
@@ -53,7 +47,6 @@ angular.module('routingApp')
 	$scope.getUser = postsService.getUser(function(response){
 		$scope.user = response.data;
 		console.log($scope.user.username);
-		console.log("got back from getting a user!!!!!!!!!!!!!!!!!!!!!!!!!1")
 		postsService.getAllCategories(function(response){
 			$scope.allCategories = response.data;
 			var newArray = $scope.allCategories.slice(0); //clone the array, or you'll end up with a new "None" option added to your "values" array on every digest cycle.
@@ -61,27 +54,15 @@ angular.module('routingApp')
 	        $scope.allCategories = newArray
 		})
 		postsService.getPostsByUsername($scope.user.username, function(response){
-			console.log("username in the beginning: " + $scope.user.username)
 			$scope.allPosts = response.data;
 			$scope.length = $scope.allPosts.length;
 			$scope.firstResult = $scope.allPosts.length;
-			console.log("length: " + $scope.length)
 		})
-		
-		
 	})
 	
 	$scope.firstResult = 0;
 	
-//	$scope.getPosts = postsService.getPosts(function(response){
-//		$scope.allPosts = response.data;
-//		$scope.length = $scope.allPosts.length;
-//		$scope.firstResult = $scope.allPosts.length;
-//		console.log("length: " + $scope.length)
-//	})
-	
 	$scope.getMorePosts = function(firstResult){
-		console.log("event hit!!!!!!!!!!!!")
 		postsService.getMorePosts(firstResult, function(response){
 			$scope.allPosts = response.data;
 			$scope.firstResult = $scope.allPosts.length;
@@ -89,15 +70,12 @@ angular.module('routingApp')
 	}
 	
 	$scope.deletePost = function(postId){
-//		console.log("GETTING IN HERERERERERE: " + authorName)
-		console.log("post id in the delete: " + postId)
 		postsService.deletePost(postId, function(response){
 			$window.location.reload();
 		});
 	}
 	
 	$scope.getPostsByCategory = function(catName){
-		console.log("INSIDE POSTCAT: " + catName)
 		if(catName === "Show all"){
 			postsService.getPostsByUsername($scope.user.username, function(response){
 				$scope.allPosts = response.data;
@@ -116,7 +94,6 @@ angular.module('routingApp')
 .service('postsService', function($http){
 	
 	this.createPost = function(postInformation, callback){
-		
 		$http.post("rest/createPost", postInformation).then(callback)
 	}
 	

@@ -27,11 +27,8 @@ app.controller("indexCtrl", function($scope, $http, $window, $location, $cookies
 				console.log($window.location.href.includes("associate-view"));
 				$scope.user = response.data; 	
 				if($scope.user.id == 0){
-					$window.location.href = 'login.html';
-//					$("#myModal").modal() 
+					$window.location.href = 'login.html'; 
 				} else {
-					console.log($scope.user.role.roleName === "Assoicate");
-					console.log($window.location.href.includes("moderate-view"));
 					if($scope.user.vaildated !== false) {
 						if($scope.user.role.roleName === "Moderator" && $window.location.href.includes("associate-view")) {
 							$window.location.href = 'moderate-view.html';
@@ -46,9 +43,6 @@ app.controller("indexCtrl", function($scope, $http, $window, $location, $cookies
 				if($scope.user.id == 0){
 					$window.location.href = 'index.jsp';	
 				}
-				
-				console.log($scope.user);
-				
 			})
 	
 	
@@ -67,10 +61,8 @@ app.controller("indexCtrl", function($scope, $http, $window, $location, $cookies
 		})
 	
 	$scope.getPostsByCategory = function(catName){
-		console.log("GOT INTO HERERERER")
 		if(catName === "Show all"){
 			createUserService.getPosts(function(response){
-				console.log("GOT BACKKKKK")
 				$scope.allPosts = response.data;
 				$scope.$apply()
 			})

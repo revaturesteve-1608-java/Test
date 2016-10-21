@@ -5,12 +5,8 @@
 angular.module('routingApp')
 
 .controller('updateUserCtrl', function($scope, updateUserData, $window, createUserService){
-	console.log('FIRST IN CONTROLLER')
 	$scope.updateInformation = function(oldPassword, newPassword, username, newEmail, newPhone, 
 			complex, newUniversity, newLinkedIn){
-		console.log('EVENT LISTENER WORKED')
-		console.log("oldpass: " + oldPassword);
-		console.log("newpass: " + newPassword);
 		var complexN = "";
 		if(complex.complexName != null) {
 			complexN = complex.complexName.complexName;
@@ -22,12 +18,8 @@ angular.module('routingApp')
 			$window.alert(response.data);
 			createUserService.getUser(
 					function(response){
-//						console.log(response);
-//						console.log(response.data) 
-					//	console.log(typeof response.data[0].maker);
 						$scope.user = response.data; 	
 						$window.location.reload();
-//						console.log($scope.user);
 					})
 			
 		});
@@ -38,14 +30,6 @@ angular.module('routingApp')
 			function(response) {
 				$scope.complex = response.data;
 			})
-	
-//	$scope.user;
-//	
-//	$scope.getUser = updateUserData.getUser(function(response){
-//		$scope.user = response.data;
-//		console.log($scope.user);
-//		
-//	})
 })
 
 .directive('ngFiles', ['$parse', function ($parse) {
@@ -82,7 +66,6 @@ angular.module('routingApp')
 
     // NOW UPLOAD THE FILES.
     $scope.uploadFiles = function () {
-//    	updateUserData.updatePics(formdata);
     	console.log(formdata.get(0));
         var request = {
             method: 'POST',
@@ -108,14 +91,11 @@ angular.module('routingApp')
 
 .service('updateUserData', function($http, $window, $q, $route){
 	this.update = function(information, callback){
-		console.log('GOT INTO SERVICE')
 		$http.post("rest/updateInfo", information).then(callback);
 	}
 	
 	this.updatePics = function(formdata){
-		console.log('GOT INTO SERVICE')
 		$http.post("rest/fileupload", formdata).then(function(response) {
-//			$window.alert(response.data);
 		}, function(error) {
 			console.log($q.reject(error));
 		});
