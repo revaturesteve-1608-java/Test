@@ -5,30 +5,62 @@ import java.util.List;
 import project3.dto.AwsKey;
 import project3.dto.Complex;
 import project3.dto.ForumCategory;
-import project3.dto.Person;
 import project3.dto.Role;
 
+/**
+ * Access the database for simple object
+ */
 public interface SimpleDao {
 	
-	public ForumCategory getForumCategoryById(int id);
-	
-	public List<Role> getRoles();
-	
-	public List<ForumCategory> getForumCategory();
-	
-	public void updateTempPerson(String username, String pass, String newUsername);
-	
-	public void updateUserInfo(Person person);
-	
-	public void createForumCategory(String categoryName);
-	
-	public void createComplex(String complexName);
-	
+	/**
+	 * Get the key to access the AWS S3
+	 * @return The key to AWS S3
+	 */
 	public AwsKey getAWSKey();
 	
+	/**
+	 * Get all the roles from the database
+	 * @return A list of roles
+	 */
+	public List<Role> getRoles();
+	
+	/**
+	 * Get a list of category from the database
+	 * @return A list of category
+	 */
+	public List<ForumCategory> getForumCategory();
+	
+	/**
+	 * Get a category by its name
+	 * @param catName The name of the category
+	 * @return A category
+	 */
 	public ForumCategory getCategoryByName(String catName);
 	
+	/**
+	 * Get a list of complex
+	 * @return A list of complex
+	 */
+	public List<Complex> getComplex();
+	
+	/**
+	 * Get a complex by name
+	 * @param name The name of the complex
+	 * @return A complex
+	 */
 	public Complex getComplexByName(String name);
 	
-	public List<Complex> getComplex();
+	/**
+	 * Create a new complex
+	 * (Feature had not been implemented)
+	 * @param complexName
+	 */
+	public void createComplex(String complexName);
+	
+	/**
+	 * Create a new category
+	 * (Feature had not been implemented)
+	 * @param categoryName The name of the category
+	 */
+	public void createForumCategory(String categoryName);
 }
