@@ -4,8 +4,6 @@ body {
 }
 
 .click {
-	background:
-		url('http://cdn2.digitalartsonline.co.uk/cmsdata/slideshow/3513552/polybreno_1500.jpg');
 	background-size: contain;
 	position: relative;
 	-webkit-border-radius: 50%;
@@ -225,7 +223,6 @@ body {
 	border-left: 3px solid #FF4511;
 	box-shadow: inset 0px 0px 8px rgba(0, 0, 0, 0.2);
 }
-
 .ta-toolbar {
 	background-color: #F0F0F0;
 	padding: 10px 10px 5px;
