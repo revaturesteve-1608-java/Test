@@ -22,7 +22,7 @@ angular.module('routingApp')
 	$scope.getUser = createUserService.getUser(
 			function(response){ 		
 				console.log(response);
-				console.log(response.data) 
+				console.log(response.data); 
 			//	console.log(typeof response.data[0].maker);
 				$scope.user = response.data; 	
 				

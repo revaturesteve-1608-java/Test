@@ -42,7 +42,7 @@ app.controller("newUserCtrl", function($scope, createUserService) {
 	}
 	
 	$scope.getRoles = createUserService.getRoles(
-			// pass in the callback function
+			
 			function(response) {
 				$scope.roles = response.data;
 			})
@@ -78,11 +78,9 @@ app.controller("frontCtrl", function($scope, $http, $window, $cookies, createUse
 	
 	$scope.getUser = createUserService.getUser(
 			function(response){
-//				console.log(response);
-//				console.log(response.data) 
-			//	console.log(typeof response.data[0].maker);
-				$scope.user = response.data; 	
-//				console.log($scope.user);
+				
+				$scope.user = response.data;
+				
 			})
 
 })

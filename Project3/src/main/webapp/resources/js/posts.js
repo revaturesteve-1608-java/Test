@@ -124,10 +124,6 @@ angular.module('routingApp')
 		$http.get('rest/user').then(callback)
 	}
 	
-//	this.getPosts = function(callback){
-//		$http.get("rest/getPosts").then(callback)
-//	}
-	
 	this.getPostsByUsername = function(username, callback){
 		$http.post("rest/getPostsByUsername", username).then(callback)
 	}
