@@ -54,20 +54,4 @@ angular.module('updateTemp', [])
 	this.getUser = function(callback){
 		$http.get('rest/user').then(callback)
 	}
-	
-//	 this.showAlert = function(ev) {
-//		    // Appending dialog to document.body to cover sidenav in docs app
-//		    // Modal dialogs should fully cover application
-//		    // to prevent interaction outside of dialog
-//		    $mdDialog.show(
-//		      $mdDialog.alert()
-//		        .parent(angular.element(document.querySelector('#popupContainer')))
-//		        .clickOutsideToClose(true)
-//		        .title('Incorrect Temporary Password')
-//		        .textContent('Update failed. You have put in the incorrect Temporary Password')
-//		        .ariaLabel('Alert Dialog Demo')
-//		        .ok('Got it!')
-//		        .targetEvent(ev)
-//		    );
-//		  };
 })
