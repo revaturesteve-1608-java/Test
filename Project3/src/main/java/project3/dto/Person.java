@@ -49,7 +49,7 @@ public class Person {
 	/**
 	 * The password of the person
 	 */
-	@Column(name="u_password", nullable=false, unique=true)
+	@Column(name="u_password", nullable=false)
 	@Size(min=6)
 	private String password;
 	

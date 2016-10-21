@@ -52,7 +52,7 @@ public class PersonInformationDaoImpl implements PersonInformationDao{
 		JoinColumn.addColumnByJoin("complex", criteria);
 		List<Person> persons = (List<Person>) criteria.add(Restrictions.eq("username", 
 				username)).list();
-		if(persons.size() == 0) {
+		if(persons.isEmpty()) {
 			return null;
 		} else {
 			return persons.get(0);
@@ -69,7 +69,7 @@ public class PersonInformationDaoImpl implements PersonInformationDao{
 	public Person getPersonByEmail(String email) {
 		List<Person> persons = session.getCurrentSession().createCriteria(Person.class).
 				add(Restrictions.eq("email", email)).list();
-		if(persons.size() == 0) {
+		if(persons.isEmpty()) {
 			return null;
 		} else {
 			return persons.get(0);
@@ -98,5 +98,42 @@ public class PersonInformationDaoImpl implements PersonInformationDao{
 		Person tempPerson = (Person) criteria.add(Restrictions.eq("username", 
 				person.getUsername())).list().get(0);
 		tempPerson.setProfilePic(person.getProfilePic());
+	}
+	
+	/**
+	 * Update the person when they are first login
+	 * @param username The old user name of the person 
+	 * @param pass The new password of the person 
+	 * @param newUsername The new user name of the person 
+	 */
+	@Override
+	public void updateTempPerson(String username, String pass, String newUsername) {
+		Session currentSession = session.getCurrentSession();
+		Criteria criteria = currentSession.createCriteria(Person.class);
+		JoinColumn.addColumnByJoin("role", criteria);
+		JoinColumn.addColumnByJoin("complex", criteria);
+		Person person = (Person) criteria.add(Restrictions.eq("username", username)).list().get(0);
+		person.setPassword(pass);
+		person.setUsername(newUsername);
+		person.setVaildated(true);
+	}
+	
+	/**
+	 * Update the user information
+	 * @param person The new person's information
+	 */
+	@Override
+	public void updateUserInfo(Person person) {
+		Session currentSession = session.getCurrentSession();
+		Criteria criteria = currentSession.createCriteria(Person.class);
+		Person tempPerson = (Person) criteria.add(Restrictions.eq("id", person.getId())).list().get(0);
+		tempPerson.setPassword(person.getPassword());
+		tempPerson.setUsername(person.getUsername());
+		tempPerson.setEmail(person.getEmail());
+		tempPerson.setPhoneNumber(person.getPhoneNumber());
+		tempPerson.setUniversity(person.getUniversity());
+		tempPerson.setLinkedin(person.getLinkedin());
+		tempPerson.setUsername(person.getUsername());
+		tempPerson.setComplex(person.getComplex());
 	}
 }

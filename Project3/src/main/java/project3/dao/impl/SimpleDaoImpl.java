@@ -5,8 +5,6 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.hibernate.Criteria;
-import org.hibernate.FetchMode;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +14,6 @@ import project3.dao.SimpleDao;
 import project3.dto.AwsKey;
 import project3.dto.Complex;
 import project3.dto.ForumCategory;
-import project3.dto.Person;
 import project3.dto.Role;
 
 @Repository
@@ -53,33 +50,6 @@ public class SimpleDaoImpl implements SimpleDao{
 	public void createComplex(String complexName) {
 		Complex newComplex = new Complex(complexName);
 		session.getCurrentSession().save(newComplex);
-	}
-
-	@Override
-	public void updateTempPerson(String username, String pass, String newUsername) {
-		Session currentSession = session.getCurrentSession();
-		Criteria criteria = currentSession.createCriteria(Person.class);
-		criteria.setFetchMode("role", FetchMode.JOIN);
-		criteria.setFetchMode("complex", FetchMode.JOIN);
-		Person person = (Person) criteria.add(Restrictions.eq("username", username)).list().get(0);
-		person.setPassword(pass);
-		person.setUsername(newUsername);
-		person.setVaildated(true);
-	}
-	
-	@Override
-	public void updateUserInfo(Person person) {
-		Session currentSession = session.getCurrentSession();
-		Criteria criteria = currentSession.createCriteria(Person.class);
-		Person tempPerson = (Person) criteria.add(Restrictions.eq("id", person.getId())).list().get(0);
-		tempPerson.setPassword(person.getPassword());
-		tempPerson.setUsername(person.getUsername());
-		tempPerson.setEmail(person.getEmail());
-		tempPerson.setPhoneNumber(person.getPhoneNumber());
-		tempPerson.setUniversity(person.getUniversity());
-		tempPerson.setLinkedin(person.getLinkedin());
-		tempPerson.setUsername(person.getUsername());
-		tempPerson.setComplex(person.getComplex());
 	}
 
 	@Override
