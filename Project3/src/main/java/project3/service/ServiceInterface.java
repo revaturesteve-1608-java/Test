@@ -14,20 +14,45 @@ import project3.dto.Role;
 public interface ServiceInterface {
 	
 	/**
-	 * Creating a new person
-	 * @param person A person to be created
-	 * @return
+	 * Get all the roles
+	 * @return A list of roles
 	 */
-	public String createUser(Person person);
-	
 	public List<Role> getRoles();
 	
+	/**
+	 * Update profile picture
+	 * @param person The person that the picture is associate with
+	 * @param picture The picture to be uploaded to S3
+	 * @return A person with new profile picture link
+	 */
 	public Person updateProfilePic(Person person, MultipartFile picture);
 	
+	/**
+	 * Get A person by user name
+	 * @param username The user name to found the person 
+	 * @return The person
+	 */
 	public Person getPersonByUsername(String username);
 	
+	/**
+	 * Get a list of complex
+	 * @return A list of complex
+	 */
 	public List<Complex> getComplex();
 	
+	/**
+	 * Login the user by checking if the user have input the right information
+	 * @param username The user name user had input
+	 * @param password The password user had input
+	 * @return A person if login true else null if false
+	 */
 	public Person loginUser(String username, String password);
+	
+	/**
+	 * Creating a new person
+	 * @param person A person to be created
+	 * @return A message on whether the person had created
+	 */
+	public String createUser(Person person);
 
 }
