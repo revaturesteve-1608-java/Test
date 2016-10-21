@@ -27,8 +27,6 @@ app.controller("postCtrl", function($scope, $location, $http, createUserService,
 	
 	$scope.likesReplysContainer;
 	
-	//$scope.userRole = true;
-	//console.log(user);
 	
 	
 	$scope.likeReply = function(user, id, index) {
@@ -44,7 +42,6 @@ app.controller("postCtrl", function($scope, $location, $http, createUserService,
 			});
 		})
 		.error(function(data, status, headers, config) {
-		//alert( "failure message: " + JSON.stringify({data: data}));
 		});
 		
 	}
@@ -63,7 +60,7 @@ app.controller("postCtrl", function($scope, $location, $http, createUserService,
 			
 		})
 		.error(function(data, status, headers, config) {
-		//alert( "failure message: " + JSON.stringify({data: data}));
+		
 		});
 		
 	}
@@ -74,11 +71,7 @@ app.controller("postCtrl", function($scope, $location, $http, createUserService,
 		
 		$scope.myReply = !$scope.myReply;
 		
-		/*var newReply = '<label>Enter your reply</label><input type="text" ng-model="replyContext"></input>';
-	//	var submitReply = '<button  ng-show="myReply" ng-click="replyToPost(replyContext, user)">reply</button>';
-		currentElement.append(newReply);
-	//	currentElement.append(submitReply);
-*/	}
+	}
 	
 	$scope.deletePost = function(id) {
 		createUserService.deletePost(id);
@@ -86,7 +79,7 @@ app.controller("postCtrl", function($scope, $location, $http, createUserService,
 	
 	$scope.replyToPost = function(replyContext, user) {
 		
-		console.log("here!")
+		
 		$scope.myReply = !$scope.myReply;
 		
 		var replyInfo = [replyContext, info, user.username];
@@ -156,7 +149,7 @@ app.controller("postCtrl", function($scope, $location, $http, createUserService,
 			});
 		})
 		.error(function(data, status, headers, config) {
-		//alert( "failure message: " + JSON.stringify({data: data}));
+		
 		});
 	}
 	
@@ -172,7 +165,7 @@ app.controller("postCtrl", function($scope, $location, $http, createUserService,
 			});
 		})
 		.error(function(data, status, headers, config) {
-		//alert( "failure message: " + JSON.stringify({data: data}));
+		
 		});
 	}
 });

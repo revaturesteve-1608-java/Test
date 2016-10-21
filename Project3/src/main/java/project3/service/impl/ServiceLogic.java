@@ -60,6 +60,7 @@ public class ServiceLogic implements ServiceInterface{
 		return crypt.encrypt(target);
 	}
 	
+	@SuppressWarnings("unused")
 	private File convByteToFile(byte[] pic) throws IOException {
 		//below is the different part
 		ByteArrayInputStream bis = new ByteArrayInputStream(pic);
@@ -219,7 +220,6 @@ public class ServiceLogic implements ServiceInterface{
 			return "[\"User had been created\"]";
 		} else {
 			//tell that the email already exist
-			System.out.println("email already exist");
 			return "[\"Email already exist\"]";
 		}		
 	}

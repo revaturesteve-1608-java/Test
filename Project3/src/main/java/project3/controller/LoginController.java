@@ -16,12 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionAttributeStore;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.context.request.WebRequest;
 
-import project3.dao.LoginDao;
-import project3.dao.impl.SimpleDaoImpl;
 import project3.dto.Person;
 import project3.service.ServiceInterface;
 
@@ -31,7 +28,13 @@ public class LoginController {
 	
 	@Autowired 	
 	ServiceInterface service; 
-
+	
+	/**
+	 * URL mapping for logging in
+	 * @param person - the user that is logging in
+	 * @param map
+	 * @return returns the user that is logging in
+	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -41,16 +44,17 @@ public class LoginController {
 			persons = new Person();
 		}
 		map.addAttribute("person", persons);
-//		System.out.println(persons.getUsername());
 		return persons;
 	}
 	
-	
+	/**
+	 * URL to the user of the logged in user
+	 * @param person - takes in the user that is aqcuired from the session
+	 * @param map
+	 * @return response entity of the logged in user
+	 */
 	@RequestMapping(value = "/user",  produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Person> getUser(@ModelAttribute("person") Person person, ModelMap map){
-		
-		System.out.println("------------------Here-----------------------------------");
-		
 		if(person == null) {
 			person = new Person();
 		} else {
@@ -60,19 +64,22 @@ public class LoginController {
 			} else {
 				person = new Person();
 			}
-//			System.out.println(person.getUsername());
-//			System.out.println(person.isVaildated());
-//			map.addAttribute("person", person);
 		}
 		
 		return new ResponseEntity<Person>(person, HttpStatus.OK);
 	}
 	
+	/**
+	 * URL mapping for logging out
+	 * @param request
+	 * @param session
+	 * @param status
+	 * @param map
+	 * @return
+	 */
 	@RequestMapping(value="/logout")
 	@ResponseBody
 	public Person logout(WebRequest request, HttpSession session, SessionStatus status, ModelMap map){
-		
-		System.out.println("in logout!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		status.setComplete();
 		Person person = new Person();
 		map.addAttribute("user", person);
@@ -86,7 +93,6 @@ public class LoginController {
 	public ResponseEntity<Person> handleException() {
 
 		Person person = new Person();
-
 		return new ResponseEntity<Person>(person, HttpStatus.OK);
 
 	}

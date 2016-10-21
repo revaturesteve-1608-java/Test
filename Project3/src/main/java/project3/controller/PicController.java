@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import project3.dto.Person;
 import project3.service.ServiceInterface;
@@ -37,9 +36,6 @@ public class PicController {
 			HttpServletResponse resp,
 			@ModelAttribute("person") Person person,
 			ModelMap map) throws ServletException, IOException {
-		System.out.println("you are here");
-		System.out.println(file);
-		System.out.println(person.getId());
 		map.addAttribute("person", service.updateProfilePic(person, file));
 	}
 }
