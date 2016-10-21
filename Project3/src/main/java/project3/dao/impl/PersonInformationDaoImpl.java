@@ -110,9 +110,8 @@ public class PersonInformationDaoImpl implements PersonInformationDao{
 	public void updateTempPerson(String username, String pass, String newUsername) {
 		Session currentSession = session.getCurrentSession();
 		Criteria criteria = currentSession.createCriteria(Person.class);
-		JoinColumn.addColumnByJoin("role", criteria);
-		JoinColumn.addColumnByJoin("complex", criteria);
-		Person person = (Person) criteria.add(Restrictions.eq("username", username)).list().get(0);
+		Person person = (Person) criteria.add(Restrictions.eq("username", username)).
+				list().get(0);
 		person.setPassword(pass);
 		person.setUsername(newUsername);
 		person.setVaildated(true);
@@ -126,7 +125,8 @@ public class PersonInformationDaoImpl implements PersonInformationDao{
 	public void updateUserInfo(Person person) {
 		Session currentSession = session.getCurrentSession();
 		Criteria criteria = currentSession.createCriteria(Person.class);
-		Person tempPerson = (Person) criteria.add(Restrictions.eq("id", person.getId())).list().get(0);
+		Person tempPerson = (Person) criteria.add(Restrictions.eq("id", person.getId())).
+				list().get(0);
 		tempPerson.setPassword(person.getPassword());
 		tempPerson.setUsername(person.getUsername());
 		tempPerson.setEmail(person.getEmail());
