@@ -60,6 +60,7 @@ public class ServiceLogic implements ServiceInterface{
 		return crypt.encrypt(target);
 	}
 	
+	@SuppressWarnings("unused")
 	private File convByteToFile(byte[] pic) throws IOException {
 		//below is the different part
 		ByteArrayInputStream bis = new ByteArrayInputStream(pic);
@@ -118,62 +119,50 @@ public class ServiceLogic implements ServiceInterface{
 	}
 
 	@Override
+	public List<Role> getRoles() {
+		return dao.getRoles();
+	}
+
+	@Override
+	public Person loginUser(String username, String password) {
+		Person person = PersonDao.getPersonByUsername(username);
+		if(person != null && crypt.validate(password, person.getPassword())) {
+			return person;
+		}
+		return null;
+	}
+
+	@Override
+	public Person updateProfilePic(Person person, MultipartFile picture) {
+		AwsKey key = dao.getAWSKey();
+		person.setProfilePic(jetS3.uploadProfileItem(person.getId() + "", person.getId() + "", picture,
+				key.getAccessKey(), key.getSecretAccessKey()));
+		PersonDao.updatePersonPic(person);
+		return person;
+	}
+
+	@Override
+	public Person getPersonByUsername(String username) {
+		return PersonDao.getPersonByUsername(username);
+	}
+
+	@Override
+	public List<Complex> getComplex() {
+		return dao.getComplex();
+	}
+	
+	@Override
 	public String createUser(Person person) {
 		person.setEmail(person.getEmail().toLowerCase());
 		// Check if email exists
 		if(PersonDao.getPersonByEmail(person.getEmail()) == null) {
 			//make new user name 
 			person.setUsername(person.getEmail());
-			System.out.println("password: " + person.getPassword());
 			//set it as new user
 			person.setVaildated(false);
 			// Generate a Temporary Password
 			String password = getRandom(20);
-			System.out.println("password2: " + password);
 			person.setPassword(maskElement(password));
-			System.out.println("password3: " + person.getPassword());
-			
-//			person.setProfilePic(ProfileImage.getGravatar80pxByte(person.getEmail()));
-//			System.out.println("profile pic: " + person.getProfilePic());
-//			if(person.getProfilePic() == null) {
-//				person.setProfilePic(ProfileImage.getGravatar80pxByte
-//						("revature.reimbursements@gmail.com"));
-				// Converting Image byte array into Base64 String
-//				String imageDataString = encodeImage(person.getProfilePic());
-//				System.out.println("pics: " + imageDataString);
-//				FileOutputStream imageOutFile;
-//				try {
-//					File currentDirFile = new File(".");
-//					String helper = currentDirFile.getAbsolutePath();
-//					System.out.println(helper);
-//					//convert array of bytes into file
-//				    FileOutputStream fileOuputStream =
-//			                  new FileOutputStream("testing2.png");
-//				    fileOuputStream.write(person.getProfilePic());
-//				    fileOuputStream.close();
-////					imageOutFile = new FileOutputStream("./water-drop-after-convert.png");
-//////					imageOutFile.write(person.getProfilePic());
-////					//convert byte array to file
-////					imageOutFile.
-////					imageOutFile.close();
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-
-				
-				
-//				try {
-//					System.out.println(jetS3.uploadProfileItem(person.getEmail(), "profile.png", convByteToFile(person.getProfilePic())));
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-			//not done
-//			} else {
-//				person.setProfilePic(ProfileImage.getGravatar80pxByte
-//						(person.getEmail()));
-//			}
 			// Save in Database
 			Person user = PersonDao.createUser(person);
 			// set a default profile picture
@@ -215,7 +204,7 @@ public class ServiceLogic implements ServiceInterface{
         					+ "<br>"
         					+ "<br>"
         					+ "Click the link below to login: "
-        					+ "<a rel=\"nofollow\" target=\"_blank\" href=\"http://ec2-54-152-99-76.compute-1.amazonaws.com:8080/Project3/\">Login</a></p>"
+        					+ "<a rel=\"nofollow\" target=\"_blank\" href=\"http://ec2-52-72-127-66.compute-1.amazonaws.com:8080/Project3/\">Login</a></p>"
 
             				+ "<br>"
             				+ "<br>"
@@ -231,42 +220,8 @@ public class ServiceLogic implements ServiceInterface{
 			return "[\"User had been created\"]";
 		} else {
 			//tell that the email already exist
-			System.out.println("email already exist");
 			return "[\"Email already exist\"]";
 		}		
-	}
-
-	@Override
-	public List<Role> getRoles() {
-		return dao.getRoles();
-	}
-
-	@Override
-	public Person loginUser(String username, String password) {
-		Person person = PersonDao.getPersonByUsername(username);
-		if(person != null && crypt.validate(password, person.getPassword())) {
-			return person;
-		}
-		return null;
-	}
-
-	@Override
-	public Person updateProfilePic(Person person, MultipartFile picture) {
-		AwsKey key = dao.getAWSKey();
-		person.setProfilePic(jetS3.uploadProfileItem(person.getId() + "", person.getId() + "", picture,
-				key.getAccessKey(), key.getSecretAccessKey()));
-		PersonDao.updatePersonPic(person);
-		return person;
-	}
-
-	@Override
-	public Person getPersonByUsername(String username) {
-		return PersonDao.getPersonByUsername(username);
-	}
-
-	@Override
-	public List<Complex> getComplex() {
-		return dao.getComplex();
 	}
 	
 

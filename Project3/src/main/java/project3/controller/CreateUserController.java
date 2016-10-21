@@ -21,15 +21,23 @@ public class CreateUserController {
 	@Autowired 	
 	ServiceInterface service; 
 	
+	/**
+	 * URL mapping for creating a new user
+	 * @param person - the new person to be created
+	 * @return response entity pertaining to the string representation of the status of the create user
+	 */
 	@RequestMapping(value="/createUser", method=RequestMethod.POST, 
 			consumes=MediaType.APPLICATION_JSON_VALUE, 
 			produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> createUser(@RequestBody Person person) {
-		System.out.println("save post " + person); 
 		String status = service.createUser(person);
 		return new ResponseEntity<String>(status, HttpStatus.OK);
 	}
 	
+	/**
+	 * URL mapping to get all the roles that a user can be
+	 * @return
+	 */
 	@RequestMapping(value="/getRoles", method=RequestMethod.POST,
 			produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Role>> getTeam() {

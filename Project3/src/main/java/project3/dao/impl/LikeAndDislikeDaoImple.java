@@ -100,7 +100,7 @@ public class LikeAndDislikeDaoImple implements LikeAndDislikeDao{
 		JoinColumn.addColumnByJoin("author", criteria);
 		criteria.add(Restrictions.eq("author", person));
 		List<LikeableReply> likes = (List<LikeableReply>) criteria.list();
-		if(likes.size() > 0) {
+		if(!likes.isEmpty()) {
 			return likes.get(0);
 		} else {
 			return null;
@@ -115,7 +115,7 @@ public class LikeAndDislikeDaoImple implements LikeAndDislikeDao{
 		JoinColumn.addColumnByJoin("author", criteria);
 		criteria.add(Restrictions.eq("author", person));
 		List<DisLikeableReply> likes = (List<DisLikeableReply>) criteria.list();
-		if(likes.size() > 0) {
+		if(!likes.isEmpty()) {
 			return likes.get(0);
 		} else {
 			return null;
