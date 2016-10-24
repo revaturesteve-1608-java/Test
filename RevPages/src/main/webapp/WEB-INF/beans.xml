@@ -10,7 +10,7 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
 
 
-	<context:component-scan base-package="project3"></context:component-scan>
+	<context:component-scan base-package="com.revpages"></context:component-scan>
 	<!-- Sets you your Spring context to allow for dispatching requests to Controllers. -->
 	<mvc:annotation-driven></mvc:annotation-driven>
 	<tx:annotation-driven />
@@ -30,7 +30,7 @@
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"></property>
-		<property name="packagesToScan" value="project3"></property>
+		<property name="packagesToScan" value="com.revpages"></property>
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop>

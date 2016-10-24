@@ -1,4 +1,4 @@
-package com.revpages.controller;
+package project3.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import com.revpages.dto.Person;
-import com.revpages.service.BusinessLogic;
-import com.revpages.service.ServiceInterface;
+import project3.dto.Person;
+import project3.service.BusinessLogic;
+import project3.service.ServiceInterface;
 
 @RestController
 @SessionAttributes("person")
-public class Controller1 {
+public class UpdateUserController {
 	  
 	@Autowired
 	BusinessLogic logic;

@@ -1,12 +1,12 @@
-package com.revpages.service;
+package project3.service;
 
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.revpages.dto.Complex;
-import com.revpages.dto.Person;
-import com.revpages.dto.Role;
+import project3.dto.Complex;
+import project3.dto.Person;
+import project3.dto.Role;
 
 /**
  * A Service method for person information

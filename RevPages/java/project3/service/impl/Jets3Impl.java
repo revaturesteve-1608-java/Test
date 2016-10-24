@@ -1,4 +1,4 @@
-package com.revpages.service.impl;
+package project3.service.impl;
 
 import org.jets3t.service.S3Service;
 import org.jets3t.service.acl.AccessControlList;
@@ -11,7 +11,7 @@ import org.jets3t.service.security.AWSCredentials;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.revpages.service.Jets3;
+import project3.service.Jets3;
 
 @Component
 public class Jets3Impl implements Jets3{

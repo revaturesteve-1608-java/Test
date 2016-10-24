@@ -1,4 +1,4 @@
-package com.revpages.service.impl;
+package project3.service.impl;
 
 import java.util.List;
 
@@ -6,17 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.revpages.dao.LoginDao;
-import com.revpages.dao.PersonInformationDao;
-import com.revpages.dao.SimpleDao;
-import com.revpages.dto.AwsKey;
-import com.revpages.dto.Complex;
-import com.revpages.dto.Person;
-import com.revpages.dto.Role;
-import com.revpages.service.Crypt;
-import com.revpages.service.Jets3;
-import com.revpages.service.ServiceInterface;
-import com.revpages.util.Email;
+import project3.dao.LoginDao;
+import project3.dao.PersonInformationDao;
+import project3.dao.SimpleDao;
+import project3.dto.AwsKey;
+import project3.dto.Complex;
+import project3.dto.Person;
+import project3.dto.Role;
+import project3.service.Crypt;
+import project3.service.Jets3;
+import project3.service.ServiceInterface;
+import project3.util.Email;
 
 /**
  * The logic behind user information

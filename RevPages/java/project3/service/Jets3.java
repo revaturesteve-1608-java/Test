@@ -1,4 +1,4 @@
-package com.revpages.service;
+package project3.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
