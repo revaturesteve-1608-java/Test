@@ -1,0 +1,109 @@
+
+<!-- Page Content -->
+<div class="container">
+
+	<div class="row">
+<div class="col-lg-2"></div>
+		<!-- Blog Post Content Column -->
+		<div class="col-lg-8">
+
+			<!-- Blog Post -->
+
+			<!-- Title -->
+			<img class="w3-circle" src="{{post.profPicURL}}"
+							alt="" style="width: 65px; height: 65px;">
+			<h1>
+				<b>{{post.postTitle}}</b>
+			</h1>
+
+			<!-- Author -->
+			<p class="lead">
+				<i> by {{post.authorName}} </i>
+			</p>
+
+			<hr>
+
+			<!-- Date/Time -->
+			<p>
+				<span class="glyphicon glyphicon-time"></span> Posted on
+				{{post.date}}
+			</p>
+
+			<hr>
+
+
+			<!-- Post Content -->
+			<div ng-bind-html="post.postContent">{{post.postContent}}</div>
+			<hr>
+			<div>
+				<md-button type="button" class="btn btn-default"
+					aria-label="Right Align" ng-click="like(user, post)"> <span
+					class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+				{{likesArray}} </md-button>
+				<md-button type="button" class="btn btn-default"
+					aria-label="Right Align" ng-click="dislike(user, post)">
+				<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+				{{dislikesArray}} </md-button>
+				<md-button ng-hide="myReply" ng-click="startReply()"
+					class="replyButton"> Reply</md-button>
+					<md-button ng-show="userRole" ng-click="deletePost(post.postId)">Delete</md-button>
+				</md-card-actions>
+				</md-card>
+
+
+				<div id="replyContainer" ng-show="myReply">
+					<div >
+
+						<div text-angular="text-angular" name="htmlcontent"
+							ta-disabled='disabled'
+							ta-text-editor-class="clearfix border-around"
+							ta-html-editor-class="border-around" ng-model="replyContext"></div>
+						<hr>
+
+
+						<button type="button" class="btn btn-primary" ng-click="replyToPost(replyContext, user)">Submit</button>
+					</div>
+				</div>
+
+
+
+			</div>
+
+			<!-- Blog Comments -->
+
+
+
+			<div id="replys">
+
+
+				<div ng-repeat="reply in replys">
+					<div id="theReplies">
+					<div class="media-body" align="right">
+					<img class="w3-circle" src="{{reply[4]}}"
+							alt="" style="width: 65px; height: 65px;">
+						 <small><span class="md-subhead"><i>by
+									{{reply[1]}} {{reply[2] | date }} </i> </span> </small>
+						<h4 class="media-heading">
+							<span ng-bind-html="reply[0]" class="md-headline">{{reply[0]}}</span>
+							
+
+						</h4>
+						Likes: {{likesReplysContainer[$index]}} Dislikes: {{dislikesReplysContainer[$index]}}
+<md-button type="button" class="btn btn-default" aria-label="Right Align" ng-click="likeReply(user, reply[3], $index )">
+	<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+</md-button>
+<md-button type="button" class="btn btn-default" aria-label="Right Align" ng-click="dislikeReply(user, reply[3], $index )">
+	<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+</md-button>
+						<br>
+				</div>
+					</div>
+					<br>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+</div>
+
