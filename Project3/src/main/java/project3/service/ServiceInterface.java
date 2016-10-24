@@ -9,7 +9,7 @@ import project3.dto.Person;
 import project3.dto.Role;
 
 /**
- * A Service method for person information
+ * A Service method for user information
  */
 public interface ServiceInterface {
 	

@@ -38,7 +38,7 @@ public class LoginController {
 	@RequestMapping(value = "/login", method = RequestMethod.POST, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Person  checkLogin(@RequestBody Person person, ModelMap map) {
+	public Person checkLogin(@RequestBody Person person, ModelMap map) {
 		Person persons = service.loginUser(person.getUsername(), person.getPassword());
 		if(persons == null) {
 			persons = new Person();
