@@ -1,20 +1,7 @@
 package project3.service.impl;
 
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReadParam;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.ImageInputStream;
-
-import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,12 +18,21 @@ import project3.service.Jets3;
 import project3.service.ServiceInterface;
 import project3.util.Email;
 
+/**
+ * The logic behind user information
+ */
 @Service
 public class ServiceLogic implements ServiceInterface{
 	
+	/**
+	 * Used for encrypting the password
+	 */
 	@Autowired
 	Crypt crypt;
 	
+	/**
+	 * Used for uploading a picture
+	 */
 	@Autowired
 	Jets3 jetS3;
 	
@@ -46,65 +42,44 @@ public class ServiceLogic implements ServiceInterface{
 	@Autowired // mapped to the bean
 	SimpleDao dao;
 	
+	/**
+	 * Using to login User
+	 */
 	@Autowired
 	LoginDao loginDao;
 	
+	/**
+	 * Using to updated user information
+	 */
 	@Autowired
 	PersonInformationDao PersonDao;
 	
+	/**
+	 * Get a random password
+	 * @param length The length of the password
+	 * @return A random password
+	 */
 	private String getRandom(int length){
 		return crypt.getRandom(length);
 	}
 	
+	/**
+	 * Encrypt the password
+	 * @param target The password to be encrypt
+	 * @return An encrypt password
+	 */
 	private String maskElement(String target){			
 		return crypt.encrypt(target);
 	}
 	
-	@SuppressWarnings("unused")
-	private File convByteToFile(byte[] pic) throws IOException {
-		//below is the different part
-		ByteArrayInputStream bis = new ByteArrayInputStream(pic);
-        Iterator<?> readers = ImageIO.getImageReadersByFormatName("png");
- 
-        //ImageIO is a class containing static methods for locating ImageReaders
-        //and ImageWriters, and performing simple encoding and decoding. 
- 
-        ImageReader reader = (ImageReader) readers.next();
-        Object source = bis; 
-        ImageInputStream iis = ImageIO.createImageInputStream(source); 
-        reader.setInput(iis, true);
-        ImageReadParam param = reader.getDefaultReadParam();
- 
-        Image image = reader.read(0, param);
-        //got an image file
- 
-        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_RGB);
-        //bufferedImage is the RenderedImage to be written
- 
-        Graphics2D g2 = bufferedImage.createGraphics();
-        g2.drawImage(image, null, null);
- 
-        File imageFile = new File("default2.png");
-        ImageIO.write(bufferedImage, "png", imageFile);
- 
-        System.out.println(imageFile.getPath());
-		return imageFile;
-	}
-	
 	/**
-	 * Encodes the byte array into base64 string
-	 *
-	 * @param imageByteArray - byte array
-	 * @return String a {@link java.lang.String}
+	 * A method to send the email to user 
+	 * @param email The address of the email
+	 * @param message The message of the email
+	 * @param subject The subject of the email
 	 */
-	public static String encodeImage(byte[] imageByteArray) {
-		return Base64.encodeBase64URLSafeString(imageByteArray);
-	}
-	
-	// method to send an email to employee regarding reimbursement request status. 
-	//Email sent by another thread
 	private void email(String email, String message, String subject){
-		
+		//Email sent by another thread
 		class myRunnable implements Runnable {
 			private String threadEmail = email;
 			private String threadMessage = message;
@@ -118,20 +93,21 @@ public class ServiceLogic implements ServiceInterface{
 		t.start();
 	}
 
+	/**
+	 * Get all the roles
+	 * @return A list of roles
+	 */
 	@Override
 	public List<Role> getRoles() {
 		return dao.getRoles();
 	}
 
-	@Override
-	public Person loginUser(String username, String password) {
-		Person person = PersonDao.getPersonByUsername(username);
-		if(person != null && crypt.validate(password, person.getPassword())) {
-			return person;
-		}
-		return null;
-	}
-
+	/**
+	 * Update profile picture
+	 * @param person The person that the picture is associate with
+	 * @param picture The picture to be uploaded to S3
+	 * @return A person with new profile picture link
+	 */
 	@Override
 	public Person updateProfilePic(Person person, MultipartFile picture) {
 		AwsKey key = dao.getAWSKey();
@@ -141,16 +117,45 @@ public class ServiceLogic implements ServiceInterface{
 		return person;
 	}
 
+	/**
+	 * Get A person by user name
+	 * @param username The user name to found the person 
+	 * @return The person
+	 */
 	@Override
 	public Person getPersonByUsername(String username) {
 		return PersonDao.getPersonByUsername(username);
 	}
 
+	/**
+	 * Get a list of complex
+	 * @return A list of complex
+	 */
 	@Override
 	public List<Complex> getComplex() {
 		return dao.getComplex();
 	}
 	
+	/**
+	 * Login the user by checking if the user have input the right information
+	 * @param username The user name user had input
+	 * @param password The password user had input
+	 * @return A person if login true else null if false
+	 */
+	@Override
+	public Person loginUser(String username, String password) {
+		Person person = PersonDao.getPersonByUsername(username);
+		if(person != null && crypt.validate(password, person.getPassword())) {
+			return person;
+		}
+		return null;
+	}
+	
+	/**
+	 * Creating a new person
+	 * @param person A person to be created
+	 * @return A message on whether the person had created
+	 */
 	@Override
 	public String createUser(Person person) {
 		person.setEmail(person.getEmail().toLowerCase());

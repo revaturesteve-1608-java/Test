@@ -19,7 +19,7 @@ import project3.service.ServiceInterface;
 
 @RestController
 @SessionAttributes("person")
-public class Controller1 {
+public class UpdateUserController {
 	  
 	@Autowired
 	BusinessLogic logic;
