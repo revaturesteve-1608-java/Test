@@ -1,0 +1,16 @@
+@CHARSET "ISO-8859-1";
+
+
+#components{
+	margin-top:10%;
+	margin-left:20%;
+	margin-right:20%;
+	margin-bottom:20%;
+}
+
+#updateBtn{
+	margin-left: 60%;
+}
+
+.carddemoBasicUsage .card-media {
+  background-color: #999999; }
