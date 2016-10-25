@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>project3</groupId>
-	<artifactId>Project3</artifactId>
+	<groupId>com.revpages</groupId>
+	<artifactId>RevPages</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
@@ -85,18 +85,16 @@
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
-			<version>1.2.2</version>
-		</dependency>
+			</dependency>
 
 		<!-- Apache Commons Upload -->
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>1.3.2</version>
-		</dependency>
+			</dependency>
 	</dependencies>
 	<build>
-		<finalName>Project3</finalName>
+		<finalName>RevPages</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -116,7 +114,7 @@
 					<server>tommy</server>
 					<username>tomcat</username>
 					<password>secret</password>
-					<path>/Project3</path>
+					<path>/RevPages</path>
 					<update>true</update>
 				</configuration>
 			</plugin>
