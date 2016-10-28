@@ -205,7 +205,7 @@ public class ServiceLogic implements ServiceInterface{
         					+ "<br>"
         					+ "<br>"
         					+ "Click the link below to login: "
-        					+ "<a rel=\"nofollow\" target=\"_blank\" href=\"http://ec2-52-72-127-66.compute-1.amazonaws.com:8080/Project3/\">Login</a></p>"
+        					+ "<a rel=\"nofollow\" target=\"_blank\" href=\"http://ec2-52-72-127-66.compute-1.amazonaws.com:8022/RevPages/\">Login</a></p>"
 
             				+ "<br>"
             				+ "<br>"
