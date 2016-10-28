@@ -13,12 +13,12 @@ public class CreateCategoryController {
 	@Autowired
 	BusinessLogic service;
 	
-	/**
-	 * URL mapping for creating a new category
-	 * @param categoryName - name of the category
-	 */
-	@RequestMapping(value="/createCategory")
-	public void createCategory(@RequestBody String categoryName){
-		service.createForumCategory(categoryName);
-	}
+//	/**
+//	 * URL mapping for creating a new category
+//	 * @param categoryName - name of the category
+//	 */
+//	@RequestMapping(value="/createCategory")
+//	public void createCategory(@RequestBody String categoryName){
+//		service.createForumCategory(categoryName);
+//	}
 }

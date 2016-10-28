@@ -1,5 +1,6 @@
 package com.revpages.dto;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +8,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,15 +25,20 @@ import org.hibernate.annotations.FetchMode;
  * The post of the RevPages
  */
 @Entity
-@Table(name="ForumPost")
-public class ForumPost {
+@Table(name="Forumpost")
+public class ForumPost implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * The primary ID of the ForumPost
 	 */
 	@Id
 	@Column(name="fp_id")
-	@SequenceGenerator(name="ForumPostSeq", sequenceName="ForumPost_Seq", 
+	@SequenceGenerator(name="ForumPostSeq", sequenceName="Forumpost_Seq", 
 		allocationSize=1)
 	@GeneratedValue(generator="ForumPostSeq", strategy=GenerationType.SEQUENCE)
 	private int id;
@@ -41,7 +46,8 @@ public class ForumPost {
 	/**
 	 * The author of the post
 	 */
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
+	@Fetch(FetchMode.JOIN)
 	@JoinColumn(name="u_id")
 	private Person author;
 	
@@ -66,14 +72,14 @@ public class ForumPost {
 	/**
 	 * The likes that associate with the post
 	 */
-	@OneToMany(mappedBy="post", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="post", cascade=CascadeType.ALL)
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<LikeablePost> likes;
 
 	/**
 	 * The dislikes that associate with the post
 	 */
-	@OneToMany(mappedBy="post", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="post", cascade=CascadeType.ALL)
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<DisLikeablePost> dislikes;
 	
@@ -86,7 +92,8 @@ public class ForumPost {
 	/**
 	 * The list of reply that associate with the post
 	 */
-	@OneToMany(mappedBy="post", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="post", cascade=CascadeType.ALL)
+	@Fetch(FetchMode.JOIN)
 	private List<PostReply> replys;
 	
 	/**

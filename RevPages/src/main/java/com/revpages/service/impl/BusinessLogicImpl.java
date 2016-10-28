@@ -8,11 +8,15 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.revpages.dao.LikeAndDislikeDao;
-import com.revpages.dao.PersonInformationDao;
-import com.revpages.dao.PostAndReplyDao;
-import com.revpages.dao.SimpleDao;
-import com.revpages.dto.Complex;
+import com.revpages.dao.CategoryRepo;
+import com.revpages.dao.ComplexRepo;
+import com.revpages.dao.DisLikePostRepo;
+import com.revpages.dao.DislikeReplyRepo;
+import com.revpages.dao.LikePostRepo;
+import com.revpages.dao.LikeReplyRepo;
+import com.revpages.dao.PersonRepo;
+import com.revpages.dao.PostRepo;
+import com.revpages.dao.ReplyRepo;
 import com.revpages.dto.DisLikeablePost;
 import com.revpages.dto.DisLikeableReply;
 import com.revpages.dto.ForumCategory;
@@ -31,18 +35,33 @@ public class BusinessLogicImpl implements BusinessLogic {
 
 	@Autowired
 	Crypt crypt;
-
-	@Autowired
-	SimpleDao dao;
 	
 	@Autowired
-	PostAndReplyDao postReplyDao;
+	PersonRepo personRepo;
 	
 	@Autowired
-	LikeAndDislikeDao likeDislikeDao;
+	ComplexRepo complexRepo;
 	
 	@Autowired
-	PersonInformationDao PersonDao;
+	ReplyRepo replyRepo;
+	
+	@Autowired
+	PostRepo postRepo;
+	
+	@Autowired
+	DisLikePostRepo disLikePostRepo;
+	
+	@Autowired
+	LikePostRepo likePostRepo;
+	
+	@Autowired
+	CategoryRepo catRepo;
+	
+	@Autowired
+	DislikeReplyRepo disLikeReplyRepo;
+	
+	@Autowired
+	LikeReplyRepo likeReplyRepo;
 
 	public boolean checkUserPassword(String username, String password, String curpassword) {
 		return crypt.validate(password, curpassword);
@@ -50,23 +69,26 @@ public class BusinessLogicImpl implements BusinessLogic {
 
 	@Override
 	public Person getPersonById(int id) {
-		return PersonDao.getPersonById(id);
+		return personRepo.findOne(id);
 	}
 
 	@Override
 	public Person getPersonByUsername(String username) {
-		return PersonDao.getPersonByUsername(username);
+		return personRepo.findByUsername(username);
 	}
 
 	@Override
 	@Transactional
 	public String updateTempPerson(String username, String pass, String oldPass, String newUsername) {
-		Person person = PersonDao.getPersonByUsername(username);
-		Person checkUsername = PersonDao.getPersonByUsername(newUsername);
+		Person person = personRepo.findByUsername(username);
+		Person checkUsername = personRepo.findByUsername(newUsername);
 		if (checkUsername == null) {
 			if (crypt.validate(oldPass, person.getPassword())) {
 				String encryptPass = crypt.encrypt(pass);
-				PersonDao.updateTempPerson(username, encryptPass, newUsername);
+				person.setUsername(newUsername);
+				person.setPassword(encryptPass);
+				person.setVaildated(true);
+				personRepo.save(person);
 				return "[\"Updated\"]";
 			} else {
 				return "[\"Inputed Wrong Password\"]";
@@ -91,7 +113,7 @@ public class BusinessLogicImpl implements BusinessLogic {
 		}
 		// username
 		if (username != null && !("".equals(username))) {
-			Person checkUsername = PersonDao.getPersonByUsername(username);
+			Person checkUsername = personRepo.findByUsername(username);
 			if (checkUsername == null) {
 				person.setUsername(username);
 			} else {
@@ -108,8 +130,8 @@ public class BusinessLogicImpl implements BusinessLogic {
 		}
 		//complex
 		if (complex != null && !("".equals(complex))) {
-			System.out.println(dao.getComplexByName(complex));
-			person.setComplex(dao.getComplexByName(complex));
+			System.out.println(complexRepo.findByComplexName(complex));
+			person.setComplex(complexRepo.findByComplexName(complex));
 		}
 		// university
 		if (newUniversity != null && !("".equals(newUniversity))) {
@@ -119,7 +141,7 @@ public class BusinessLogicImpl implements BusinessLogic {
 		if (newLinkedIn != null && !("".equals(newLinkedIn))) {
 			person.setLinkedin(newLinkedIn);
 		}
-		PersonDao.updateUserInfo(person);
+		personRepo.save(person);
 		return "[\"Updated\"]";
 	}
 
@@ -127,19 +149,23 @@ public class BusinessLogicImpl implements BusinessLogic {
 	public int createForumPost(String content, String title, Person author, List<ForumCategory> categories) {
 		ForumPost post = new ForumPost(author, title, content, GetTimestamp.getCurrentTime(), false);
 		post.setCategory(categories);
-		return postReplyDao.createForumPost(post);
+		ForumPost newPost = postRepo.save(post);
+		return newPost.getId();
 	}
 
 	@Override
 	public List<ForumPost> getAllPosts() {
-		return getRidOfDupes(postReplyDao.getAllPosts());
+		return getRidOfDupes(postRepo.findAllByOrderByTimestampDesc());
 	}
 
 	@Override
 	public void createReply(String replyContent, int postId, String username) {
-		Person author = PersonDao.getPersonByUsername(username);
-		postReplyDao.createPostReply(postId, author, new ArrayList<LikeableReply>(), new ArrayList<DisLikeableReply>(), false,
-				replyContent, GetTimestamp.getCurrentTime());
+		Person author = personRepo.findByUsername(username);
+		ForumPost post = postRepo.findOne(postId);
+		PostReply reply = new PostReply(post, author, new ArrayList<LikeableReply>(), new ArrayList<DisLikeableReply>(),
+				false, replyContent, GetTimestamp.getCurrentTime());
+		
+		replyRepo.save(reply);
 	}
 
 	private List<ForumPost> getRidOfDupes(List<ForumPost> posts) {
@@ -154,12 +180,12 @@ public class BusinessLogicImpl implements BusinessLogic {
 	@Override
 	@Transactional
 	public ForumPost getPostById(int id) {
-		return postReplyDao.getPostById(id);
+		return postRepo.findOne(id);
 	}
 
 	@Override
 	public List<ForumPost> getMorePosts(int firstResult) {
-		return getRidOfDupes(postReplyDao.getMorePosts());
+		return getRidOfDupes(postRepo.findAllByOrderByTimestampDesc());
 	}
 
 	@Transactional
@@ -174,10 +200,9 @@ public class BusinessLogicImpl implements BusinessLogic {
 			}
 		}
 		if (!exist) {
-			likeDislikeDao.saveDislikePost(dislike);
+			disLikePostRepo.save(dislike);
 			post.getDislikes().add(dislike);
-			System.out.println(post.getDislikes().size());
-			postReplyDao.updatePost(post);
+			postRepo.save(post);
 		}
 	}
 
@@ -186,8 +211,8 @@ public class BusinessLogicImpl implements BusinessLogic {
 	public void checkForLike(ForumPost post, Person person) {
 		for (LikeablePost like : post.getLikes()) {
 			if (like.getAuthor().getUsername().equals(person.getUsername())) {
-				LikeablePost likeable = likeDislikeDao.getLikesById(like.getId());
-				likeDislikeDao.removeLikePost(likeable);
+				LikeablePost likeable = likePostRepo.findOne(like.getId());
+				likePostRepo.delete(likeable);
 			}
 		}
 
@@ -198,8 +223,8 @@ public class BusinessLogicImpl implements BusinessLogic {
 	public void checkForDislike(ForumPost post, Person person) {
 		for (DisLikeablePost dislike : post.getDislikes()) {
 			if (dislike.getAuthor().getUsername().equals(person.getUsername())) {
-				DisLikeablePost dislikeable = likeDislikeDao.getDislikesPostById(dislike.getId());
-				likeDislikeDao.removeDislikePost(dislikeable);
+				DisLikeablePost dislikeable = disLikePostRepo.findOne(dislike.getId());
+				disLikePostRepo.delete(dislikeable);
 			}
 		}
 
@@ -228,25 +253,25 @@ public class BusinessLogicImpl implements BusinessLogic {
 		if (exist) {
 
 		} else {
-			likeDislikeDao.saveLikePost(like);
+			likePostRepo.save(like);
 			post.getLikes().add(like);
-			postReplyDao.updatePost(post);
+			postRepo.save(post);
 		}
 	}
 
 	@Override
 	public ForumPost getPostForDislike(int id) {
-		return postReplyDao.getPostForDislike(id);
+		return postRepo.findOne(id);
 	}
 
 	@Override
 	public PostReply getReplyForDislike(int id){
-		return postReplyDao.getReplyForDislike(id);
+		return replyRepo.findOne(id);
 	}
 	
 	@Override
 	public ForumPost getPostForLike(int id) {
-		return postReplyDao.getPostForLike(id);
+		return postRepo.findOne(id);
 	}
 
 	@Override
@@ -256,27 +281,27 @@ public class BusinessLogicImpl implements BusinessLogic {
 
 	@Override
 	public List<ForumPost> getPostsByUsername(int firstResult, String username) {
-		Person author = PersonDao.getPersonByUsername(username);
-		return getRidOfDupes(postReplyDao.getMorePostsByAuthor(author));
+		Person author = personRepo.findByUsername(username);
+		return getRidOfDupes(postRepo.findByAuthorOrderByTimestampDesc(author));
 	}
 
 	@Override
 	public void deletePost(int postId) {
-		postReplyDao.deleteForumPost(postId);
+		postRepo.delete(postId);
 	}
 	public List<PostReply> getRepliesByPost(ForumPost post) {
-		return postReplyDao.getRepliesByPost(post);
+		return replyRepo.findByPost(post);
 	}
 
-	@Override
-	public void createForumCategory(String categoryName) {
-		dao.createForumCategory(categoryName);
-	}
+//	@Override
+//	public void createForumCategory(String categoryName) {
+//		dao.createForumCategory(categoryName);
+//	}
 
 	@Override
 	public List<ForumPost> getPostsByCategory(String catName) {
-		List<ForumPost> posts = getRidOfDupes(postReplyDao.getPostsByCategory());
-		ForumCategory category = dao.getCategoryByName(catName);
+		List<ForumPost> posts = getRidOfDupes(postRepo.findAllByOrderByTimestampDesc());
+		ForumCategory category = catRepo.findByCategoryName(catName);
 		List<ForumPost> filteredPosts = new ArrayList<>();
 		for(ForumPost post: posts){
 			for(ForumCategory cat: post.getCategory()){
@@ -291,7 +316,7 @@ public class BusinessLogicImpl implements BusinessLogic {
 
 	@Override
 	public List<ForumCategory> getAllCategories() {
-		return getRidOfDupesCategory(dao.getForumCategory());
+		return getRidOfDupesCategory(catRepo.findAll());
 	}
 	
 	private List<ForumCategory> getRidOfDupesCategory(List<ForumCategory> categories) {
@@ -305,7 +330,7 @@ public class BusinessLogicImpl implements BusinessLogic {
 
 	@Override
 	public ForumCategory getCategoryByName(String catName) {
-		return dao.getCategoryByName(catName);
+		return catRepo.findByCategoryName(catName);
 	}
 	
 	public void addDislikeReply(PostReply reply, Person person) {
@@ -319,10 +344,9 @@ public class BusinessLogicImpl implements BusinessLogic {
 			}
 		}
 		if (!exist) {
-			likeDislikeDao.saveDislikeReply(dislike);
+			disLikeReplyRepo.save(dislike);
 			reply.getDislikes().add(dislike);
-			System.out.println(reply.getDislikes().size());
-			postReplyDao.updateReply(reply);
+			replyRepo.save(reply);
 		}	
 	}
 	
@@ -338,9 +362,9 @@ public class BusinessLogicImpl implements BusinessLogic {
 			}
 		}
 		if (!exist) {
-			likeDislikeDao.saveLikeReply(like);
+			likeReplyRepo.save(like);
 			reply.getLikes().add(like);
-			postReplyDao.updateReply(reply);
+			replyRepo.save(reply);
 		}
 	}
 
@@ -349,8 +373,9 @@ public class BusinessLogicImpl implements BusinessLogic {
 		
 		for (LikeableReply like : replyLike.getLikes()) {
 			if (like.getAuthor().getUsername().equals(person.getUsername())) {
-				LikeableReply likeable = likeDislikeDao.getLikesReplyById(like.getId());
-				likeDislikeDao.removeLikeReply(likeable);
+				likeReplyRepo.findOne(like.getId());
+				LikeableReply likeable = likeReplyRepo.findOne(like.getId());
+				likeReplyRepo.delete(likeable);
 			}
 		}
 		
@@ -361,8 +386,8 @@ public class BusinessLogicImpl implements BusinessLogic {
 		
 		for (DisLikeableReply dislike : disLikeReply.getDislikes()) {
 			if (dislike.getAuthor().getUsername().equals(person.getUsername())) {
-				DisLikeableReply likeable = likeDislikeDao.getDislikesReplyById(dislike.getId());
-				likeDislikeDao.removeDislikeReply(likeable);
+				DisLikeableReply likeable = disLikeReplyRepo.findOne(dislike.getId());
+				disLikeReplyRepo.delete(likeable);
 			}
 		}
 		
@@ -370,7 +395,7 @@ public class BusinessLogicImpl implements BusinessLogic {
 
 	@Override
 	public PostReply getReplyForLike(int id) {
-		return postReplyDao.getReplyForLike(id);
+		return replyRepo.findOne(id);
 	}
 
 	@Override
@@ -385,9 +410,9 @@ public class BusinessLogicImpl implements BusinessLogic {
 
 	@Override
 	public List<ForumPost> getPostsByCategoryProf(String catName, String username) {
-		Person author = PersonDao.getPersonByUsername(username);
-		List<ForumPost> posts = getRidOfDupes(postReplyDao.getPostsByCategoryProf(author));
-		ForumCategory category = dao.getCategoryByName(catName);
+		Person author = personRepo.findByUsername(username);
+		List<ForumPost> posts = getRidOfDupes(postRepo.findByAuthorOrderByTimestampDesc(author));
+		ForumCategory category = catRepo.findByCategoryName(catName);
 		List<ForumPost> filteredPosts = new ArrayList<>();
 		for(ForumPost post: posts){
 			for(ForumCategory cat: post.getCategory()){

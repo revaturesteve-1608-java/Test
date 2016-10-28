@@ -6,16 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.revpages.dao.LoginDao;
-import com.revpages.dao.PersonInformationDao;
-import com.revpages.dao.SimpleDao;
+import com.revpages.service.Crypt;
+import com.revpages.service.Jets3;
+import com.revpages.service.ServiceInterface;
+
+import com.revpages.dao.AWSKeyRepo;
+import com.revpages.dao.ComplexRepo;
+import com.revpages.dao.PersonRepo;
+import com.revpages.dao.RoleRepo;
 import com.revpages.dto.AwsKey;
 import com.revpages.dto.Complex;
 import com.revpages.dto.Person;
 import com.revpages.dto.Role;
-import com.revpages.service.Crypt;
-import com.revpages.service.Jets3;
-import com.revpages.service.ServiceInterface;
 import com.revpages.util.Email;
 
 /**
@@ -36,24 +38,17 @@ public class ServiceLogic implements ServiceInterface{
 	@Autowired
 	Jets3 jetS3;
 	
-	/**
-	 * Using to access the database
-	 */
-	@Autowired // mapped to the bean
-	SimpleDao dao;
-	
-	/**
-	 * Using to login User
-	 */
 	@Autowired
-	LoginDao loginDao;
+	PersonRepo personRepo;
 	
-	/**
-	 * Using to updated user information
-	 */
 	@Autowired
-	PersonInformationDao PersonDao;
+	RoleRepo roleRepo;
 	
+	@Autowired
+	ComplexRepo complexRepo;
+	
+	@Autowired
+	AWSKeyRepo awsRepo;
 	/**
 	 * Get a random password
 	 * @param length The length of the password
@@ -99,7 +94,7 @@ public class ServiceLogic implements ServiceInterface{
 	 */
 	@Override
 	public List<Role> getRoles() {
-		return dao.getRoles();
+		return roleRepo.findAll();
 	}
 
 	/**
@@ -110,11 +105,12 @@ public class ServiceLogic implements ServiceInterface{
 	 */
 	@Override
 	public Person updateProfilePic(Person person, MultipartFile picture) {
-		AwsKey key = dao.getAWSKey();
+		AwsKey key = awsRepo.findOne(1);
 		person.setProfilePic(jetS3.uploadProfileItem(person.getId() + "", person.getId() + "", picture,
 				key.getAccessKey(), key.getSecretAccessKey()));
-		PersonDao.updatePersonPic(person);
-		return person;
+		Person newPerson = personRepo.findByEmail(person.getEmail());
+		personRepo.save(newPerson);
+		return personRepo.findByEmail(person.getEmail());
 	}
 
 	/**
@@ -124,7 +120,7 @@ public class ServiceLogic implements ServiceInterface{
 	 */
 	@Override
 	public Person getPersonByUsername(String username) {
-		return PersonDao.getPersonByUsername(username);
+		return personRepo.findByUsername(username);
 	}
 
 	/**
@@ -133,7 +129,7 @@ public class ServiceLogic implements ServiceInterface{
 	 */
 	@Override
 	public List<Complex> getComplex() {
-		return dao.getComplex();
+		return complexRepo.findAll();
 	}
 	
 	/**
@@ -144,7 +140,7 @@ public class ServiceLogic implements ServiceInterface{
 	 */
 	@Override
 	public Person loginUser(String username, String password) {
-		Person person = PersonDao.getPersonByUsername(username);
+		Person person = personRepo.findByUsername(username);
 		if(person != null && crypt.validate(password, person.getPassword())) {
 			return person;
 		}
@@ -160,7 +156,7 @@ public class ServiceLogic implements ServiceInterface{
 	public String createUser(Person person) {
 		person.setEmail(person.getEmail().toLowerCase());
 		// Check if email exists
-		if(PersonDao.getPersonByEmail(person.getEmail()) == null) {
+		if(personRepo.findByEmail(person.getEmail()) == null) {
 			//make new user name 
 			person.setUsername(person.getEmail());
 			//set it as new user
@@ -169,12 +165,13 @@ public class ServiceLogic implements ServiceInterface{
 			String password = getRandom(20);
 			person.setPassword(maskElement(password));
 			// Save in Database
-			Person user = PersonDao.createUser(person);
+			personRepo.save(person);
+			Person newPerson = personRepo.findByEmail(person.getEmail());
 			// set a default profile picture
-			AwsKey key = dao.getAWSKey();
-			person.setProfilePic(jetS3.uploadProfileItem(user.getId() + "", user.getId() + "", 
+			AwsKey key = awsRepo.findOne(1);
+			newPerson.setProfilePic(jetS3.uploadProfileItem(newPerson.getId() + "", newPerson.getId() + "", 
 					key.getAccessKey(), key.getSecretAccessKey()));
-			PersonDao.updatePersonPic(person);
+			personRepo.save(newPerson);
 			// Send Email to Account
 			String subject = "Welcome to Revature";
 			String message = 
@@ -200,16 +197,16 @@ public class ServiceLogic implements ServiceInterface{
             	+ "<tbody>"
             		+ "<tr>"
             			+ "<td style=\"padding-top:0;padding-right:18px;padding-bottom:9px;padding-left:18px;\" valign=\"top\">"
-            				+ "<h3 style=\"text-align:left;\">Hello " + person.getFirstName() + " " + person.getLastName() + "</h3>"
+            				+ "<h3 style=\"text-align:left;\">Hello " + newPerson.getFirstName() + " " + newPerson.getLastName() + "</h3>"
             				+ "<p style=\"text-align:left;\"> Your account had been approve<br><br>"
             				
             				+ "Here is your login information <br><br>" 
-        					+ "Temporary Username: " + person.getUsername() + "<br>" 
+        					+ "Temporary Username: " + newPerson.getUsername() + "<br>" 
         					+ "Temporary Password: " + password
         					+ "<br>"
         					+ "<br>"
         					+ "Click the link below to login: "
-        					+ "<a rel=\"nofollow\" target=\"_blank\" href=\"http://ec2-52-72-127-66.compute-1.amazonaws.com:8080/Project3/\">Login</a></p>"
+        					+ "<a rel=\"nofollow\" target=\"_blank\" href=\"http://ec2-52-72-127-66.compute-1.amazonaws.com:8022/RevPages/\">Login</a></p>"
 
             				+ "<br>"
             				+ "<br>"
@@ -221,13 +218,11 @@ public class ServiceLogic implements ServiceInterface{
             		+ "</tr>"
             	+ "</tbody>"
             + "</table>";
-			email(person.getEmail(), message, subject);
+			email(newPerson.getEmail(), message, subject);
 			return "[\"User had been created\"]";
 		} else {
 			//tell that the email already exist
 			return "[\"Email already exist\"]";
 		}		
 	}
-	
-
 }
