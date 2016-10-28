@@ -1,8 +1,9 @@
 package com.revpages.dto;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,13 +13,21 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 /**
  * The user of the RevPages
  */
 @Entity
 @Table(name="Person")
-public class Person {
+public class Person implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * The primary ID of the Person
 	 */
@@ -31,13 +40,13 @@ public class Person {
 	/**
 	 * The first name of the person
 	 */
-	@Column(name="u_firstName", nullable=false)
+	@Column(name="u_firstname", nullable=false)
 	private String firstName;
 	
 	/**
 	 * The last name of the person
 	 */
-	@Column(name="u_lastName", nullable=false)
+	@Column(name="u_lastname", nullable=false)
 	private String lastName;
 
 	/**
@@ -62,7 +71,8 @@ public class Person {
 	/**
 	 * The role of the person
 	 */
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
+	@Fetch(FetchMode.JOIN)
 	@JoinColumn(name="r_id")
 	private Role role;
 	
@@ -75,14 +85,15 @@ public class Person {
 	/**
 	 * The place where the person live
 	 */
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
+	@Fetch(FetchMode.JOIN)
 	@JoinColumn(name="c_id")
 	private Complex complex;
 	
 	/**
 	 * The phone number of the person
 	 */
-	@Column(name="u_phoneNumber")
+	@Column(name="u_phonenumber")
 	private String phoneNumber;
 	
 	/**
@@ -112,7 +123,7 @@ public class Person {
 	/**
 	 * The total likes a person had gotten
 	 */
-	@Column(name="u_totalLikes")
+	@Column(name="u_totallikes")
 	private int totalLikes;
 	
 	/**

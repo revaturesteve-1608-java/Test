@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revpages.service.ServiceInterface;
+
 import com.revpages.dto.Person;
 import com.revpages.dto.Role;
-import com.revpages.service.ServiceInterface;
 
 @RestController
 public class CreateUserController {

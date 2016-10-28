@@ -1,12 +1,12 @@
 package com.revpages.dto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,32 +14,41 @@ import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 /**
  * The category of each post
  */
 @Entity
-@Table(name="ForumCategory")
-public class ForumCategory {
+@Table(name="Forumcategory")
+public class ForumCategory implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * The primary ID of the ForumCategory
 	 */
 	@Id
 	@Column(name="fc_id")
-	@SequenceGenerator(name="forumCatSeq", sequenceName="forumCat_Seq", allocationSize=1)
+	@SequenceGenerator(name="forumCatSeq", sequenceName="forumcat_Seq", allocationSize=1)
 	@GeneratedValue(generator="forumCatSeq", strategy=GenerationType.SEQUENCE)
 	private int id;
 	
 	/**
 	 * The name of the category
 	 */
-	@Column(name="fc_categoryName")
+	@Column(name="fc_categoryname")
 	private String categoryName;
 	
 	/**
 	 * A list of the post associate with the category
 	 */
-	@ManyToMany(mappedBy="category", cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@ManyToMany(mappedBy="category", cascade=CascadeType.ALL)
+	@Fetch(FetchMode.JOIN)
 	private List<ForumPost> forumPost;
 	
 	/**

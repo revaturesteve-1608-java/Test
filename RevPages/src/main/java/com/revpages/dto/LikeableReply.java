@@ -1,8 +1,9 @@
 package com.revpages.dto;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,12 +13,20 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 /**
  * All the likes for the reply
  */
 @Entity
-@Table(name="LikeableReply")
-public class LikeableReply {
+@Table(name="Likeablereply")
+public class LikeableReply implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * The primary ID of the LikeableReply
@@ -32,7 +41,8 @@ public class LikeableReply {
 	/**
 	 * The author that likes the reply
 	 */
-	@OneToOne(fetch=FetchType.EAGER)  
+	@OneToOne
+	@Fetch(FetchMode.JOIN)
 	@JoinColumn(name="u_id")
 	private Person author;
 	

@@ -1,9 +1,14 @@
 package com.revpages.objectcontainer;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class PostContainer {
+public class PostContainer implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String authorName;
 	private String postTitle;
 	private String postContent;

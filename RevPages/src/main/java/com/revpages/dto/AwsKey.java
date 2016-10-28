@@ -1,5 +1,7 @@
 package com.revpages.dto;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,8 +11,13 @@ import javax.persistence.Table;
  * The key to the S3
  */
 @Entity
-@Table(name="AwsKey")
-public class AwsKey {
+@Table(name="Awskey")
+public class AwsKey implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * The primary ID of the AwsKey

@@ -1,12 +1,12 @@
 package com.revpages.dto;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,19 +16,27 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 /**
  * The reply to the post
  */
 @Entity
-@Table(name="PostReply")
-public class PostReply {
+@Table(name="Postreply")
+public class PostReply implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * The id of the PostReply
 	 */
 	@Id
 	@Column(name="pr_id")
-	@SequenceGenerator(name="postReplySeq", sequenceName="postReply_Seq", 
+	@SequenceGenerator(name="postReplySeq", sequenceName="postreply_Seq", 
 		allocationSize=1)
 	@GeneratedValue(generator="postReplySeq", strategy=GenerationType.SEQUENCE)
 	private int id;
@@ -36,7 +44,8 @@ public class PostReply {
 	/**
 	 * The author of the reply
 	 */
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
+	@Fetch(FetchMode.JOIN)
 	@JoinColumn(name="u_id")
 	private Person author;
 
@@ -50,13 +59,15 @@ public class PostReply {
 	/**
 	 * A list of likes for the reply
 	 */
-	@OneToMany(mappedBy="reply", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="reply", cascade=CascadeType.ALL)
+	@Fetch(FetchMode.JOIN)
 	private List<LikeableReply> likes;
 	
 	/**
 	 * A list of dislikes for the reply
 	 */
-	@OneToMany(mappedBy="reply", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@OneToMany(mappedBy="reply", cascade=CascadeType.ALL)
+	@Fetch(FetchMode.SUBSELECT)
 	private List<DisLikeableReply> dislikes;
 	
 	/**

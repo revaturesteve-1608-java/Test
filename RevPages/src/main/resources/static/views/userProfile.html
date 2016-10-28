@@ -1,0 +1,371 @@
+<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-4">
+
+				<div class="ACon">
+					<div class="Profile">
+						<div>
+							<img id = "profilePic" src="{{user.profilePic}}" class="Img">
+							<div class="overlay">
+								<span><img /></span>
+							</div>
+						</div>
+						<div class="PopUp">Open Profile</div>
+						<div class="clickPopUp">
+							<h4>
+								<a class="username" text-align="center" href="">{{user.firstName}}
+									{{user.lastName}}, {{user.role.roleName}}</a>
+							</h4>
+							<h5 class="buttons">
+								<a class="username" href="">{{user.bio}}</a>
+							</h5>
+							<h5 class="buttons">
+								<a class="username" href="">Email: {{user.email}}<br>
+									PhoneNumber: {{user.phoneNumber}}
+								</a>
+							</h5>
+							<h5 class="buttons">
+								<a class="username" href="">School: {{user.university}}</a>
+							</h5>
+							<h5 class="buttons">
+								<a class="username" href="">Complex:
+									{{user.complex.complexName}}</a>
+							</h5>
+                            
+                         	<div>
+								<button type="button" class="btn btn-secondary"
+								data-toggle="modal" data-target="#myModal">Edit
+								Profile Information</button>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="col-md-8">
+				
+	</div>
+
+	<div>
+		<div class="col-sm-8 text-left">
+			
+			<div id="allPosts" data-ng-controller="postsCtrl">
+				<div id="newPost">
+					<ul class="list-group">
+						<li class="list-group-item">
+							<div class="row">
+								<h3><i> <div id="theUsername" align="center"> {{user.username}} 
+								</div> </h3></i>
+							</div>
+						</li>
+						<li class="list-group-item">
+							<div id=title>
+							<form>
+								<fieldset>
+									<input class="form-control input-sm" id="postContent" type="text"
+										placeholder="Title" ng-model="postTitle">
+								</fieldset>
+							</form>
+								<div class="form-group">
+  									<label for="sel1">Category:</label>
+  										<select class="form-control" id="sel1" ng-options="categories for categories in allCategories" 
+  												ng-model="categoryPicked">
+ 									 	</select>
+								</div>
+							</div>
+							<div>
+								<div>
+									<h3>Create Post</h3>
+
+									<div text-angular="text-angular" name="htmlcontent"
+										ng-model="htmlcontent" ta-disabled='disabled'
+										ta-text-editor-class="clearfix border-around"
+										ta-html-editor-class="border-around"></div>
+									<hr>
+
+									<button id="submit" type="button" class="btn btn-primary"
+										ng-click="addPost(postTitle, htmlcontent, categoryPicked)">Submit</button>
+									<button type="button" class="btn btn-primary"
+										ng-click="htmlcontent = emptyhtml">Reset</button>
+									<button type="button" class="btn btn-primary"
+										data-toggle="modal" data-target=".bs-example-modal-lg">Get
+										Code Block HTML</button>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>				
+				
+				<form id="filterSearch">
+				<fieldset>
+					<div class="col-md-6">
+						Search: <input class="form-control input-sm" type="text" ng-model="searchBox" placeholder="Search..."/>
+					</div>
+					<div class="col-md-6">
+						Select category: <select class="form-control" id="sel1" ng-options="categories for categories in allCategories" ng-model="selectCat" ng-change="getPostsByCategory(selectCat)"></select>
+					</div>
+				</fieldset>
+			</form> <br>
+				
+				<div id="posts" ng-repeat="postContainer in allPosts | filter:searchBox">
+					<div id="eachPost">
+						<ul class="list-group">
+							<li class="list-group-item" >
+								<div id="titleDiv">
+								<div class="col-md-8"><h4><a href="#post?id={{postContainer.postId}}"><b>{{postContainer.postTitle}}</b></a></h4></div>
+								<div class="col-md-4">
+									<button id="deleteBtn" type="button" class="btn btn-default"
+										aria-label="Right Align" ng-click="deletePost(postId)">
+										<span class="glyphicon glyphicon-remove"
+											aria-hidden="true"></span>
+									</button>
+								</div>
+								</div>
+							</li>
+							<li class="list-group-item">
+								<div ng-bind-html="postContainer.postContent">
+									<p id="thePost">{{postContainer.postContent}}</p>
+								</div>
+							</li>
+
+							<li class="list-group-item">
+								<div class="{{postContainer.postId}}">
+									<div id="singleReply" class="row" ng-repeat="replies in postContainer.replyContent">
+										<div ng-bind-html="replies[0]" class="col-md-8">
+											{{replies[0]}}
+
+										</div>
+										<br>
+										<p align="right"><b>Replied By: </b><i>{{replies[1]}}</i></p>
+										<p align="right"><b>Replied On: </b><i>{{replies[2]}}</i></p>
+									</div>
+								</div>
+							</li>
+							<li class="list-group-item" id="theRepyTextBox"><input
+								id="post" name="post1" type="hidden"
+								ng-init="postId=postContainer.postId;" ng-model="postId" /> <form><fieldset><div class="col-md-6"> <input
+								class="form-control input-sm" id="replyText" type="text"
+								placeholder="reply" ng-model="userReply1"> </div>
+								<div class="col-md-6">
+								<button id="reply" type="button" class="btn btn-primary"
+									ng-click="addReply(userReply1, postId)">reply</button></div></fieldset></form></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		
+	
+	</div>
+	<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+		aria-labelledby="myLargeModalLabel">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="form-group">
+					<label for="sel1">What language would you like to snip code
+						in:</label> <select class="form-control" id="sel1">
+						<option>Java</option>
+						<option>JS</option>
+						<option>HTML</option>
+						<option>C</option>
+					</select>
+				</div>
+			</div>
+		</div>
+	</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" ng-controller="updateUserCtrl">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">Edit Profile
+						Information</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal" id="components" role="form">
+						<fieldset>
+							<div class="tab-content">
+								<!-- Tabs of snippets go here -->
+								<div class="tab-pane active" id="input">
+									<div class="component">
+										<!-- Text input-->
+										<div class="form-group">
+											<label class="col-md-4 control-label" for="textinput">
+												Username</label>
+											<div class="col-md-8">
+												<input class="form-control input-md" id="username"
+													type="username" maxlength="40" placeholder="Username"
+													ng-model="username">
+											</div>
+										</div>
+									</div>
+									<div class="component">
+										<!-- Text input-->
+										<div class="form-group">
+											<label class="col-md-4 control-label" for="textinput">
+												Current Password</label>
+											<div class="col-md-8">
+												<input class="form-control input-md" id="password"
+													type="password" maxlength="40" placeholder="Password"
+													ng-model="oldPassword">
+											</div>
+										</div>
+									</div>
+
+									<div class="component">
+										<!-- Text input-->
+										<div class="form-group">
+											<label class="col-md-4 control-label" for="textinput">
+												New Password</label>
+											<div class="col-md-8">
+												<input class="form-control input-md" id="password"
+													type="password" maxlength="40" placeholder="New Password"
+													ng-model="newPassword">
+											</div>
+										</div>
+									</div>
+									<div class="component">
+										<!-- Password input-->
+										<div class="form-group">
+											<label class="col-md-4 control-label" for="passwordinput">New
+												Email Address </label>
+											<div class="col-md-8">
+												<input class="form-control input-md" id="email" type="text"
+													maxlength="150" placeholder="Email Address"
+													ng-model="newEmail">
+											</div>
+										</div>
+									</div>
+									<div class="component">
+										<!-- Search input-->
+										<div class="form-group">
+											<label class="col-md-4 control-label" for="searchinput">
+												Phone Number</label>
+											<div class="col-md-8">
+												<input class="form-control input-md" id="phone" type="text"
+													maxlength="11" placeholder="Phone" ng-model="newPhone">
+											</div>
+										</div>
+									</div>
+									<div class="component">
+										<!-- Search input-->
+										<div class="form-group">
+											<label class="col-md-4 control-label" for="searchinput">
+												Complex</label>
+											<div class="col-md-8">
+												<select class="form-control" ng-model="complex.complexName" ng-options="x.complexName for x in complex">
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="component">
+										<!-- Search input-->
+										<div class="form-group">
+											<label class="col-md-4 control-label" for="searchinput">
+												University</label>
+											<div class="col-md-8">
+												<input class="form-control input-md" id="university"
+													type="text" maxlength="150" placeholder="University"
+													ng-model="newUniversity">
+											</div>
+										</div>
+									</div>
+									<div class="component">
+										<!-- Search input-->
+										<div class="form-group">
+											<label class="col-md-4 control-label" for="searchinput">
+												LinkedIn Link</label>
+											<div class="col-md-8">
+												<input class="form-control input-md" id="linkedIn"
+													type="text" maxlength="200" placeholder="LinkedIn link"
+													ng-model="newLinkedIn">
+											</div>
+										</div>
+									</div>
+									
+									<div class="component">
+										<!-- Search input-->
+										<div class="form-group">
+											<label class="col-md-4 control-label" for="searchinput">
+												File to upload</label>
+											<div class="col-md-8">
+												<input type="file" id ="fileChooser" name="file" /><br/>
+                                    			<input type="submit" id="fileUploadButton" value="Upload" />
+											</div>
+										</div>
+									</div>
+									
+
+								</div>
+							</div>
+						</fieldset>
+					</form>
+
+
+
+
+
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary"
+						ng-click="updateInformation(oldPassword, newPassword, username, newEmail, newPhone, complex, newUniversity, newLinkedIn)">Save
+						Changes</button>
+				</div>
+			</div>
+		</div>
+		<script src="resources/js/editor.js"></script>
+	</div>
+<script type="text/javascript">
+$(document).ready(function(){
+	var currentPicture = '{{user.profilePic}}';
+	$("#fileChooser").change(function(event){
+		if(event.target.files[0].type.includes("image")) {
+			console.log("here1")
+			newPicture = URL.createObjectURL(event.target.files[0]);
+			$("#profilePic").attr("src", newPicture);
+			
+			$("#fileUploadButton").click(function(e){
+				console.log("here2")
+				if(event.target.files[0].type.includes("image")) {
+					console.log("here3")
+					var data = new FormData();
+					
+					data.append("file",$("#fileChooser")[0].files[0]);
+					$.ajax({
+						url: "/upload-remote",
+						data: data,
+						contentType: false,
+						processData: false,
+						type: "POST",
+						cache: false,
+						success: function(response){
+							
+								alert("Profile Picture Updated");
+						}		
+					});
+					
+					e.preventDefault();
+				}
+			})
+		} else {
+    		alert("Only image");
+    	}
+	})
+			
+});
+</script>
+	
+
