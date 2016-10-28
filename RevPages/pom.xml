@@ -1,49 +1,70 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.revpages</groupId>
-	<artifactId>RevPages</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
-	
-	<!--  The spring-boot-starter-parent is a special starter 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.revpages</groupId>
+  <artifactId>SpringBootRevPage</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <!-- Making it as war package -->
+  <packaging>war</packaging>
+  <!--  The spring-boot-starter-parent is a special starter 
 	  that provides useful Maven defaults. 
 	  It also provides a dependency-management section 
 	  so that you can omit version tags for “blessed” dependencies. -->
-	<parent>
-	    <groupId>org.springframework.boot</groupId>
-	    <artifactId>spring-boot-starter-parent</artifactId>
-	    <version>1.4.1.RELEASE</version>
-	</parent>
-	
-	<properties>
+  <parent>
+       <groupId>org.springframework.boot</groupId>
+       <artifactId>spring-boot-starter-parent</artifactId>
+       <version>1.4.1.RELEASE</version>
+   </parent>
+   
+   <properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 	</properties>
-
-	<dependencies>
-	   <!-- With this in your classpath, boot knows you are building a Spring 
-	       MVC application, configuring itself.
-	       It is for developing a web application that uses Tomcat. -->
-	   <dependency>
-	       <groupId>org.springframework.boot</groupId>
-	       <artifactId>spring-boot-starter-web</artifactId>
-	   </dependency>
-	   <!-- This will enable you to use Spring Data with Spring Boot -->
-	   <dependency>
-	       <groupId>org.springframework.boot</groupId>
-	       <artifactId>spring-boot-starter-data-jpa</artifactId>
-	   </dependency>
-		<!-- Provides you with JUnit, Sprint Test (and Spring Boot Test), AssertJ, Hamcrest,
-		   Mockito, JSONassert, and JsonPath. This example will not be using the testing
-		   suite, but the dependency is left here to show how you would add testing. -->
-	   <dependency>
-	       <groupId>org.springframework.boot</groupId>
-	       <artifactId>spring-boot-starter-test</artifactId>
-	       <scope>test</scope>
-	   </dependency>
-	   <dependency>
+	
+   <dependencies>
+       <!-- With this in your classpath, boot knows you are building a Spring 
+           MVC application, configuring itself.
+           It is for developing a web application that uses Tomcat. -->
+       <dependency>
+           <groupId>org.springframework.boot</groupId>
+           <artifactId>spring-boot-starter-web</artifactId>
+       </dependency>
+       <!-- This will enable you to use Spring Data with Spring Boot -->
+       <dependency>
+           <groupId>org.springframework.boot</groupId>
+           <artifactId>spring-boot-starter-data-jpa</artifactId>
+       </dependency>
+       <!-- These are devtools for ease of building. It will restart your server 
+           if you make changes to the application while the application is running, 
+           among other things. The devtools are automagically disabled when you fully 
+           package your project for production release. -->
+       <dependency>
+           <groupId>org.springframework.boot</groupId>
+           <artifactId>spring-boot-devtools</artifactId>
+       </dependency>
+       <!-- The actuator for Spring MVC. Provides some extra rest endpoints for 
+           your MVC application such as /health, /beans, and /metrics -->
+       <dependency>
+           <groupId>org.springframework.boot</groupId>
+           <artifactId>spring-boot-starter-actuator</artifactId>
+       </dependency>
+       <!-- Provides you with JUnit, Sprint Test (and Spring Boot Test), AssertJ, Hamcrest,
+           Mockito, JSONassert, and JsonPath. This example will not be using the testing
+           suite, but the dependency is left here to show how you would add testing. -->
+       <dependency>
+           <groupId>org.springframework.boot</groupId>
+           <artifactId>spring-boot-starter-test</artifactId>
+           <scope>test</scope>
+       </dependency>
+       <!-- If you are using an open source SQL driver, insert the dependency 
+           as normal. However, Spring Boot wishes to manage the versioning on the driver, 
+           so do not provide a version -->
+       <dependency>
+           <groupId>org.springframework.data</groupId>
+           <artifactId>spring-data-oracle</artifactId>
+           <version>1.2.1.RELEASE</version>
+       </dependency>
+        <dependency>
 			<groupId>net.java.dev.jets3t</groupId>
 		    <artifactId>jets3t</artifactId>
 		    <version>0.9.4</version>
@@ -79,19 +100,34 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-rest</artifactId>
 		</dependency>
-	</dependencies>
-	<build>
-		<finalName>RevPages</finalName>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
-			<plugin>
+   </dependencies>
+   <build>
+       <plugins>
+           <!-- Spring Boot plugin to manage dependencies for you. -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+           <!-- Integration testing plugin -->
+           <plugin>
+               <artifactId>maven-failsafe-plugin</artifactId>
+               <executions>
+                   <execution>
+                       <goals>
+                           <goal>integration-test</goal>
+                           <goal>verify</goal>
+                       </goals>
+                   </execution>
+               </executions>
+           </plugin>
+           <plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.2</version>
@@ -104,8 +140,6 @@
 					<update>true</update>
 				</configuration>
 			</plugin>
-		</plugins>
-	</build>
-
-
+       </plugins>
+   </build>
 </project>
