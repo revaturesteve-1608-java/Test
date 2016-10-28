@@ -16,7 +16,7 @@ import com.revpages.service.BusinessLogic;
 import com.revpages.service.ServiceInterface;
 
 @RestController
-public class ProfileController {
+public class UserProfileController {
 	
 	@Autowired 	
 	BusinessLogic logic; 

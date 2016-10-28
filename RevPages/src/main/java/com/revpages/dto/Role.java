@@ -1,5 +1,7 @@
 package com.revpages.dto;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,8 +15,13 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="Role")
-public class Role {
+public class Role implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * The primary ID of the role
 	 */
@@ -27,7 +34,7 @@ public class Role {
 	/**
 	 * The name of the role
 	 */
-	@Column(name="r_roleName")
+	@Column(name="r_rolename")
 	private String roleName;
 	
 	/**

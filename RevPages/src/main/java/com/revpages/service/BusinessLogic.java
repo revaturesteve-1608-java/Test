@@ -56,7 +56,7 @@ public interface BusinessLogic {
 	
 	public List<PostReply> getRepliesByPost(ForumPost post);
 	
-	public void createForumCategory(String categoryName);
+//	public void createForumCategory(String categoryName);
 	
 	public List<ForumPost> getPostsByCategory(String catName);
 	
